@@ -63,8 +63,8 @@ impl InstanceFilter<RuntimeCall> for ProxyType {
 				RuntimeCall::Council(..) |
 				RuntimeCall::CouncilMembership(..) |
 				RuntimeCall::Treasury(..) |
-				//RuntimeCall::Vesting(orml_vesting::Call::claim{..}) |
-				//RuntimeCall::Vesting(orml_vesting::Call::claim_for{..}) |
+				RuntimeCall::Vesting(orml_vesting::Call::claim{..}) |
+				RuntimeCall::Vesting(orml_vesting::Call::claim_for{..}) |
 				// Specifically omitting Vesting `vested_transfer`, and `update_vesting_schedules`
 				RuntimeCall::Utility(..) |
 				RuntimeCall::Identity(..) |
