@@ -144,8 +144,20 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPalletsWithSystem,
-	(),
+	Migrations,
 >;
+
+type Migrations = (
+	// todo check how expensive that is.
+	pallet_identity::migration::versioned::V0ToV1<Runtime, { u64::MAX }	>,
+	// Track inactive funds of the teleporter account, currently we don't use that, but it doesn't
+	// hurt either.
+	pallet_balances::migration::MigrateToTrackInactive<Runtime, xcm_config::CheckingAccount>,
+	// Simple migration ordering the set of invulnerables.
+	pallet_collator_selection::migration::v1::MigrateToV1<Runtime>,
+	// Simple migration of the queue config data.
+	cumulus_pallet_xcmp_queue::migration::v4::MigrationToV4<Runtime>,
+);
 
 //type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
