@@ -29,8 +29,8 @@ parameter_types! {
 	pub const RelayNetwork: Option<NetworkId> = None;
 	pub RelayChainOrigin: RuntimeOrigin = cumulus_pallet_xcm::Origin::Relay.into();
 	pub UniversalLocation: InteriorLocation = Parachain(ParachainInfo::parachain_id().into()).into();
-	// Potential KSM teleporter account, we don't teleport yet, but who knows. If we also have a
-	// convenience dex at some time on Ajuna, we want to have it.
+	// Potential KSM teleporter account, we don't teleport (yet). If we also have a
+	// convenience DEX for KSM<>BAJUN at some point, we want to teleport.
 	pub CheckingAccount: AccountId = PolkadotXcm::check_account();
 }
 
