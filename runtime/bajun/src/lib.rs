@@ -152,7 +152,7 @@ pub type Executive = frame_executive::Executive<
 // https://substrate.stackexchange.com/questions/10986/runtime-upgrade-for-parachainsystemhostconfiguration
 type Migrations = (
 	// todo check how expensive that is.
-	pallet_identity::migration::versioned::V0ToV1<Runtime, { u64::MAX }	>,
+	pallet_identity::migration::versioned::V0ToV1<Runtime, { u64::MAX }>,
 	// Track inactive funds of the teleporter account, currently we don't use that, but it doesn't
 	// hurt either.
 	pallet_balances::migration::MigrateToTrackInactive<Runtime, xcm_config::CheckingAccount>,
