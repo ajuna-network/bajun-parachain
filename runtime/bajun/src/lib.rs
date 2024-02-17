@@ -147,6 +147,9 @@ pub type Executive = frame_executive::Executive<
 	Migrations,
 >;
 
+// Note: if try-runtime pre/post checks are enabled it will error when it tries to decode the
+// entire chain state. However, this is to be expected and can be ignored:
+// https://substrate.stackexchange.com/questions/10986/runtime-upgrade-for-parachainsystemhostconfiguration
 type Migrations = (
 	// todo check how expensive that is.
 	pallet_identity::migration::versioned::V0ToV1<Runtime, { u64::MAX }	>,
