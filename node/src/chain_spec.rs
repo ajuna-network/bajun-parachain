@@ -182,6 +182,12 @@ fn testnet_genesis(
 			"invulnerables": invulnerables.iter().cloned().map(|(acc, _)| acc).collect::<Vec<_>>(),
 			"candidacyBond": EXISTENTIAL_DEPOSIT * 16,
 		},
+		"council": {
+			"members": vec![get_account_id_from_seed::<sr25519::Public>("Alice")]
+		},
+		"technicalCommittee": {
+			"members": vec![get_account_id_from_seed::<sr25519::Public>("Alice")]
+		},
 		"session": {
 			"keys": invulnerables
 				.into_iter()
