@@ -53,7 +53,7 @@ use frame_support::{
 	dispatch::DispatchClass,
 	genesis_builder_helper::{build_config, create_default_config},
 	parameter_types,
-	traits::{AsEnsureOriginWithArg, ConstBool, Contains, EitherOfDiverse},
+	traits::{AsEnsureOriginWithArg, ConstBool, Contains},
 	weights::{
 		constants::WEIGHT_REF_TIME_PER_SECOND, ConstantMultiplier, Weight, WeightToFeeCoefficient,
 		WeightToFeeCoefficients, WeightToFeePolynomial,
@@ -64,7 +64,6 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot, EnsureSigned,
 };
-use pallet_collective::{EnsureProportionAtLeast, EnsureProportionMoreThan};
 use pallet_identity::legacy::IdentityInfo;
 use pallet_transaction_payment::CurrencyAdapter;
 use scale_info::TypeInfo;
@@ -894,7 +893,11 @@ construct_runtime!(
 		Treasury: pallet_treasury = 41,
 		// type CouncilCollective = pallet_collective::Instance2
 		Council: pallet_collective::<Instance2> = 42,
-		// CouncilMembership: pallet_membership::<Instance2> = 43,
+		// Removed: CouncilMembership: pallet_membership::<Instance2> = 43,
+		// pub type TechnicalCommitteeInstance = pallet_collective::Instance1;
+		TechnicalCommittee: pallet_collective::<Instance1> = 44,
+		// In case we want membership after all, reserve index 45.
+		Democracy: pallet_democracy = 46,
 
 		// Indexes 50-59 should be reserved for our games.
 		Randomness: pallet_insecure_randomness_collective_flip = 50,

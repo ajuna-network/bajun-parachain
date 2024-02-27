@@ -1,7 +1,8 @@
+use crate::{AccountId, Balance, BlockNumber};
 use crate::{
-	BlockWeights, OriginCaller, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, AJUNS, DAYS,
+	OriginCaller, Runtime, RuntimeBlockWeights, RuntimeCall, RuntimeEvent, RuntimeOrigin, BAJUN,
+	DAYS,
 };
-use ajuna_primitives::{AccountId, Balance, BlockNumber};
 use frame_support::{
 	dispatch::RawOrigin,
 	parameter_types,
@@ -70,9 +71,8 @@ impl<
 type CouncilCollective = pallet_collective::Instance2;
 
 parameter_types! {
-	pub CouncilMotionDuration: BlockNumber = 3 * DAYS;
-	pub MaxProposalWeight: Weight = Perbill::from_percent(50) * BlockWeights::get().max_block;
-}
+pub CouncilMotionDuration: BlockNumber = 3 * DAYS;
+pub MaxProposalWeight: Weight = Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block;}
 
 impl pallet_collective::Config<CouncilCollective> for Runtime {
 	type RuntimeOrigin = RuntimeOrigin;
@@ -113,7 +113,7 @@ parameter_types! {
 	pub const TwentyEightDays: BlockNumber = 28 * DAYS;
 	pub const ThirtyDays: BlockNumber = 30 * DAYS;
 	pub EnactmentPeriod: BlockNumber = 7 * DAYS;
-	pub const MinimumDeposit: Balance = AJUNS;
+	pub const MinimumDeposit: Balance = BAJUN;
 }
 
 impl pallet_democracy::Config for Runtime {

@@ -33,6 +33,7 @@ pallet-aura                                = { workspace = true }
 pallet-authorship                          = { workspace = true }
 pallet-balances                            = { workspace = true }
 pallet-collective                          = { workspace = true }
+pallet-democracy                          = { workspace = true }
 pallet-identity                            = { workspace = true }
 pallet-insecure-randomness-collective-flip = { workspace = true }
 pallet-membership                          = { workspace = true }
@@ -121,6 +122,7 @@ std = [
     "pallet-balances/std",
     "pallet-collective/std",
     "pallet-collator-selection/std",
+    "pallet-democracy/std",
     "pallet-identity/std",
     "pallet-membership/std",
     "pallet-message-queue/std",
@@ -170,6 +172,7 @@ runtime-benchmarks = [
     "pallet-balances/runtime-benchmarks",
     "pallet-collator-selection/runtime-benchmarks",
     "pallet-collective/runtime-benchmarks",
+    "pallet-democracy/runtime-benchmarks",
     "pallet-identity/runtime-benchmarks",
     "pallet-membership/runtime-benchmarks",
     "pallet-message-queue/runtime-benchmarks",
