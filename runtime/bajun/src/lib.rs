@@ -22,10 +22,12 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+mod gov;
 mod proxy_type;
 mod weights;
 pub mod xcm_config;
 
+use crate::gov::EnsureRootOrMoreThanHalfCouncil;
 use cumulus_primitives_core::{AggregateMessageOrigin, ParaId};
 use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use smallvec::smallvec;
@@ -86,6 +88,12 @@ use parachains_common::message_queue::{NarrowOriginToSibling, ParaIdToSibling};
 use parachains_common::{BlockNumber, Hash, Header};
 use polkadot_runtime_common::xcm_sender::NoPriceForMessageDelivery;
 use sp_runtime::traits::{Convert, IdentifyAccount, IdentityLookup, Verify};
+
+parameter_types! {
+	pub const OneDay: BlockNumber = DAYS;
+	pub const OneWeek: BlockNumber = 7 * DAYS;
+	pub const TwoWeeks: BlockNumber = 14 * DAYS;
+}
 
 /// The address format for describing accounts.
 pub type Address = MultiAddress<AccountId, ()>;
@@ -461,42 +469,6 @@ parameter_types! {
 	pub MaxProposalWeight: Weight = Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block;
 }
 
-type CouncilCollective = pallet_collective::Instance2;
-impl pallet_collective::Config<CouncilCollective> for Runtime {
-	type RuntimeOrigin = RuntimeOrigin;
-	type Proposal = RuntimeCall;
-	type RuntimeEvent = RuntimeEvent;
-	type MotionDuration = Weekly;
-	type MaxProposals = frame_support::traits::ConstU32<100>;
-	type MaxMembers = CouncilMaxMembers;
-	type DefaultVote = pallet_collective::PrimeDefaultVote;
-	type WeightInfo = weights::pallet_collective::WeightInfo<Runtime>;
-	type SetMembersOrigin = EnsureRoot<AccountId>;
-	type MaxProposalWeight = MaxProposalWeight;
-}
-
-type EnsureRootOrMoreThanHalfCouncil = EitherOfDiverse<
-	EnsureRoot<AccountId>,
-	EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
->;
-type EnsureRootOrAtLeastTwoThirdsCouncil = EitherOfDiverse<
-	EnsureRoot<AccountId>,
-	EnsureProportionAtLeast<AccountId, CouncilCollective, 2, 3>,
->;
-
-impl pallet_membership::Config<pallet_membership::Instance2> for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type AddOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type RemoveOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type SwapOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type ResetOrigin = EnsureRootOrAtLeastTwoThirdsCouncil;
-	type PrimeOrigin = EnsureRootOrAtLeastTwoThirdsCouncil;
-	type MembershipInitialized = Council;
-	type MembershipChanged = Council;
-	type MaxMembers = CouncilMaxMembers;
-	type WeightInfo = weights::pallet_membership::WeightInfo<Runtime>;
-}
-
 parameter_types! {
 	pub TreasuryAccount: AccountId = Treasury::account_id();
 	pub const SpendPayoutPeriod: u32 = 5;
@@ -511,7 +483,7 @@ impl pallet_treasury::Config for Runtime {
 	type ProposalBond = FivePercent;
 	type ProposalBondMinimum = MinimumProposalBond;
 	type ProposalBondMaximum = ();
-	type SpendPeriod = Weekly;
+	type SpendPeriod = OneWeek;
 	type Burn = ZeroPercent;
 	type PalletId = TreasuryPalletId;
 	type BurnDestination = ();
@@ -920,8 +892,9 @@ construct_runtime!(
 		// Governance
 		Sudo: pallet_sudo = 40,
 		Treasury: pallet_treasury = 41,
+		// type CouncilCollective = pallet_collective::Instance2
 		Council: pallet_collective::<Instance2> = 42,
-		CouncilMembership: pallet_membership::<Instance2> = 43,
+		// CouncilMembership: pallet_membership::<Instance2> = 43,
 
 		// Indexes 50-59 should be reserved for our games.
 		Randomness: pallet_insecure_randomness_collective_flip = 50,
