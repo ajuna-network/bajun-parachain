@@ -926,7 +926,7 @@ mod benches {
 		[cumulus_pallet_xcmp_queue, XcmpQueue]
 		[pallet_treasury, Treasury]
 		[pallet_collective, Council]
-		[pallet_membership, CouncilMembership]
+		[pallet_collective, TechnicalCommittee]
 		[pallet_identity, Identity]
 		[pallet_preimage, Preimage]
 		[pallet_proxy, Proxy]
