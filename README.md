@@ -52,4 +52,7 @@ TBD when we actually start setting up XCM.
 
 ### Test Governance execution
 
-TBD when we have governance
+Simply create an external proposal and fast-track it with a small voting period and delay, e.g. 10 blocks. Then, in
+polkadot-js/apps, go to Developer -> JavaScript and execute the following chopsticks-dev-rpc:
+`api.rpc('dev_newBlock', { count: 10 })`. After this you can observe the blocks being created one by one until the
+proposal is executed.
