@@ -14,8 +14,9 @@ with [Substrate](https://docs.substrate.io/).
 ## Chopsticks
 
 Chopsticks can be used to create a local fork of a life network, copying all its storage values and override specific
-storage values with a config file. The fork will create a block whenever an extrinsic is added to the tx-pool but
-it will be stale otherwise, but exposes a fast-forward rpc to produce 'n' blocks, which is useful for scheduler testing.
+storage values with a config file. The fork will create a block whenever an extrinsic is added to the tx-pool.
+Otherwise, it will be stale, but exposes a fast-forward rpc to produce 'n' blocks, which is useful for scheduler
+testing.
 
 Chopsticks can be used to:
 

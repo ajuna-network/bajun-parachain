@@ -44,7 +44,7 @@ pub type EnsureRootOrAllTechnicalCommittee = EitherOfDiverse<
 
 /// Council collective instance declaration.
 ///
-/// The council primarily serves to optimize and balance the inclusive referendum system,
+/// The council primarily serves to optimize and balance the inclusive referendum system
 /// by being allowed to propose external democracy proposals, which can be fast tracked and
 /// bypass the one active referendum at a time rule.
 ///
@@ -85,7 +85,7 @@ impl pallet_membership::Config<CouncilMembershipInstance> for Runtime {
 	type WeightInfo = pallet_membership::weights::SubstrateWeight<Runtime>;
 }
 
-/// The technical committee primarily serves to safeguard against malicious referenda,
+/// The technical committee primarily serves to safeguard against malicious referenda
 /// and fast track critical referenda.
 pub type TechnicalCommitteeInstance = pallet_collective::Instance1;
 
