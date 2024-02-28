@@ -14,10 +14,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{AccountId, Balance, BlockNumber, Council, CouncilMembership, TechnicalCommittee};
 use crate::{
-	OriginCaller, Runtime, RuntimeBlockWeights, RuntimeCall, RuntimeEvent, RuntimeOrigin, BAJUN,
-	DAYS,
+	AccountId, Balance, BlockNumber, Council, CouncilMembership, OriginCaller, Runtime,
+	RuntimeBlockWeights, RuntimeCall, RuntimeEvent, RuntimeOrigin, TechnicalCommittee, BAJUN, DAYS,
 };
 use frame_support::{
 	parameter_types,
