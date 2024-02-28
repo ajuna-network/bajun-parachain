@@ -108,7 +108,7 @@ impl pallet_collective::Config<TechnicalCommitteeInstance> for Runtime {
 	type MaxProposalWeight = MaxProposalWeight;
 }
 
-/// Helper pallet to manage Council members.
+/// Helper pallet to manage TechnicalCommittee members.
 type TechnicalCommitteeMembershipInstance = pallet_membership::Instance1;
 impl pallet_membership::Config<TechnicalCommitteeMembershipInstance> for Runtime {
 	type RuntimeEvent = RuntimeEvent;
