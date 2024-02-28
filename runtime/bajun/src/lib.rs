@@ -891,12 +891,14 @@ construct_runtime!(
 		// Governance
 		Sudo: pallet_sudo = 40,
 		Treasury: pallet_treasury = 41,
-		// type CouncilCollective = pallet_collective::Instance2
+		// type CouncilCollectiveInstance = pallet_collective::Instance2
 		Council: pallet_collective::<Instance2> = 42,
-		// Removed: CouncilMembership: pallet_membership::<Instance2> = 43,
+		// type CouncilMembershipInstance = pallet_membership::Instance2;
+		CouncilMembership: pallet_membership::<Instance2> = 43,
 		// pub type TechnicalCommitteeInstance = pallet_collective::Instance1;
 		TechnicalCommittee: pallet_collective::<Instance1> = 44,
-		// In case we want membership after all, reserve index 45.
+		// type TechnicalCommitteeMembershipInstance = pallet_membership::Instance1;
+		TechnicalCommitteeMembership: pallet_membership::<Instance1> = 45,
 		Democracy: pallet_democracy = 46,
 
 		// Indexes 50-59 should be reserved for our games.

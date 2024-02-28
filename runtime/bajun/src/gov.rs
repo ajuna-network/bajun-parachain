@@ -14,25 +14,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{AccountId, Balance, BlockNumber};
+use crate::{AccountId, Balance, BlockNumber, Council, CouncilMembership, TechnicalCommittee};
 use crate::{
 	OriginCaller, Runtime, RuntimeBlockWeights, RuntimeCall, RuntimeEvent, RuntimeOrigin, BAJUN,
 	DAYS,
 };
 use frame_support::{
-	dispatch::RawOrigin,
 	parameter_types,
-	traits::{ConstBool, ConstU32, EitherOfDiverse, EnsureOrigin},
+	traits::{ConstBool, ConstU32, EitherOfDiverse},
 	weights::Weight,
 };
-use frame_system::EnsureRoot;
+use frame_system::{EnsureRoot, EnsureSignedBy};
 use pallet_collective::{EnsureMember, EnsureProportionAtLeast, EnsureProportionMoreThan};
 use sp_runtime::Perbill;
-use sp_std::marker::PhantomData;
 
 pub type EnsureRootOrMoreThanHalfCouncil = EitherOfDiverse<
 	EnsureRoot<AccountId>,
-	EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
+	EnsureProportionMoreThan<AccountId, CouncilCollectiveInstance, 1, 2>,
 >;
 
 pub type EnsureRootOrMoreThanHalfTechnicalCommittee = EitherOfDiverse<
@@ -45,38 +43,6 @@ pub type EnsureRootOrAllTechnicalCommittee = EitherOfDiverse<
 	EnsureProportionAtLeast<AccountId, TechnicalCommitteeInstance, 1, 1>,
 >;
 
-type AccountIdFor<T> = <T as frame_system::Config>::AccountId;
-
-/// Ensures that the signer of a transaction is a member of said collective instance.
-///
-/// This is fundamentally different from the `pallet_collective::EnsureMember`,
-/// which checks if the referendum to be executed has been ayed by any member.
-/// It is a different kind of origin.
-pub struct EnsureSignerIsCollectiveMember<T, I: 'static>(PhantomData<(T, I)>);
-impl<
-		O: Into<Result<RawOrigin<AccountIdFor<T>>, O>> + From<RawOrigin<AccountIdFor<T>>>,
-		T: pallet_collective::Config<I>,
-		I,
-	> EnsureOrigin<O> for EnsureSignerIsCollectiveMember<T, I>
-{
-	type Success = AccountIdFor<T>;
-	fn try_origin(o: O) -> Result<Self::Success, O> {
-		o.into().and_then(|o| match o {
-			RawOrigin::Signed(a) if pallet_collective::Pallet::<T, I>::is_member(&a) => Ok(a),
-			r => Err(O::from(r)),
-		})
-	}
-
-	#[cfg(feature = "runtime-benchmarks")]
-	fn try_successful_origin() -> Result<O, ()> {
-		use parity_scale_codec::Decode;
-		use sp_runtime::traits::TrailingZeroInput;
-		let zero_account_id =
-			<AccountIdFor<T>>::decode(&mut TrailingZeroInput::zeroes()).map_err(|_| ())?;
-		Ok(O::from(RawOrigin::Signed(zero_account_id)))
-	}
-}
-
 /// Council collective instance declaration.
 ///
 /// The council primarily serves to optimize and balance the inclusive referendum system,
@@ -84,23 +50,40 @@ impl<
 /// bypass the one active referendum at a time rule.
 ///
 /// It also controls the treasury.
-type CouncilCollective = pallet_collective::Instance2;
+type CouncilCollectiveInstance = pallet_collective::Instance2;
 
 parameter_types! {
-pub CouncilMotionDuration: BlockNumber = 3 * DAYS;
-pub MaxProposalWeight: Weight = Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block;}
+	pub CouncilMotionDuration: BlockNumber = 3 * DAYS;
+	pub MaxProposalWeight: Weight = Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block;
+	pub CouncilMaxMembers: u32 = 100;
+}
 
-impl pallet_collective::Config<CouncilCollective> for Runtime {
+impl pallet_collective::Config<CouncilCollectiveInstance> for Runtime {
 	type RuntimeOrigin = RuntimeOrigin;
 	type Proposal = RuntimeCall;
 	type RuntimeEvent = RuntimeEvent;
 	type MotionDuration = CouncilMotionDuration;
 	type MaxProposals = ConstU32<100>;
-	type MaxMembers = ConstU32<100>;
+	type MaxMembers = CouncilMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
 	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
 	type SetMembersOrigin = EnsureRootOrMoreThanHalfCouncil;
 	type MaxProposalWeight = MaxProposalWeight;
+}
+
+/// Helper pallet to manage Council members.
+type CouncilMembershipInstance = pallet_membership::Instance2;
+impl pallet_membership::Config<CouncilMembershipInstance> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type AddOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type RemoveOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type SwapOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type ResetOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type PrimeOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type MembershipInitialized = Council;
+	type MembershipChanged = Council;
+	type MaxMembers = CouncilMaxMembers;
+	type WeightInfo = pallet_membership::weights::SubstrateWeight<Runtime>;
 }
 
 /// The technical committee primarily serves to safeguard against malicious referenda,
@@ -109,6 +92,7 @@ pub type TechnicalCommitteeInstance = pallet_collective::Instance1;
 
 parameter_types! {
 	pub const TechnicalMotionDuration: BlockNumber = 3 * DAYS;
+	pub const TechnicalCommitteeMaxMembers: u32 = 100;
 }
 
 impl pallet_collective::Config<TechnicalCommitteeInstance> for Runtime {
@@ -117,11 +101,26 @@ impl pallet_collective::Config<TechnicalCommitteeInstance> for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type MotionDuration = TechnicalMotionDuration;
 	type MaxProposals = ConstU32<100>;
-	type MaxMembers = ConstU32<100>;
+	type MaxMembers = TechnicalCommitteeMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
 	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
 	type SetMembersOrigin = EnsureRootOrMoreThanHalfCouncil;
 	type MaxProposalWeight = MaxProposalWeight;
+}
+
+/// Helper pallet to manage Council members.
+type TechnicalCommitteeMembershipInstance = pallet_membership::Instance1;
+impl pallet_membership::Config<TechnicalCommitteeMembershipInstance> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type AddOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type RemoveOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type SwapOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type ResetOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type PrimeOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type MembershipInitialized = TechnicalCommittee;
+	type MembershipChanged = TechnicalCommittee;
+	type MaxMembers = TechnicalCommitteeMaxMembers;
+	type WeightInfo = pallet_membership::weights::SubstrateWeight<Runtime>;
 }
 
 parameter_types! {
@@ -155,7 +154,7 @@ impl pallet_democracy::Config for Runtime {
 	type ExternalDefaultOrigin = EnsureRootOrMoreThanHalfCouncil;
 	// Initially, we want that only the council can submit proposals to
 	// prevent malicious proposals.
-	type SubmitOrigin = EnsureSignerIsCollectiveMember<Runtime, CouncilCollective>;
+	type SubmitOrigin = EnsureSignedBy<CouncilMembership, AccountId>;
 	type FastTrackOrigin = EnsureRootOrMoreThanHalfTechnicalCommittee;
 	type InstantOrigin = EnsureRootOrMoreThanHalfTechnicalCommittee;
 	// To cancel a proposal that has passed.
