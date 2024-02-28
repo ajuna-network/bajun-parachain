@@ -47,7 +47,7 @@ use sp_version::RuntimeVersion;
 use frame_support::pallet_prelude::ConstU32;
 use frame_support::traits::fungible::HoldConsideration;
 use frame_support::traits::tokens::{PayFromAccount, UnityAssetBalanceConversion};
-use frame_support::traits::{Footprint, TransformOrigin};
+use frame_support::traits::{LinearStoragePrice, TransformOrigin};
 use frame_support::{
 	construct_runtime,
 	dispatch::DispatchClass,
@@ -86,7 +86,7 @@ use pallet_nfts::{AttributeNamespace, Call as NftsCall};
 use parachains_common::message_queue::{NarrowOriginToSibling, ParaIdToSibling};
 use parachains_common::{BlockNumber, Hash, Header};
 use polkadot_runtime_common::xcm_sender::NoPriceForMessageDelivery;
-use sp_runtime::traits::{Convert, IdentifyAccount, IdentityLookup, Verify};
+use sp_runtime::traits::{IdentifyAccount, IdentityLookup, Verify};
 
 parameter_types! {
 	pub const OneDay: BlockNumber = DAYS;
@@ -436,7 +436,7 @@ impl pallet_balances::Config for Runtime {
 	type ReserveIdentifier = [u8; 8];
 	type FreezeIdentifier = ();
 	type MaxFreezes = ();
-	type RuntimeHoldReason = ();
+	type RuntimeHoldReason = RuntimeHoldReason;
 	type RuntimeFreezeReason = ();
 }
 
@@ -748,11 +748,11 @@ impl pallet_scheduler::Config for Runtime {
 	type Preimages = Preimage;
 }
 
-pub struct ConvertDeposit;
-impl Convert<Footprint, u128> for ConvertDeposit {
-	fn convert(a: Footprint) -> u128 {
-		(a.count as u128) * 2 + (a.size as u128)
-	}
+parameter_types! {
+	pub const PreimageBaseDeposit: Balance = deposit(2, 64);
+	pub const PreimageByteDeposit: Balance = deposit(0, 1);
+	pub const PreimageHoldReason: RuntimeHoldReason =
+		RuntimeHoldReason::Preimage(pallet_preimage::HoldReason::Preimage);
 }
 
 impl pallet_preimage::Config for Runtime {
@@ -760,7 +760,12 @@ impl pallet_preimage::Config for Runtime {
 	type WeightInfo = weights::pallet_preimage::WeightInfo<Runtime>;
 	type Currency = Balances;
 	type ManagerOrigin = EnsureRoot<AccountId>;
-	type Consideration = HoldConsideration<AccountId, Balances, (), ConvertDeposit>;
+	type Consideration = HoldConsideration<
+		AccountId,
+		Balances,
+		PreimageHoldReason,
+		LinearStoragePrice<PreimageBaseDeposit, PreimageByteDeposit, Balance>,
+	>;
 }
 
 impl pallet_insecure_randomness_collective_flip::Config for Runtime {}
