@@ -33,7 +33,7 @@ pallet-aura                                = { workspace = true }
 pallet-authorship                          = { workspace = true }
 pallet-balances                            = { workspace = true }
 pallet-collective                          = { workspace = true }
-pallet-democracy                          = { workspace = true }
+pallet-democracy                           = { workspace = true }
 pallet-identity                            = { workspace = true }
 pallet-insecure-randomness-collective-flip = { workspace = true }
 pallet-membership                          = { workspace = true }
