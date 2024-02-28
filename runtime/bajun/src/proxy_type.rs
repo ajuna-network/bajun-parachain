@@ -61,6 +61,10 @@ impl InstanceFilter<RuntimeCall> for ProxyType {
 				// Specifically omitting the entire Balances pallet
 				RuntimeCall::Session(..) |
 				RuntimeCall::Council(..) |
+				RuntimeCall::CouncilMembership(..) |
+				RuntimeCall::TechnicalCommittee(..) |
+				RuntimeCall::TechnicalCommitteeMembership(..) |
+				RuntimeCall::Democracy(..) |
 				RuntimeCall::Treasury(..) |
 				RuntimeCall::Vesting(orml_vesting::Call::claim{..}) |
 				RuntimeCall::Vesting(orml_vesting::Call::claim_for{..}) |
