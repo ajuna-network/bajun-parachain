@@ -2,9 +2,9 @@ name: Check Migrations
 
 on:
   push:
-    branches: ["develop"]
+    branches: [ "develop" ]
   pull_request:
-    branches: ["develop"]
+    branches: [ "develop" ]
   workflow_dispatch:
 
 # Cancel a currently running workflow from the same PR, branch or tag when a new workflow is
@@ -35,7 +35,7 @@ jobs:
           echo "runtime=$TASKS" >> $GITHUB_OUTPUT
 
   check-migrations:
-    needs: [runtime-matrix]
+    needs: [ runtime-matrix ]
     continue-on-error: true
     runs-on: ubuntu-latest
     strategy:
@@ -57,6 +57,11 @@ jobs:
 
       - name: Install rust toolchain from toolchain.toml
         run: rustup show
+
+      - name: Fetch cache
+        uses: Swatinem/rust-cache@a95ba195448af2da9b00fb742d14ffaaf3c21f43 # v2.7.0
+        with:
+          shared-key: "check-migrations-cache"
 
       - name: Build ${{ matrix.runtime.name }}
         run: |
