@@ -33,7 +33,8 @@ jobs:
     continue-on-error: false
     steps:
       - uses: actions/checkout@v4
-      - run: cargo fmt --all -- --check
+        # some settings are only available in nightly.
+      - run: cargo +nightly fmt --all -- --check
 
   lint:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
