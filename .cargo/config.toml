@@ -1,13 +1,13 @@
 [alias]
-build-bajun            = "build --release --no-default-features --bin bajun-node"
-build-bajun-benchmarks = [ "build-bajun", "--features", "runtime-benchmarks" ]
+build-bajun = "build --release --no-default-features --bin bajun-node"
+build-bajun-benchmarks = ["build-bajun", "--features", "runtime-benchmarks"]
 
 [target.'cfg(feature = "cargo-clippy")']
 rustflags = [
-    "-Aclippy::derive_partial_eq_without_eq",
-    "-Aclippy::too_many_arguments",
-    "-Aclippy::type_complexity",
-    "-Aclippy::uninlined-format-args",
-    "-Aclippy::unnecessary_cast",
-    "-Aclippy::large_enum_variant",
+  "-Aclippy::derive_partial_eq_without_eq",
+  "-Aclippy::too_many_arguments",
+  "-Aclippy::type_complexity",
+  "-Aclippy::uninlined-format-args",
+  "-Aclippy::unnecessary_cast",
+  "-Aclippy::large_enum_variant",
 ]

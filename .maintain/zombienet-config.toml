@@ -3,7 +3,7 @@ timeout = 120
 
 [relaychain]
 default_command = "./zombienet-tests/bin/polkadot"
-default_args = [ "-lparachain=debug" ]
+default_args = ["-lparachain=debug"]
 chain = "rococo-local"
 
 [[relaychain.nodes]]
