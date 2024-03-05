@@ -161,7 +161,7 @@ pub type Executive = frame_executive::Executive<
 	Migrations,
 >;
 
-type Migrations = ();
+type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
 //type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
