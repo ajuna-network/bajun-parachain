@@ -3,7 +3,7 @@ authors    = [ "Ajuna Network <https://github.com/ajuna-network>" ]
 edition    = "2021"
 homepage   = "https://ajuna.io"
 repository = "https://github.com/ajuna-network/Ajuna"
-version    = "0.2.2"
+version    = "0.3.0-rc1"
 
 [workspace]
 resolver = "2"
@@ -155,6 +155,7 @@ orml-traits = { git = "https://github.com/ajuna-network/open-runtime-module-libr
 bajun-runtime = { path = "runtime/bajun" }
 
 # Ajuna Pallets
+pallet-ajuna-affiliates                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "cl/crates-io-deps", default-features = false }
 pallet-ajuna-awesome-avatars              = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "cl/crates-io-deps", default-features = false }
 pallet-ajuna-battle-mogs                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "cl/crates-io-deps", default-features = false }
 pallet-ajuna-awesome-avatars-benchmarking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "cl/crates-io-deps", default-features = false }
