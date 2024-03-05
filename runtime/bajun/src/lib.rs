@@ -223,7 +223,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("bajun"),
 	impl_name: create_runtime_str!("bajun"),
 	authoring_version: 1,
-	spec_version: 202,
+	spec_version: 300,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -769,6 +769,8 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 	type KeyLimit = KeyLimit;
 	type ValueLimit = ValueLimit;
 	type NftHandler = NftTransfer;
+	type AffiliateHandler = AffiliatesAAA;
+	type FeeChainMaxLength = AffiliateMaxLevel;
 	type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
 }
 
@@ -845,6 +847,18 @@ impl pallet_ajuna_nft_transfer::Config for Runtime {
 	type NftHelper = Nft;
 }
 
+parameter_types! {
+	pub const AffiliateMaxLevel: u32 = 2;
+}
+
+pub type AffiliatesInstanceAAA = pallet_ajuna_affiliates::Instance1;
+impl pallet_ajuna_affiliates::Config<AffiliatesInstanceAAA> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type RuleIdentifier = pallet_ajuna_awesome_avatars::types::AffiliateMethods;
+	type RuntimeRule = pallet_ajuna_awesome_avatars::FeePropagationOf<Runtime>;
+	type AffiliateMaxLevel = AffiliateMaxLevel;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub struct Runtime
@@ -900,6 +914,9 @@ construct_runtime!(
 		// Indexes 60-69 should be reserved for NFT related pallets
 		Nft: pallet_nfts = 60,
 		NftTransfer: pallet_ajuna_nft_transfer = 61,
+
+		// Indexes 70-79 should be reserved for Affiliate instances
+		AffiliatesAAA: pallet_ajuna_affiliates::<Instance1> = 70,
 	}
 );
 
