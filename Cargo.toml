@@ -150,11 +150,12 @@ orml-vesting = { git = "https://github.com/ajuna-network/open-runtime-module-lib
 bajun-runtime = { path = "runtime/bajun" }
 
 # Ajuna Pallets
-pallet-ajuna-awesome-avatars = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.1.0", default-features = false }
-pallet-ajuna-battle-mogs = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.1.0", default-features = false }
-pallet-ajuna-awesome-avatars-benchmarking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.1.0", default-features = false }
-pallet-ajuna-nft-transfer = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.1.0", default-features = false }
-pallet-ajuna-nft-staking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.1.0", default-features = false }
+pallet-ajuna-affiliates = { git = "https://github.com/ajuna-network/ajuna-pallets.git", default-features = false }
+pallet-ajuna-awesome-avatars = { git = "https://github.com/ajuna-network/ajuna-pallets.git", default-features = false }
+pallet-ajuna-battle-mogs = { git = "https://github.com/ajuna-network/ajuna-pallets.git", default-features = false }
+pallet-ajuna-awesome-avatars-benchmarking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", default-features = false }
+pallet-ajuna-nft-transfer = { git = "https://github.com/ajuna-network/ajuna-pallets.git", default-features = false }
+pallet-ajuna-nft-staking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", default-features = false }
 
 [profile.production]
 codegen-units = 1
@@ -164,3 +165,11 @@ lto = true
 [profile.release]
 opt-level = 3
 panic = "unwind"
+
+[patch."https://github.com/ajuna-network/ajuna-pallets.git"]
+pallet-ajuna-affiliates = { path = "../ajuna-pallets/pallets/ajuna-affiliates" }
+pallet-ajuna-awesome-avatars = { path = "../ajuna-pallets/pallets/ajuna-awesome-avatars" }
+pallet-ajuna-battle-mogs = { path = "../ajuna-pallets/pallets/ajuna-battle-mogs" }
+pallet-ajuna-awesome-avatars-benchmarking = { path = "../ajuna-pallets/pallets/ajuna-awesome-avatars/benchmarking" }
+pallet-ajuna-nft-transfer = { path = "../ajuna-pallets/pallets/ajuna-nft-transfer" }
+pallet-ajuna-nft-staking = { path = "../ajuna-pallets/pallets/ajuna-nft-staking" }

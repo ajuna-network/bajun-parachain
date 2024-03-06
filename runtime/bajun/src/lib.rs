@@ -64,6 +64,8 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot, EnsureSigned,
 };
+use pallet_ajuna_awesome_avatars::types::AffiliateMethods;
+use pallet_ajuna_awesome_avatars::FeePropagationOf;
 use pallet_identity::legacy::IdentityInfo;
 use pallet_transaction_payment::CurrencyAdapter;
 use scale_info::TypeInfo;
@@ -155,9 +157,9 @@ pub type Executive = frame_executive::Executive<
 	Migrations,
 >;
 
-type Migrations = ();
+// type Migrations = ();
 
-//type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
+type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
 /// Handles converting a weight scalar to a fee value, based on the scale and granularity of the
 /// node's balance type.
@@ -768,6 +770,8 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 	type ValueLimit = ValueLimit;
 	type NftHandler = NftTransfer;
 	type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
+	type FeeChainMaxLength = ConstU32<2>;
+	type AffiliateHandler = pallet_ajuna_affiliates::Pallet<Runtime>;
 }
 
 parameter_types! {
@@ -843,6 +847,13 @@ impl pallet_ajuna_nft_transfer::Config for Runtime {
 	type NftHelper = Nft;
 }
 
+impl pallet_ajuna_affiliates::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type RuleIdentifier = AffiliateMethods;
+	type RuntimeRule = FeePropagationOf<Runtime>;
+	type AffiliateMaxLevel = ConstU32<2>;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub struct Runtime
@@ -894,6 +905,7 @@ construct_runtime!(
 		// Indexes 50-59 should be reserved for our games.
 		Randomness: pallet_insecure_randomness_collective_flip = 50,
 		AwesomeAvatars: pallet_ajuna_awesome_avatars = 51,
+		Affiliates: pallet_ajuna_affiliates = 52,
 
 		// Indexes 60-69 should be reserved for NFT related pallets
 		Nft: pallet_nfts = 60,

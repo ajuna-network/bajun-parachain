@@ -885,6 +885,7 @@ dependencies = [
  "hex-literal",
  "log",
  "orml-vesting",
+ "pallet-ajuna-affiliates",
  "pallet-ajuna-awesome-avatars",
  "pallet-ajuna-awesome-avatars-benchmarking",
  "pallet-ajuna-nft-transfer",
@@ -6148,14 +6149,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-ajuna-affiliates"
+version = "0.1.0"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+ "sp-std 14.0.0 (git+https://github.com/paritytech/polkadot-sdk.git?branch=release-polkadot-v1.7.0)",
+]
+
+[[package]]
 name = "pallet-ajuna-awesome-avatars"
 version = "0.1.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.1.0#e24233355d40c98ebb66e24959aabca6b635f76e"
 dependencies = [
  "frame-support",
  "frame-system",
  "hex",
  "log",
+ "pallet-ajuna-affiliates",
  "pallet-ajuna-nft-transfer",
  "parity-scale-codec",
  "scale-info",
@@ -6167,13 +6180,13 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
 version = "0.1.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.1.0#e24233355d40c98ebb66e24959aabca6b635f76e"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "hex",
  "log",
+ "pallet-ajuna-affiliates",
  "pallet-ajuna-awesome-avatars",
  "pallet-ajuna-nft-transfer",
  "pallet-balances",
@@ -6189,7 +6202,6 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-nft-transfer"
 version = "0.1.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.1.0#e24233355d40c98ebb66e24959aabca6b635f76e"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -14749,3 +14761,11 @@ dependencies = [
  "cc",
  "pkg-config",
 ]
+
+[[patch.unused]]
+name = "pallet-ajuna-battle-mogs"
+version = "0.1.0"
+
+[[patch.unused]]
+name = "pallet-ajuna-nft-staking"
+version = "0.1.0"
