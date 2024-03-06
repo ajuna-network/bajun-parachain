@@ -11,7 +11,7 @@ version.workspace    = true
 # General
 clap       = { workspace = true, features = ["std"] }
 log        = { workspace = true, features = ["std"] }
-serde      = { workspace = true, features = ["derive"] }
+serde      = { workspace = true, features = ["std", "derive"] }
 jsonrpsee  = { workspace = true, features = ["server"] }
 futures    = { workspace = true, features = ["std"] }
 serde_json = { workspace = true, features = ["std"] }
