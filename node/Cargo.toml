@@ -1,71 +1,71 @@
 [package]
 name = "bajun-node"
 
-authors.workspace = true
-edition.workspace = true
-homepage.workspace = true
+authors.workspace    = true
+edition.workspace    = true
+homepage.workspace   = true
 repository.workspace = true
-version.workspace = true
+version.workspace    = true
 
 [dependencies]
 # General
-clap = { workspace = true, features = ["std"] }
-log = { workspace = true, features = ["std"] }
-serde = { workspace = true, features = ["derive"] }
-jsonrpsee = { workspace = true, features = ["server"] }
-futures = { workspace = true, features = ["std"] }
+clap       = { workspace = true, features = ["std"] }
+log        = { workspace = true, features = ["std"] }
+serde      = { workspace = true, features = ["derive"] }
+jsonrpsee  = { workspace = true, features = ["server"] }
+futures    = { workspace = true, features = ["std"] }
 serde_json = { workspace = true, features = ["std"] }
 
 # Parity codec
 parity-scale-codec = { workspace = true, features = ["std"] }
 
 # Substrate
-frame-benchmarking = { workspace = true, features = ["std"] }
-frame-benchmarking-cli = { workspace = true }
+frame-benchmarking             = { workspace = true, features = ["std"] }
+frame-benchmarking-cli         = { workspace = true }
 pallet-transaction-payment-rpc = { workspace = true }
-sc-basic-authorship = { workspace = true }
-sc-chain-spec = { workspace = true }
-sc-cli = { workspace = true }
-sc-client-api = { workspace = true }
-sc-offchain = { workspace = true }
-sc-consensus = { workspace = true }
-sc-executor = { workspace = true, features = ["std"] }
-sc-network = { workspace = true }
-sc-network-sync = { workspace = true }
-sc-rpc = { workspace = true }
-sc-service = { workspace = true }
-sc-sysinfo = { workspace = true }
-sc-telemetry = { workspace = true }
-sc-tracing = { workspace = true }
-sc-transaction-pool = { workspace = true }
-sc-transaction-pool-api = { workspace = true }
-sp-api = { workspace = true, features = ["std"] }
-sp-block-builder = { workspace = true, features = ["std"] }
-sp-blockchain = { workspace = true }
-sp-consensus-aura = { workspace = true, features = ["std"] }
-sp-core = { workspace = true, features = ["std"] }
-sp-keystore = { workspace = true, features = ["std"] }
-sp-runtime = { workspace = true, features = ["std"] }
-sp-timestamp = { workspace = true, features = ["std"] }
-substrate-frame-rpc-system = { workspace = true }
-substrate-prometheus-endpoint = { workspace = true }
+sc-basic-authorship            = { workspace = true }
+sc-chain-spec                  = { workspace = true }
+sc-cli                         = { workspace = true }
+sc-client-api                  = { workspace = true }
+sc-offchain                    = { workspace = true }
+sc-consensus                   = { workspace = true }
+sc-executor                    = { workspace = true, features = ["std"] }
+sc-network                     = { workspace = true }
+sc-network-sync                = { workspace = true }
+sc-rpc                         = { workspace = true }
+sc-service                     = { workspace = true }
+sc-sysinfo                     = { workspace = true }
+sc-telemetry                   = { workspace = true }
+sc-tracing                     = { workspace = true }
+sc-transaction-pool            = { workspace = true }
+sc-transaction-pool-api        = { workspace = true }
+sp-api                         = { workspace = true, features = ["std"] }
+sp-block-builder               = { workspace = true, features = ["std"] }
+sp-blockchain                  = { workspace = true }
+sp-consensus-aura              = { workspace = true, features = ["std"] }
+sp-core                        = { workspace = true, features = ["std"] }
+sp-keystore                    = { workspace = true, features = ["std"] }
+sp-runtime                     = { workspace = true, features = ["std"] }
+sp-timestamp                   = { workspace = true, features = ["std"] }
+substrate-frame-rpc-system     = { workspace = true }
+substrate-prometheus-endpoint  = { workspace = true }
 
 # Polkadot
-polkadot-cli = { workspace = true }
+polkadot-cli        = { workspace = true }
 polkadot-primitives = { workspace = true, features = ["std"] }
-staging-xcm = { workspace = true, features = ["std"] }
+staging-xcm         = { workspace = true, features = ["std"] }
 
 # Cumulus
-cumulus-client-cli = { workspace = true }
-cumulus-client-collator = { workspace = true }
-cumulus-client-consensus-aura = { workspace = true }
-cumulus-client-consensus-common = { workspace = true }
-cumulus-client-consensus-proposer = { workspace = true }
-cumulus-client-service = { workspace = true }
-cumulus-primitives-core = { workspace = true, features = ["std"] }
+cumulus-client-cli                    = { workspace = true }
+cumulus-client-collator               = { workspace = true }
+cumulus-client-consensus-aura         = { workspace = true }
+cumulus-client-consensus-common       = { workspace = true }
+cumulus-client-consensus-proposer     = { workspace = true }
+cumulus-client-service                = { workspace = true }
+cumulus-primitives-core               = { workspace = true, features = ["std"] }
 cumulus-primitives-parachain-inherent = { workspace = true, features = ["std"] }
-cumulus-relay-chain-interface = { workspace = true }
-color-print = { workspace = true }
+cumulus-relay-chain-interface         = { workspace = true }
+color-print                           = { workspace = true }
 
 # Runtime
 bajun-runtime = { workspace = true, features = ["std"] }
@@ -76,17 +76,17 @@ substrate-build-script-utils = { workspace = true }
 [features]
 default = []
 runtime-benchmarks = [
-  "cumulus-primitives-core/runtime-benchmarks",
-  "frame-benchmarking-cli/runtime-benchmarks",
-  "frame-benchmarking/runtime-benchmarks",
-  "bajun-runtime/runtime-benchmarks",
-  "polkadot-cli/runtime-benchmarks",
-  "polkadot-primitives/runtime-benchmarks",
-  "sc-service/runtime-benchmarks",
-  "sp-runtime/runtime-benchmarks",
+	"cumulus-primitives-core/runtime-benchmarks",
+	"frame-benchmarking-cli/runtime-benchmarks",
+	"frame-benchmarking/runtime-benchmarks",
+	"bajun-runtime/runtime-benchmarks",
+	"polkadot-cli/runtime-benchmarks",
+	"polkadot-primitives/runtime-benchmarks",
+	"sc-service/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
-  "bajun-runtime/try-runtime",
-  "polkadot-cli/try-runtime",
-  "sp-runtime/try-runtime",
+	"bajun-runtime/try-runtime",
+	"polkadot-cli/try-runtime",
+	"sp-runtime/try-runtime",
 ]
