@@ -14,12 +14,12 @@ substrate-wasm-builder = { workspace = true }
 # General
 hex-literal = { workspace = true, optional = true }
 log         = { workspace = true }
-serde       = { workspace = true, features = [ "derive" ], optional = true }
+serde       = { workspace = true, features = ["derive"], optional = true }
 smallvec    = { workspace = true }
 
 # Parity codec
 parity-scale-codec = { workspace = true }
-scale-info         = { workspace = true, features = [ "derive" ] }
+scale-info         = { workspace = true, features = ["derive"] }
 
 # Substrate
 frame-benchmarking                         = { workspace = true, optional = true }
