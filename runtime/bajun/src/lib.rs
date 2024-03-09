@@ -910,25 +910,26 @@ extern crate frame_benchmarking;
 #[cfg(feature = "runtime-benchmarks")]
 mod benches {
 	define_benchmarks!(
-		// [cumulus_pallet_xcmp_queue, XcmpQueue]
-		// [frame_system, SystemBench::<Runtime>]
-		// [pallet_balances, Balances]
-		// [pallet_collator_selection, CollatorSelection]
-		// [pallet_collective, Council]
+		[cumulus_pallet_xcmp_queue, XcmpQueue]
+		[frame_system, SystemBench::<Runtime>]
+		[pallet_balances, Balances]
+		[pallet_collator_selection, CollatorSelection]
+		[pallet_collective, Council]
 		// [pallet_collective, TechnicalCommittee] // writes to the same file
-		// [pallet_identity, Identity]
-		// [pallet_membership, CouncilMembership]
+		[pallet_democracy, Democracy]
+		[pallet_identity, Identity]
+		[pallet_membership, CouncilMembership]
 		// [pallet_membership, TechnicalCommitteeMembership] // writes to the same file
-		// [pallet_multisig, Multisig]
-		// [pallet_preimage, Preimage]
-		// [pallet_proxy, Proxy]
-		// [pallet_scheduler, Scheduler]
-		// [pallet_session, SessionBench::<Runtime>]
-		// [pallet_timestamp, Timestamp]
-		[pallet_treasury, Treasury]
+		[pallet_multisig, Multisig]
+		[pallet_preimage, Preimage]
+		[pallet_proxy, Proxy]
+		[pallet_scheduler, Scheduler]
+		[pallet_session, SessionBench::<Runtime>]
+		[pallet_timestamp, Timestamp]
+		// [pallet_treasury, Treasury] // treasury config is broken, needs fixes
 		[pallet_utility, Utility]
-		// [pallet_ajuna_awesome_avatars, AwesomeAvatarsBench::<Runtime>]
-		// [pallet_nfts, Nft]
+		[pallet_ajuna_awesome_avatars, AwesomeAvatarsBench::<Runtime>]
+		[pallet_nfts, Nft]
 	);
 }
 
