@@ -384,7 +384,7 @@ impl frame_system::Config for Runtime {
 impl pallet_sudo::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type RuntimeCall = RuntimeCall;
-	type WeightInfo = (); // TODO: Add weight calc
+	type WeightInfo = weights::pallet_sudo::WeightInfo<Runtime>;
 }
 
 impl pallet_timestamp::Config for Runtime {
@@ -526,7 +526,7 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 		cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
 	type ConsensusHook = ConsensusHook;
 	type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
-	type WeightInfo = ();
+	type WeightInfo = weights::cumulus_pallet_parachain_system::WeightInfo<Runtime>;
 }
 
 impl staging_parachain_info::Config for Runtime {}
@@ -551,7 +551,7 @@ parameter_types! {
 
 impl pallet_message_queue::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = ();
+	type WeightInfo = weights::pallet_message_queue::WeightInfo<Runtime>;
 	#[cfg(feature = "runtime-benchmarks")]
 	type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
 		cumulus_primitives_core::AggregateMessageOrigin,
@@ -910,6 +910,7 @@ extern crate frame_benchmarking;
 #[cfg(feature = "runtime-benchmarks")]
 mod benches {
 	define_benchmarks!(
+		[cumulus_pallet_parachain_system, ParachainSystem]
 		[cumulus_pallet_xcmp_queue, XcmpQueue]
 		[frame_system, SystemBench::<Runtime>]
 		[pallet_balances, Balances]
@@ -920,17 +921,23 @@ mod benches {
 		[pallet_identity, Identity]
 		[pallet_membership, CouncilMembership]
 		// [pallet_membership, TechnicalCommitteeMembership] // writes to the same file
+		[pallet_message_queue, MessageQueue]
 		[pallet_multisig, Multisig]
 		[pallet_preimage, Preimage]
 		[pallet_proxy, Proxy]
 		[pallet_scheduler, Scheduler]
 		[pallet_session, SessionBench::<Runtime>]
+		[pallet_sudo, Sudo]
 		[pallet_timestamp, Timestamp]
 		// [pallet_treasury, Treasury] // treasury config is broken, needs fixes
 		[pallet_utility, Utility]
 		[pallet_ajuna_awesome_avatars, AwesomeAvatarsBench::<Runtime>]
 		[pallet_nfts, Nft]
 	);
+	// Use this section if you want to benchmark individual pallets
+	// define_benchmarks!(
+	// 	[orml_vesting, Vesting]
+	// )
 }
 
 #[cfg(feature = "runtime-benchmarks")]
