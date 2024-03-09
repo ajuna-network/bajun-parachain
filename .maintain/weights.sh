@@ -28,6 +28,7 @@ while read -r line; do
   --extrinsic="*" \
   --wasm-execution=compiled \
   --heap-pages=4096 \
+  --header=./HEADER-AGPL \
   --output=./$RUNTIME_WEIGHT_DIR/"$pallet".rs
 done < "bajun_runtime_pallets"
 rm "bajun_runtime_pallets"
