@@ -15,8 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-	weights, AccountId, Balance, BlockNumber, Council, CouncilMembership, OriginCaller, Runtime,
-	RuntimeBlockWeights, RuntimeCall, RuntimeEvent, RuntimeOrigin, TechnicalCommittee, BAJUN, DAYS,
+	weights, AccountId, Balance, BlockNumber, Council, OriginCaller, Runtime, RuntimeBlockWeights,
+	RuntimeCall, RuntimeEvent, RuntimeOrigin, TechnicalCommittee, BAJUN, DAYS,
 };
 use frame_support::{
 	parameter_types,
