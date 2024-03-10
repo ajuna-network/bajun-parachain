@@ -23,7 +23,7 @@ use frame_support::{
 	traits::{ConstBool, ConstU32, EitherOfDiverse},
 	weights::Weight,
 };
-use frame_system::{EnsureRoot, EnsureSigned, EnsureSignedBy};
+use frame_system::EnsureRoot;
 use pallet_collective::{EnsureMember, EnsureProportionAtLeast, EnsureProportionMoreThan};
 use sp_runtime::Perbill;
 
@@ -154,9 +154,9 @@ impl pallet_democracy::Config for Runtime {
 	// Initially, we want that only the council can submit proposals to
 	// prevent malicious proposals.
 	#[cfg(not(feature = "runtime-benchmarks"))]
-	type SubmitOrigin = EnsureSignedBy<CouncilMembership, AccountId>;
+	type SubmitOrigin = frame_system::EnsureSignedBy<crate::CouncilMembership, AccountId>;
 	#[cfg(feature = "runtime-benchmarks")]
-	type SubmitOrigin = EnsureSigned<AccountId>;
+	type SubmitOrigin = frame_system::EnsureSigned<AccountId>;
 	type FastTrackOrigin = EnsureRootOrMoreThanHalfTechnicalCommittee;
 	type InstantOrigin = EnsureRootOrMoreThanHalfTechnicalCommittee;
 	// To cancel a proposal that has passed.
