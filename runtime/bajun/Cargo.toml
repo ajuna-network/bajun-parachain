@@ -165,7 +165,7 @@ std = [
     "staging-xcm-builder/std",
     "staging-xcm-executor/std",
 ]
-
+orml-benchmarks = ["runtime-benchmarks"]
 runtime-benchmarks = [
     "hex-literal",
     "frame-benchmarking/runtime-benchmarks",
