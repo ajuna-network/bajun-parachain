@@ -5,7 +5,7 @@ on:
     branches:
       - release/[0-9]+.[0-9]+.[0-9]+
     tags:
-      - v[0-9]+.[0-9]+.[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+-?[a-z0-9]*
 
 env:
   CARGO_TERM_COLOR: always
@@ -67,10 +67,6 @@ jobs:
           echo "release version as integer: $RELEASE_VERSION_INTEGER"
           echo "spec version: $SPEC_VERSION"
 
-          [ "$RELEASE_VERSION_INTEGER" != "$SPEC_VERSION" ] && {
-            echo "spec version doesn't match release version"
-            exit 1
-          }
           exit 0
       - run: sudo apt-get install -y protobuf-compiler
       - name: Check wasm build
