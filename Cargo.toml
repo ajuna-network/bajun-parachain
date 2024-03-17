@@ -148,6 +148,8 @@ staging-parachain-info                  = { version = "0.8.0", default-features 
 
 # ORML
 orml-vesting = { git = "https://github.com/ajuna-network/open-runtime-module-library.git", branch = "remove-nested-workspace", default-features = false }
+orml-benchmarking = { git = "https://github.com/ajuna-network/open-runtime-module-library.git", branch = "remove-nested-workspace", default-features = false }
+orml-traits = { git = "https://github.com/ajuna-network/open-runtime-module-library.git", branch = "remove-nested-workspace", default-features = false }
 
 # Runtime
 bajun-runtime = { path = "runtime/bajun" }
