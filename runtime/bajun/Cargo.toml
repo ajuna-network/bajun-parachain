@@ -89,7 +89,6 @@ staging-parachain-info              = { workspace = true }
 # ORML
 orml-vesting = { workspace = true }
 orml-benchmarking = { workspace = true, optional = true }
-orml-traits = { workspace = true, optional = true }
 
 # Ajuna Pallets
 pallet-ajuna-affiliates                   = { workspace = true }
@@ -119,7 +118,6 @@ std = [
     "orml-vesting/std",
     "pallet-ajuna-affiliates/std",
     "orml-benchmarking?/std",
-    "orml-traits?/std",
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking?/std",
     "pallet-ajuna-nft-transfer/std",
@@ -176,7 +174,6 @@ runtime-benchmarks = [
     "frame-system/runtime-benchmarks",
     "orml-vesting/runtime-benchmarks",
     "orml-benchmarking",
-    "orml-traits",
     "pallet-balances/runtime-benchmarks",
     "pallet-collator-selection/runtime-benchmarks",
     "pallet-collective/runtime-benchmarks",

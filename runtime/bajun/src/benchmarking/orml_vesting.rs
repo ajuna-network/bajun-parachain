@@ -16,20 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-use super::{
-	get_vesting_account,
-	utils::{lookup_of_account, set_balance, NATIVE},
-};
-use crate::{dollar, AccountId, Balance, BlockNumber, Currencies, Runtime, System, Vesting};
-
+use super::utils::{get_vesting_account, lookup_of_account, set_balance};
+use crate::{AccountId, Balance, Balances, BlockNumber, Runtime, System, Vesting, BAJUN};
+use frame_benchmarking::{account, whitelisted_caller};
+use frame_support::traits::{fungible::Inspect, Get};
+use frame_system::RawOrigin;
 use sp_std::prelude::*;
 
-use frame_benchmarking::{account, whitelisted_caller};
-use frame_support::traits::Get;
-use frame_system::RawOrigin;
-
 use orml_benchmarking::runtime_benchmarks;
-use orml_traits::MultiCurrency;
 use orml_vesting::VestingSchedule;
 
 pub type Schedule = VestingSchedule<BlockNumber, Balance>;
@@ -47,16 +41,14 @@ runtime_benchmarks! {
 			per_period: <Runtime as orml_vesting::Config>::MinVestedTransfer::get(),
 		};
 
-		// extra 1 dollar to pay fees
 		let from: AccountId = get_vesting_account();
-		set_balance(NATIVE, &from, schedule.total_amount().unwrap() + dollar(NATIVE));
+		set_balance(from.clone(), schedule.total_amount().unwrap() + BAJUN);
 
 		let to: AccountId = account("to", 0, SEED);
 		let to_lookup = lookup_of_account(to.clone());
 	}: _(RawOrigin::Signed(from), to_lookup, schedule.clone())
 	verify {
-		assert_eq!(
-			<Currencies as MultiCurrency<_>>::total_balance(NATIVE, &to),
+		assert_eq!(Balances::total_balance(&to),
 			schedule.total_amount().unwrap()
 		);
 	}
@@ -72,9 +64,7 @@ runtime_benchmarks! {
 		};
 
 		let from: AccountId = get_vesting_account();
-		// extra 1 dollar to pay fees
-		set_balance(NATIVE, &from, schedule.total_amount().unwrap() * i as u128 + dollar(NATIVE));
-
+		set_balance(from.clone(), schedule.total_amount().unwrap() + BAJUN);
 		let to: AccountId = whitelisted_caller();
 		let to_lookup = lookup_of_account(to.clone());
 
@@ -86,7 +76,7 @@ runtime_benchmarks! {
 	}: _(RawOrigin::Signed(to.clone()))
 	verify {
 		assert_eq!(
-			<Currencies as MultiCurrency<_>>::free_balance(NATIVE, &to),
+			Balances::free_balance(&to),
 			schedule.total_amount().unwrap() * i as u128,
 		);
 	}
@@ -102,7 +92,7 @@ runtime_benchmarks! {
 		};
 
 		let to: AccountId = account("to", 0, SEED);
-		set_balance(NATIVE, &to, schedule.total_amount().unwrap() * i as u128);
+		set_balance(to.clone(),schedule.total_amount().unwrap() * i as u128);
 		let to_lookup = lookup_of_account(to.clone());
 
 		let mut schedules = vec![];
@@ -113,7 +103,7 @@ runtime_benchmarks! {
 	}: _(RawOrigin::Root, to_lookup, schedules)
 	verify {
 		assert_eq!(
-			<Currencies as MultiCurrency<_>>::free_balance(NATIVE, &to),
+			Balances::free_balance(&to),
 			schedule.total_amount().unwrap() * i as u128
 		);
 	}

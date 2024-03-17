@@ -727,7 +727,6 @@ dependencies = [
  "hex-literal",
  "log",
  "orml-benchmarking",
- "orml-traits",
  "orml-vesting",
  "pallet-ajuna-affiliates",
  "pallet-ajuna-awesome-avatars",
@@ -5972,41 +5971,6 @@ dependencies = [
  "sp-runtime-interface",
  "sp-std",
  "sp-storage",
-]
-
-[[package]]
-name = "orml-traits"
-version = "0.7.0"
-source = "git+https://github.com/ajuna-network/open-runtime-module-library.git?branch=remove-nested-workspace#b80c07673265f6f3872ed10a1b2f9b1804206343"
-dependencies = [
- "frame-support",
- "impl-trait-for-tuples",
- "num-traits",
- "orml-utilities",
- "parity-scale-codec",
- "paste",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "staging-xcm",
-]
-
-[[package]]
-name = "orml-utilities"
-version = "0.7.0"
-source = "git+https://github.com/ajuna-network/open-runtime-module-library.git?branch=remove-nested-workspace#b80c07673265f6f3872ed10a1b2f9b1804206343"
-dependencies = [
- "frame-support",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
 ]
 
 [[package]]
