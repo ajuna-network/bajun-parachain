@@ -147,7 +147,7 @@ parachains-common                       = { version = "8.0.0", default-features 
 staging-parachain-info                  = { version = "0.8.0", default-features = false }
 
 # ORML
-orml-vesting = { git = "https://github.com/ajuna-network/open-runtime-module-library.git", branch = "remove-nested-workspace", default-features = false }
+orml-vesting = { version = "0.8.0", default-features = false }
 
 # Runtime
 bajun-runtime = { path = "runtime/bajun" }
