@@ -94,6 +94,7 @@ pallet-ajuna-affiliates                   = { workspace = true }
 pallet-ajuna-awesome-avatars              = { workspace = true }
 pallet-ajuna-awesome-avatars-benchmarking = { workspace = true, optional = true }
 pallet-ajuna-nft-transfer                 = { workspace = true }
+pallet-ajuna-tournament      = { workspace = true }
 
 [features]
 default = [ "std" ]
@@ -119,6 +120,7 @@ std = [
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking/std",
     "pallet-ajuna-nft-transfer/std",
+    "pallet-ajuna-tournament/std",
     "pallet-aura/std",
     "pallet-authorship/std",
     "pallet-balances/std",
@@ -232,6 +234,7 @@ try-runtime = [
     "pallet-ajuna-affiliates/try-runtime",
     "pallet-ajuna-awesome-avatars/try-runtime",
     "pallet-ajuna-nft-transfer/try-runtime",
+    "pallet-ajuna-tournament/try-runtime",
 ]
 
 experimental = [ "pallet-aura/experimental" ]
