@@ -159,7 +159,7 @@ pub type Executive = frame_executive::Executive<
 	Migrations,
 >;
 
-type Migrations = ();
+type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
 //type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
@@ -223,7 +223,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("bajun"),
 	impl_name: create_runtime_str!("bajun"),
 	authoring_version: 1,
-	spec_version: 202,
+	spec_version: 300,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -769,6 +769,8 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 	type KeyLimit = KeyLimit;
 	type ValueLimit = ValueLimit;
 	type NftHandler = NftTransfer;
+	type AffiliateHandler = AffiliatesAAA;
+	type FeeChainMaxLength = AffiliateMaxLevel;
 	type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
 }
 
@@ -845,6 +847,18 @@ impl pallet_ajuna_nft_transfer::Config for Runtime {
 	type NftHelper = Nft;
 }
 
+parameter_types! {
+	pub const AffiliateMaxLevel: u32 = 2;
+}
+
+pub type AffiliatesInstanceAAA = pallet_ajuna_affiliates::Instance1;
+impl pallet_ajuna_affiliates::Config<AffiliatesInstanceAAA> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type RuleIdentifier = pallet_ajuna_awesome_avatars::types::AffiliateMethods;
+	type RuntimeRule = pallet_ajuna_awesome_avatars::FeePropagationOf<Runtime>;
+	type AffiliateMaxLevel = AffiliateMaxLevel;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub struct Runtime
@@ -900,6 +914,9 @@ construct_runtime!(
 		// Indexes 60-69 should be reserved for NFT related pallets
 		Nft: pallet_nfts = 60,
 		NftTransfer: pallet_ajuna_nft_transfer = 61,
+
+		// Indexes 70-79 should be reserved for Affiliate instances
+		AffiliatesAAA: pallet_ajuna_affiliates::<Instance1> = 70,
 	}
 );
 
@@ -909,35 +926,32 @@ extern crate frame_benchmarking;
 
 #[cfg(feature = "runtime-benchmarks")]
 mod benches {
-	define_benchmarks!(
-		[cumulus_pallet_parachain_system, ParachainSystem]
-		[cumulus_pallet_xcmp_queue, XcmpQueue]
-		[frame_system, SystemBench::<Runtime>]
-		[pallet_balances, Balances]
-		[pallet_collator_selection, CollatorSelection]
-		[pallet_collective, Council]
-		// [pallet_collective, TechnicalCommittee] // writes to the same file
-		[pallet_democracy, Democracy]
-		[pallet_identity, Identity]
-		[pallet_membership, CouncilMembership]
-		// [pallet_membership, TechnicalCommitteeMembership] // writes to the same file
-		[pallet_message_queue, MessageQueue]
-		[pallet_multisig, Multisig]
-		[pallet_preimage, Preimage]
-		[pallet_proxy, Proxy]
-		[pallet_scheduler, Scheduler]
-		[pallet_session, SessionBench::<Runtime>]
-		[pallet_sudo, Sudo]
-		[pallet_timestamp, Timestamp]
-		// [pallet_treasury, Treasury] // treasury config is broken, needs fixes
-		[pallet_utility, Utility]
-		[pallet_ajuna_awesome_avatars, AwesomeAvatarsBench::<Runtime>]
-		[pallet_nfts, Nft]
-	);
-	// Use this section if you want to benchmark individual pallets
 	// define_benchmarks!(
-	// 	[orml_vesting, Vesting]
-	// )
+	// 	[cumulus_pallet_parachain_system, ParachainSystem]
+	// 	[cumulus_pallet_xcmp_queue, XcmpQueue]
+	// 	[frame_system, SystemBench::<Runtime>]
+	// 	[pallet_balances, Balances]
+	// 	[pallet_collator_selection, CollatorSelection]
+	// 	[pallet_collective, Council]
+	// 	// [pallet_collective, TechnicalCommittee] // writes to the same file
+	// 	[pallet_democracy, Democracy]
+	// 	[pallet_identity, Identity]
+	// 	[pallet_membership, CouncilMembership]
+	// 	// [pallet_membership, TechnicalCommitteeMembership] // writes to the same file
+	// 	[pallet_message_queue, MessageQueue]
+	// 	[pallet_multisig, Multisig]
+	// 	[pallet_preimage, Preimage]
+	// 	[pallet_proxy, Proxy]
+	// 	[pallet_scheduler, Scheduler]
+	// 	[pallet_session, SessionBench::<Runtime>]
+	// 	[pallet_sudo, Sudo]
+	// 	[pallet_timestamp, Timestamp]
+	// 	// [pallet_treasury, Treasury] // treasury config is broken, needs fixes
+	// 	[pallet_utility, Utility]
+	// 	[pallet_ajuna_awesome_avatars, AwesomeAvatarsBench::<Runtime>]
+	// 	[pallet_nfts, Nft]
+	// );
+	define_benchmarks!([orml_vesting, VestingBench::<Runtime>]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]
@@ -1118,6 +1132,7 @@ impl_runtime_apis! {
 			use frame_system_benchmarking::Pallet as SystemBench;
 			use cumulus_pallet_session_benchmarking::Pallet as SessionBench;
 			use pallet_ajuna_awesome_avatars_benchmarking::Pallet as AwesomeAvatarsBench;
+			use orml_pallets_benchmarking::vesting::Pallet as VestingBench;
 
 			let mut list = Vec::<BenchmarkList>::new();
 			list_benchmarks!(list, extra);

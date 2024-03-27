@@ -87,9 +87,11 @@ parachains-common                   = { workspace = true }
 staging-parachain-info              = { workspace = true }
 
 # ORML
+orml-pallets-benchmarking = { workspace = true, optional = true }
 orml-vesting = { workspace = true }
 
 # Ajuna Pallets
+pallet-ajuna-affiliates                   = { workspace = true }
 pallet-ajuna-awesome-avatars              = { workspace = true }
 pallet-ajuna-awesome-avatars-benchmarking = { workspace = true, optional = true }
 pallet-ajuna-nft-transfer                 = { workspace = true }
@@ -113,7 +115,9 @@ std = [
     "frame-system-rpc-runtime-api/std",
     "frame-system/std",
     "frame-try-runtime/std",
+    "orml-pallets-benchmarking?/std",
     "orml-vesting/std",
+    "pallet-ajuna-affiliates/std",
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking?/std",
     "pallet-ajuna-nft-transfer/std",
@@ -161,13 +165,13 @@ std = [
     "staging-xcm-builder/std",
     "staging-xcm-executor/std",
 ]
-
 runtime-benchmarks = [
     "hex-literal",
     "frame-benchmarking/runtime-benchmarks",
     "frame-support/runtime-benchmarks",
     "frame-system-benchmarking/runtime-benchmarks",
     "frame-system/runtime-benchmarks",
+    "orml-pallets-benchmarking",
     "orml-vesting/runtime-benchmarks",
     "pallet-balances/runtime-benchmarks",
     "pallet-collator-selection/runtime-benchmarks",
@@ -191,6 +195,7 @@ runtime-benchmarks = [
     "cumulus-pallet-parachain-system/runtime-benchmarks",
     "cumulus-pallet-session-benchmarking/runtime-benchmarks",
     "cumulus-pallet-xcmp-queue/runtime-benchmarks",
+    "pallet-ajuna-awesome-avatars/runtime-benchmarks",
     "pallet-ajuna-awesome-avatars-benchmarking/runtime-benchmarks",
     "pallet-ajuna-nft-transfer/runtime-benchmarks",
 ]
@@ -227,6 +232,7 @@ try-runtime = [
     "pallet-utility/try-runtime",
     "pallet-xcm/try-runtime",
     "staging-parachain-info/try-runtime",
+    "pallet-ajuna-affiliates/try-runtime",
     "pallet-ajuna-awesome-avatars/try-runtime",
     "pallet-ajuna-nft-transfer/try-runtime",
 ]
