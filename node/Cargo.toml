@@ -75,7 +75,6 @@ substrate-build-script-utils = { workspace = true }
 
 [features]
 default = []
-orml-benchmarks = ["runtime-benchmarks", "bajun-runtime/orml-benchmarks"]
 runtime-benchmarks = [
 	"cumulus-primitives-core/runtime-benchmarks",
 	"frame-benchmarking-cli/runtime-benchmarks",

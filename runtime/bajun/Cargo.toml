@@ -87,8 +87,8 @@ parachains-common                   = { workspace = true }
 staging-parachain-info              = { workspace = true }
 
 # ORML
+orml-pallets-benchmarking = { workspace = true, optional = true }
 orml-vesting = { workspace = true }
-orml-benchmarking = { workspace = true, optional = true }
 
 # Ajuna Pallets
 pallet-ajuna-affiliates                   = { workspace = true }
@@ -115,9 +115,9 @@ std = [
     "frame-system-rpc-runtime-api/std",
     "frame-system/std",
     "frame-try-runtime/std",
+    "orml-pallets-benchmarking?/std",
     "orml-vesting/std",
     "pallet-ajuna-affiliates/std",
-    "orml-benchmarking?/std",
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking?/std",
     "pallet-ajuna-nft-transfer/std",
@@ -165,15 +165,14 @@ std = [
     "staging-xcm-builder/std",
     "staging-xcm-executor/std",
 ]
-orml-benchmarks = ["runtime-benchmarks"]
 runtime-benchmarks = [
     "hex-literal",
     "frame-benchmarking/runtime-benchmarks",
     "frame-support/runtime-benchmarks",
     "frame-system-benchmarking/runtime-benchmarks",
     "frame-system/runtime-benchmarks",
+    "orml-pallets-benchmarking",
     "orml-vesting/runtime-benchmarks",
-    "orml-benchmarking",
     "pallet-balances/runtime-benchmarks",
     "pallet-collator-selection/runtime-benchmarks",
     "pallet-collective/runtime-benchmarks",

@@ -726,7 +726,7 @@ dependencies = [
  "frame-try-runtime",
  "hex-literal",
  "log",
- "orml-benchmarking",
+ "orml-pallets-benchmarking",
  "orml-vesting",
  "pallet-ajuna-affiliates",
  "pallet-ajuna-awesome-avatars",
@@ -4030,7 +4030,7 @@ dependencies = [
  "iana-time-zone-haiku",
  "js-sys",
  "wasm-bindgen",
- "windows-core 0.52.0",
+ "windows-core",
 ]
 
 [[package]]
@@ -5954,24 +5954,20 @@ dependencies = [
 ]
 
 [[package]]
-name = "orml-benchmarking"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8eef1c4a2b9bbce292805b47a46467167e0d67937e7581bca993165d1e857dbc"
+name = "orml-pallets-benchmarking"
+version = "0.3.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/orml-benchmarks#d3995160082ee1a7fae021f8adf6af08ec245f78"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
- "log",
+ "frame-system",
+ "orml-vesting",
+ "pallet-balances",
  "parity-scale-codec",
- "paste",
  "scale-info",
- "serde",
- "sp-api",
  "sp-io",
  "sp-runtime",
- "sp-runtime-interface",
  "sp-std",
- "sp-storage",
 ]
 
 [[package]]
@@ -5992,8 +5988,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-affiliates"
-version = "0.2.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/crates-io-deps#301e13d64b58deedb60c2e1ca5116d5608df8770"
+version = "0.3.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/orml-benchmarks#d3995160082ee1a7fae021f8adf6af08ec245f78"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6005,8 +6001,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-awesome-avatars"
-version = "0.2.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/crates-io-deps#301e13d64b58deedb60c2e1ca5116d5608df8770"
+version = "0.3.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/orml-benchmarks#d3995160082ee1a7fae021f8adf6af08ec245f78"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6014,6 +6010,7 @@ dependencies = [
  "log",
  "pallet-ajuna-affiliates",
  "pallet-ajuna-nft-transfer",
+ "pallet-ajuna-tournament",
  "parity-scale-codec",
  "scale-info",
  "sp-io",
@@ -6023,8 +6020,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
-version = "0.2.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/crates-io-deps#301e13d64b58deedb60c2e1ca5116d5608df8770"
+version = "0.3.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/orml-benchmarks#d3995160082ee1a7fae021f8adf6af08ec245f78"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6034,6 +6031,7 @@ dependencies = [
  "pallet-ajuna-affiliates",
  "pallet-ajuna-awesome-avatars",
  "pallet-ajuna-nft-transfer",
+ "pallet-ajuna-tournament",
  "pallet-balances",
  "pallet-insecure-randomness-collective-flip",
  "pallet-nfts",
@@ -6046,13 +6044,28 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-nft-transfer"
-version = "0.2.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/crates-io-deps#301e13d64b58deedb60c2e1ca5116d5608df8770"
+version = "0.3.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/orml-benchmarks#d3995160082ee1a7fae021f8adf6af08ec245f78"
 dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-ajuna-tournament"
+version = "0.3.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/orml-benchmarks#d3995160082ee1a7fae021f8adf6af08ec245f78"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-arithmetic",
  "sp-runtime",
  "sp-std",
 ]
@@ -14240,7 +14253,7 @@ version = "0.51.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca229916c5ee38c2f2bc1e9d8f04df975b4bd93f9955dc69fabb5d91270045c9"
 dependencies = [
- "windows-core 0.51.1",
+ "windows-core",
  "windows-targets 0.48.5",
 ]
 
@@ -14251,15 +14264,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f1f8cf84f35d2db49a46868f947758c7a1138116f7fac3bc844f43ade1292e64"
 dependencies = [
  "windows-targets 0.48.5",
-]
-
-[[package]]
-name = "windows-core"
-version = "0.52.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33ab640c8d7e35bf8ba19b884ba838ceb4fba93a4e8c65a9059d08afcfc683d9"
-dependencies = [
- "windows-targets 0.52.4",
 ]
 
 [[package]]
