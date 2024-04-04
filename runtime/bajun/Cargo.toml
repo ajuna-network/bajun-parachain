@@ -94,6 +94,7 @@ pallet-ajuna-affiliates                   = { workspace = true }
 pallet-ajuna-awesome-avatars              = { workspace = true }
 pallet-ajuna-awesome-avatars-benchmarking = { workspace = true, optional = true }
 pallet-ajuna-nft-transfer                 = { workspace = true }
+pallet-ajuna-tournament                   = { workspace = true }
 
 [features]
 default = [ "std" ]

@@ -64,6 +64,7 @@ use frame_support::{
 };
 use frame_system::{
 	limits::{BlockLength, BlockWeights},
+	pallet_prelude::BlockNumberFor,
 	EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
 use pallet_identity::legacy::IdentityInfo;
@@ -769,8 +770,9 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 	type KeyLimit = KeyLimit;
 	type ValueLimit = ValueLimit;
 	type NftHandler = NftTransfer;
-	type AffiliateHandler = AffiliatesAAA;
 	type FeeChainMaxLength = AffiliateMaxLevel;
+	type AffiliateHandler = AffiliatesAAA;
+	type TournamentHandler = TournamentAAA;
 	type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
 }
 
@@ -859,6 +861,22 @@ impl pallet_ajuna_affiliates::Config<AffiliatesInstanceAAA> for Runtime {
 	type AffiliateMaxLevel = AffiliateMaxLevel;
 }
 
+parameter_types! {
+	pub const TournamentPalletId1: PalletId = PalletId(*b"aj/trmt1");
+	pub const MinimumTournamentPhaseDuration: BlockNumber = 100;
+}
+
+type TournamentInstance1 = pallet_ajuna_tournament::Instance1;
+impl pallet_ajuna_tournament::Config<TournamentInstance1> for Runtime {
+	type PalletId = TournamentPalletId1;
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type SeasonId = pallet_ajuna_awesome_avatars::types::SeasonId;
+	type EntityId = pallet_ajuna_awesome_avatars::AvatarIdOf<Runtime>;
+	type RankedEntity = pallet_ajuna_awesome_avatars::types::Avatar<BlockNumberFor<Runtime>>;
+	type MinimumTournamentPhaseDuration = MinimumTournamentPhaseDuration;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub struct Runtime
@@ -917,6 +935,9 @@ construct_runtime!(
 
 		// Indexes 70-79 should be reserved for Affiliate instances
 		AffiliatesAAA: pallet_ajuna_affiliates::<Instance1> = 70,
+
+		// Indexes 80-89 should be reserved for Tournament instances
+		TournamentAAA: pallet_ajuna_tournament::<Instance1> = 80,
 	}
 );
 
