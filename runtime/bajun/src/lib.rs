@@ -38,7 +38,7 @@ use sp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT},
 	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult, MultiSignature,
+	ApplyExtrinsicResult, MultiSignature, SaturatedConversion,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -85,6 +85,7 @@ use weights::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
 // XCM Imports
 use staging_xcm::latest::prelude::BodyId;
 
+use pallet_ajuna_wildcard::{OnMappingRequest, WideId};
 use pallet_nfts::{AttributeNamespace, Call as NftsCall};
 use parachains_common::{
 	message_queue::{NarrowOriginToSibling, ParaIdToSibling},
@@ -875,6 +876,56 @@ impl pallet_ajuna_tournament::Config<TournamentInstance1> for Runtime {
 	type EntityId = pallet_ajuna_awesome_avatars::AvatarIdOf<Runtime>;
 	type RankedEntity = pallet_ajuna_awesome_avatars::types::Avatar<BlockNumberFor<Runtime>>;
 	type MinimumTournamentPhaseDuration = MinimumTournamentPhaseDuration;
+}
+
+pub struct GetChainId;
+
+impl Get<u16> for GetChainId {
+	fn get() -> u16 {
+		u32::from(parachain_info::Pallet::<Runtime>::parachain_id()) as u16
+	}
+}
+
+parameter_types! {
+	pub const WildcardPalletId: PalletId = PalletId(*b"aj/wdcrd");
+	pub const NativeAssetId: AssetId = 0;
+	pub const ChallengeBalance: Balance = 10 * MICRO_BAJUN;
+}
+
+pub struct OnMappingRequestImpl;
+
+impl OnMappingRequest<AssetId, CollectionId, Hash> for OnMappingRequestImpl {
+	fn on_fungible_asset_mapping(id: WideId) -> AssetId {
+		AssetId::from_le_bytes([id[30], id[31], 0x00, 0x00]).saturated_into::<AssetId>()
+	}
+
+	fn on_non_fungible_collection_mapping(id: WideId) -> CollectionId {
+		CollectionId::from_le_bytes([id[30], id[31], 0x00, 0x00]).saturated_into::<CollectionId>()
+	}
+
+	fn on_non_fungible_item_mapping(id: WideId) -> Hash {
+		Hash::from_slice(id.as_bytes())
+	}
+}
+
+pub type CollectionConfig = pallet_nfts::CollectionConfig<Balance, BlockNumber, CollectionId>;
+
+impl pallet_ajuna_wildcard::Config for Runtime {
+	type PalletId = WildcardPalletId;
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type Fungibles = Assets;
+	type CollectionConfig = CollectionConfig;
+	type NonFungibles = Nft;
+	type CollectionId = CollectionId;
+	type ItemId = Hash;
+	type OnMappingRequest = OnMappingRequestImpl;
+	type ItemConfig = pallet_nfts::ItemConfig;
+	type Time = Timestamp;
+	type ChainId = GetChainId;
+	type AssetId = AssetId;
+	type NativeTokenAssetId = NativeAssetId;
+	type ChallengeMinBalance = ChallengeBalance;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
