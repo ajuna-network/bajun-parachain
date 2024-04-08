@@ -40,6 +40,7 @@ frame-system                               = { git = "https://github.com/parityt
 frame-system-benchmarking                  = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.7.0", default-features = false }
 frame-system-rpc-runtime-api               = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.7.0", default-features = false }
 frame-try-runtime                          = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.7.0", default-features = false }
+pallet-assets                              = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.7.0", default-features = false }
 pallet-aura                                = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.7.0", default-features = false }
 pallet-authorship                          = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.7.0", default-features = false }
 pallet-balances                            = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.7.0", default-features = false }

@@ -29,6 +29,7 @@ frame-system                               = { workspace = true }
 frame-system-benchmarking                  = { workspace = true, optional = true }
 frame-system-rpc-runtime-api               = { workspace = true }
 frame-try-runtime                          = { workspace = true, optional = true }
+pallet-assets                              = { workspace = true }
 pallet-aura                                = { workspace = true }
 pallet-authorship                          = { workspace = true }
 pallet-balances                            = { workspace = true }
@@ -121,6 +122,8 @@ std = [
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking/std",
     "pallet-ajuna-nft-transfer/std",
+    "pallet-ajuna-wildcard/std",
+    "pallet-assets/std",
     "pallet-aura/std",
     "pallet-authorship/std",
     "pallet-balances/std",
@@ -173,6 +176,7 @@ runtime-benchmarks = [
     "frame-system-benchmarking/runtime-benchmarks",
     "frame-system/runtime-benchmarks",
     "orml-vesting/runtime-benchmarks",
+    "pallet-assets/runtime-benchmarks",
     "pallet-balances/runtime-benchmarks",
     "pallet-collator-selection/runtime-benchmarks",
     "pallet-collective/runtime-benchmarks",
@@ -198,6 +202,7 @@ runtime-benchmarks = [
     "pallet-ajuna-awesome-avatars/runtime-benchmarks",
     "pallet-ajuna-awesome-avatars-benchmarking/runtime-benchmarks",
     "pallet-ajuna-nft-transfer/runtime-benchmarks",
+    "pallet-ajuna-wildcard/runtime-benchmarks",
 ]
 
 try-runtime = [
@@ -209,6 +214,7 @@ try-runtime = [
     "frame-system/try-runtime",
     "frame-try-runtime/try-runtime",
     "orml-vesting/try-runtime",
+    "pallet-assets/try-runtime",
     "pallet-aura/try-runtime",
     "pallet-authorship/try-runtime",
     "pallet-balances/try-runtime",
@@ -235,6 +241,7 @@ try-runtime = [
     "pallet-ajuna-affiliates/try-runtime",
     "pallet-ajuna-awesome-avatars/try-runtime",
     "pallet-ajuna-nft-transfer/try-runtime",
+    "pallet-ajuna-wildcard/try-runtime",
 ]
 
 experimental = [ "pallet-aura/experimental" ]

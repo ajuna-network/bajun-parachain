@@ -100,6 +100,9 @@ parameter_types! {
 	pub const TwoWeeks: BlockNumber = 14 * DAYS;
 }
 
+/// Identifier of an asset.
+pub type AssetId = u32;
+
 /// The address format for describing accounts.
 pub type Address = MultiAddress<AccountId, ()>;
 
@@ -836,6 +839,46 @@ impl pallet_nfts::Config for Runtime {
 }
 
 parameter_types! {
+	pub const AssetDeposit: Balance = 1_000 * MICRO_BAJUN;
+	pub const AssetAccountDeposit: Balance = 1_000 * MICRO_BAJUN;
+	pub const ApprovalDeposit: Balance = 100 * MICRO_BAJUN;
+	pub const MetadataDepositPerByte: Balance = 10 * NANO_BAJUN;
+}
+
+#[cfg(feature = "runtime-benchmarks")]
+pub struct AssetHelper;
+#[cfg(feature = "runtime-benchmarks")]
+impl<AssetId: From<u32>> pallet_assets::BenchmarkHelper<AssetId> for AssetHelper {
+	fn create_asset_id_parameter(id: u32) -> AssetId {
+		id.into()
+	}
+}
+
+impl pallet_assets::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type RemoveItemsLimit = frame_support::traits::ConstU32<1000>;
+	type AssetId = AssetId;
+	type AssetIdParameter = parity_scale_codec::Compact<AssetId>;
+	type Currency = Balances;
+	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
+	type ForceOrigin = EnsureRoot<AccountId>;
+	type AssetDeposit = AssetDeposit;
+	type AssetAccountDeposit = AssetAccountDeposit;
+	type MetadataDepositBase = MetadataDepositBase;
+	type MetadataDepositPerByte = MetadataDepositPerByte;
+	type ApprovalDeposit = ApprovalDeposit;
+	type StringLimit = frame_support::traits::ConstU32<20>;
+	type Freezer = ();
+	type Extra = ();
+	type CallbackHandle = ();
+	type WeightInfo = ();
+	pallet_assets::runtime_benchmarks_enabled! {
+		type BenchmarkHelper = AssetHelper;
+	}
+}
+
+parameter_types! {
 	pub const NftTransferPalletId: PalletId = PalletId(*b"aj/nfttr");
 }
 
@@ -882,7 +925,7 @@ pub struct GetChainId;
 
 impl Get<u16> for GetChainId {
 	fn get() -> u16 {
-		u32::from(parachain_info::Pallet::<Runtime>::parachain_id()) as u16
+		u32::from(staging_parachain_info::Pallet::<Runtime>::parachain_id()) as u16
 	}
 }
 
@@ -983,6 +1026,8 @@ construct_runtime!(
 		// Indexes 60-69 should be reserved for NFT related pallets
 		Nft: pallet_nfts = 60,
 		NftTransfer: pallet_ajuna_nft_transfer = 61,
+		Assets: pallet_assets = 62,
+		Wildcard: pallet_ajuna_wildcard = 63,
 
 		// Indexes 70-79 should be reserved for Affiliate instances
 		AffiliatesAAA: pallet_ajuna_affiliates::<Instance1> = 70,
