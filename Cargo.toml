@@ -147,7 +147,7 @@ parachains-common                       = { version = "10.0.0", default-features
 staging-parachain-info                  = { version = "0.10.0", default-features = false }
 
 # ORML
-orml-vesting = { version = "0.9.0", default-features = false }
+orml-vesting = { version = "0.9.1", default-features = false }
 
 # Runtime
 bajun-runtime = { path = "runtime/bajun" }
