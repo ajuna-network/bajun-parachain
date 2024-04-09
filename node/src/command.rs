@@ -36,7 +36,8 @@ use std::{net::SocketAddr, path::PathBuf};
 /// (it is based/calculated on ChainSpec's ID attribute)
 #[derive(Debug, PartialEq, Default)]
 enum Runtime {
-	/// This is the default runtime (actually based on rococo)
+	/// Ajuna only has one runtime variant, but we maintain the upstream paradigm to simplify
+	/// maintenance.
 	#[default]
 	Default,
 }
@@ -69,7 +70,6 @@ impl RuntimeResolver for PathBuf {
 }
 
 fn runtime(_id: &str) -> Runtime {
-	// Ajuna has only one runtime, but we copy the upstream paradigm to simplify polkadot updates.
 	Runtime::default()
 }
 
@@ -322,7 +322,9 @@ pub fn run() -> Result<()> {
 				info!("Is collating: {}", if config.role.is_authority() { "yes" } else { "no" });
 
 				match config.chain_spec.runtime()? {
-					_ => {
+					// We only have one Runtime variant, but maintenance is easier if we use the same code structure.
+					#[allow(clippy::match_single_binding)]
+					Runtime::Default => {
 							crate::service::start_generic_aura_node(config, polkadot_config, collator_options, id, hwbench)
 								.await
 								.map(|r| r.0)
