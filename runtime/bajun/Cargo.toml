@@ -118,7 +118,7 @@ std = [
     "orml-vesting/std",
     "pallet-ajuna-affiliates/std",
     "pallet-ajuna-awesome-avatars/std",
-    "pallet-ajuna-awesome-avatars-benchmarking/std",
+    "pallet-ajuna-awesome-avatars-benchmarking?/std",
     "pallet-ajuna-nft-transfer/std",
     "pallet-aura/std",
     "pallet-authorship/std",
