@@ -321,9 +321,9 @@ pub fn run() -> Result<()> {
 				info!("Parachain Account: {}", parachain_account);
 				info!("Is collating: {}", if config.role.is_authority() { "yes" } else { "no" });
 
+				// We only have one Runtime variant, but maintenance is easier if we use the same code structure.
+				#[allow(clippy::match_single_binding)]
 				match config.chain_spec.runtime()? {
-					// We only have one Runtime variant, but maintenance is easier if we use the same code structure.
-					#[allow(clippy::match_single_binding)]
 					Runtime::Default => {
 							crate::service::start_generic_aura_node(config, polkadot_config, collator_options, id, hwbench)
 								.await
