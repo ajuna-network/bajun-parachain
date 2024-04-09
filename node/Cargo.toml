@@ -26,6 +26,7 @@ frame-benchmarking-cli         = { workspace = true }
 frame-support                  = { workspace = true, features = ["std"] }
 frame-system-rpc-runtime-api   = { workspace = true, features = ["std"] }
 frame-try-runtime 			   = { workspace = true, features = ["std"] }
+pallet-transaction-payment 	   = { workspace = true, features = ["std"] }
 pallet-transaction-payment-rpc = { workspace = true }
 pallet-transaction-payment-rpc-runtime-api = { workspace = true, features = ["std"] }
 sc-basic-authorship            = { workspace = true }

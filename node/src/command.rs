@@ -32,6 +32,47 @@ use sc_service::config::{BasePath, PrometheusConfig};
 use sp_runtime::traits::AccountIdConversion;
 use std::{net::SocketAddr, path::PathBuf};
 
+/// Helper enum that is used for better distinction of different parachain/runtime configuration
+/// (it is based/calculated on ChainSpec's ID attribute)
+#[derive(Debug, PartialEq, Default)]
+enum Runtime {
+	/// This is the default runtime (actually based on rococo)
+	#[default]
+	Default,
+}
+
+trait RuntimeResolver {
+	fn runtime(&self) -> Result<Runtime>;
+}
+
+impl RuntimeResolver for dyn ChainSpec {
+	fn runtime(&self) -> Result<Runtime> {
+		Ok(runtime(self.id()))
+	}
+}
+
+/// Implementation, that can resolve [`Runtime`] from any json configuration file
+impl RuntimeResolver for PathBuf {
+	fn runtime(&self) -> Result<Runtime> {
+		#[derive(Debug, serde::Deserialize)]
+		struct EmptyChainSpecWithId {
+			id: String,
+		}
+
+		let file = std::fs::File::open(self)?;
+		let reader = std::io::BufReader::new(file);
+		let chain_spec: EmptyChainSpecWithId =
+			serde_json::from_reader(reader).map_err(|e| sc_cli::Error::Application(Box::new(e)))?;
+
+		Ok(runtime(&chain_spec.id))
+	}
+}
+
+fn runtime(_id: &str) -> Runtime {
+	// Ajuna has only one runtime, but we copy the upstream paradigm to simplify polkadot updates.
+	Runtime::default()
+}
+
 fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
 		"dev" => Box::new(chain_spec::development_config()),
