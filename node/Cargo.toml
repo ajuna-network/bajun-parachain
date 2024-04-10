@@ -98,6 +98,7 @@ runtime-benchmarks = [
 	"cumulus-primitives-core/runtime-benchmarks",
 	"frame-benchmarking-cli/runtime-benchmarks",
 	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
 	"bajun-runtime/runtime-benchmarks",
 	"polkadot-cli/runtime-benchmarks",
 	"polkadot-primitives/runtime-benchmarks",
@@ -105,6 +106,8 @@ runtime-benchmarks = [
 	"sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
+	"frame-support/try-runtime",
+	"frame-try-runtime/try-runtime",
 	"bajun-runtime/try-runtime",
 	"polkadot-cli/try-runtime",
 	"sp-runtime/try-runtime",

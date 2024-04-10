@@ -92,7 +92,13 @@ impl SubstrateCli for Cli {
 	}
 
 	fn description() -> String {
-		env!("CARGO_PKG_DESCRIPTION").into()
+		format!(
+			"Bajun parachain\n\nThe command-line arguments provided first will be \
+		passed to the parachain node, while the arguments provided after -- will be passed \
+		to the relaychain node.\n\n\
+		{} [parachain-args] -- [relaychain-args]",
+			Self::executable_name()
+		)
 	}
 
 	fn author() -> String {
@@ -107,14 +113,14 @@ impl SubstrateCli for Cli {
 		2021
 	}
 
-	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
+	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 		load_spec(id)
 	}
 }
 
 impl SubstrateCli for RelayChainCli {
 	fn impl_name() -> String {
-		"Parachain Collator Template".into()
+		"Polkadot parachain".into()
 	}
 
 	fn impl_version() -> String {
@@ -123,10 +129,10 @@ impl SubstrateCli for RelayChainCli {
 
 	fn description() -> String {
 		format!(
-			"Parachain Collator Template\n\nThe command-line arguments provided first will be \
+			"Bajun Parachain\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relay chain node.\n\n\
-		{} <parachain-args> -- <relay-chain-args>",
+		{} [parachain-args] -- [relay_chain-args]",
 			Self::executable_name()
 		)
 	}
@@ -143,7 +149,7 @@ impl SubstrateCli for RelayChainCli {
 		2020
 	}
 
-	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
+	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 		polkadot_cli::Cli::from_iter([RelayChainCli::executable_name()].iter()).load_spec(id)
 	}
 }

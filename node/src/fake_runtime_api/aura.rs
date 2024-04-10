@@ -17,8 +17,8 @@
 //! These are used to provide a type that implements these runtime APIs without requiring to import
 //! the native runtimes.
 
-use bajun_runtime::{AccountId, AuraId, Balance, Nonce};
 use frame_support::weights::Weight;
+use parachains_common::{AccountId, AuraId, Balance, Nonce};
 use polkadot_primitives::Block;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
 use sp_runtime::{
