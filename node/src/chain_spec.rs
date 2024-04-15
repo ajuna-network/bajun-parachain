@@ -221,6 +221,6 @@ pub fn bajun_config() -> Result<ChainSpec, String> {
 
 pub fn bajun_westend_config() -> Result<ChainSpec, String> {
 	ChainSpec::from_json_bytes(
-		&include_bytes!("../../resources/bajun/westend/westend-raw.json")[..],
+		&include_bytes!("../../resources/bajun/westend/bajun-westend.json")[..],
 	)
 }
