@@ -13,7 +13,7 @@ use sp_runtime::traits::AccountIdConversion;
 
 use crate::{
 	chain_spec,
-	chain_spec::{bajun_config, bajun_westend_config},
+	chain_spec::bajun_config,
 	cli::{Cli, RelayChainCli, Subcommand},
 	service::new_partial,
 };
