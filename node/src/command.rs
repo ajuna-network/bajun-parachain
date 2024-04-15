@@ -25,8 +25,9 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 		"bajun-westend" => Box::new(bajun_westend_config()?),
 
 		// initialize new genesis configs
-		// Todo: add helper functions into chain-spec to re-create configs for
-		// bajun and bajun westend.
+		// Todo: add helper functions to chain-spec to recreate configs for
+		// bajun and bajun-westend. so that we don't have to copy paste custom
+		// genesis keys.
 
 		// on the spot configs
 		"dev" => Box::new(chain_spec::development_config()),
