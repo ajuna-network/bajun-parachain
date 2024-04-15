@@ -22,7 +22,7 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
 		// live configs
 		"bajun" => Box::new(bajun_config()?),
-		"bajun-westend" => Box::new(bajun_westend_config()?),
+		// "bajun-westend" => Box::new(bajun_westend_config()?),
 
 		// initialize new genesis configs
 		// Todo: add helper functions to chain-spec to recreate configs for
