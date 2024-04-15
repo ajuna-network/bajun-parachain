@@ -13,15 +13,24 @@ use sp_runtime::traits::AccountIdConversion;
 
 use crate::{
 	chain_spec,
+	chain_spec::{bajun_config, bajun_westend_config},
 	cli::{Cli, RelayChainCli, Subcommand},
 	service::new_partial,
 };
 
 fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
+		// live configs
+		"bajun" => Box::new(bajun_config()?),
+		"bajun-westend" => Box::new(bajun_westend_config()?),
+
+		// initialize new genesis configs
+
+		// on the spot configs
 		"dev" => Box::new(chain_spec::development_config()),
 		"template-rococo" => Box::new(chain_spec::local_testnet_config()),
 		"" | "local" => Box::new(chain_spec::local_testnet_config()),
+
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
 	})
 }

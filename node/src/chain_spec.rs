@@ -214,3 +214,11 @@ fn testnet_genesis(
 		"sudo": { "key": Some(root) }
 	})
 }
+
+pub fn bajun_config() -> Result<ChainSpec, String> {
+	ChainSpec::from_json_bytes(&include_bytes!("../../resources/bajun/bajun-raw.json")[..])
+}
+
+pub fn bajun_westend_config() -> Result<ChainSpec, String> {
+	ChainSpec::from_json_bytes(&include_bytes!("../../resources/bajun/rococo/bajun-raw.json")[..])
+}
