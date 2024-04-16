@@ -54,6 +54,7 @@ sp-genesis-builder    		   = { workspace = true, features = ["std"] }
 sp-inherents   	         	   = { workspace = true, features = ["std"] }
 sp-io	    	         	   = { workspace = true, features = ["std"] }
 sp-keystore                    = { workspace = true, features = ["std"] }
+sp-keyring                     = { workspace = true }
 sp-offchain                    = { workspace = true, features = ["std"] }
 sp-runtime                     = { workspace = true, features = ["std"] }
 sp-session                     = { workspace = true, features = ["std"] }

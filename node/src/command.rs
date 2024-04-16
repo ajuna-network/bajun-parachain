@@ -31,6 +31,10 @@ use sc_cli::{
 use sc_service::config::{BasePath, PrometheusConfig};
 use sp_runtime::traits::AccountIdConversion;
 use std::{net::SocketAddr, path::PathBuf};
+use crate::{
+    chain_spec::{bajun_chain_spec, bajun_config, bajun_westend_config},
+    chain_spec_utils::{GenesisKeys, RelayChain},
+};
 
 /// Helper enum that is used for better distinction of different parachain/runtime configuration
 /// (it is based/calculated on ChainSpec's ID attribute)
@@ -73,11 +77,27 @@ fn runtime(_id: &str) -> Runtime {
 	Runtime::default()
 }
 
+const KUSAMA_PARA_ID: u32 = 2119;
+const WESTEND_PARA_ID: u32 = 2138;
+const LOCAL_PARA_ID: u32 = 2119;
+
+// If we don't skipp here, each cmd expands to 5 lines. I think we have better overview like this.
+#[rustfmt::skip]
 fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
-		"dev" => Box::new(chain_spec::development_config()),
-		"template-rococo" => Box::new(chain_spec::local_testnet_config()),
-		"" | "local" => Box::new(chain_spec::local_testnet_config()),
+		// live configs
+		"bajun-kusama" => Box::new(bajun_config()?),
+		"bajun-westend" => Box::new(bajun_westend_config()?),
+
+		// fresh production/testnet chain-specs based on the current rust code.
+		"bajun-kusama-fresh" => Box::new(bajun_chain_spec(KUSAMA_PARA_ID.into(), GenesisKeys::Bajun, RelayChain::Kusama)),
+		"bajun-westend-fresh" => Box::new(bajun_chain_spec(WESTEND_PARA_ID.into(), GenesisKeys::BajunDev, RelayChain::Westend)),
+
+		// on the spot configs
+		"bajun-kusama-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::KusamaLocal)),
+		"bajun-westend-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::WestendLocal)),
+		"" | "bajun-rococo-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::RococoLocal)),
+
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
 	})
 }
