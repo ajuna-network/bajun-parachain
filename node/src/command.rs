@@ -36,9 +36,9 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 		"bajun-westend-fresh" => Box::new(bajun_chain_spec(WESTEND_PARA_ID.into(), GenesisKeys::BajunDev, RelayChain::Westend)),
 
 		// on the spot configs
-		"kusama-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::KusamaLocal)),
-		"westend-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::WestendLocal)),
-		"" | "rococo-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::RococoLocal)),
+		"bajun-kusama-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::KusamaLocal)),
+		"bajun-westend-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::WestendLocal)),
+		"" | "bajun-rococo-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::RococoLocal)),
 
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
 	})
