@@ -13,7 +13,7 @@ use sp_runtime::traits::AccountIdConversion;
 
 use crate::{
 	chain_spec,
-	chain_spec::{bajun_chain_spec, bajun_config},
+	chain_spec::{bajun_chain_spec, bajun_config, bajun_westend_config},
 	chain_spec_utils::{GenesisKeys, RelayChain},
 	cli::{Cli, RelayChainCli, Subcommand},
 	service::new_partial,
@@ -28,8 +28,8 @@ const LOCAL_PARA_ID: u32 = 2119;
 fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
 		// live configs
-		"bajun" => Box::new(bajun_config()?),
-		// "bajun-westend" => Box::new(bajun_westend_config()?),
+		"bajun-kusama" => Box::new(bajun_config()?),
+		"bajun-westend" => Box::new(bajun_westend_config()?),
 
 		// Create production or testnet fresh genesis configs.
 		"bajun-kusama-fresh" => Box::new(bajun_chain_spec(KUSAMA_PARA_ID.into(), GenesisKeys::Bajun, RelayChain::Kusama)),
