@@ -25,8 +25,8 @@ frame-benchmarking             = { workspace = true, features = ["std"] }
 frame-benchmarking-cli         = { workspace = true }
 frame-support                  = { workspace = true, features = ["std"] }
 frame-system-rpc-runtime-api   = { workspace = true, features = ["std"] }
-frame-try-runtime 			   = { workspace = true, features = ["std"] }
-pallet-transaction-payment 	   = { workspace = true, features = ["std"] }
+frame-try-runtime              = { workspace = true, features = ["std"] }
+pallet-transaction-payment     = { workspace = true, features = ["std"] }
 pallet-transaction-payment-rpc = { workspace = true }
 pallet-transaction-payment-rpc-runtime-api = { workspace = true, features = ["std"] }
 sc-basic-authorship            = { workspace = true }
@@ -50,9 +50,9 @@ sp-block-builder               = { workspace = true, features = ["std"] }
 sp-blockchain                  = { workspace = true }
 sp-consensus-aura              = { workspace = true, features = ["std"] }
 sp-core                        = { workspace = true, features = ["std"] }
-sp-genesis-builder    		   = { workspace = true, features = ["std"] }
-sp-inherents   	         	   = { workspace = true, features = ["std"] }
-sp-io	    	         	   = { workspace = true, features = ["std"] }
+sp-genesis-builder             = { workspace = true, features = ["std"] }
+sp-inherents                   = { workspace = true, features = ["std"] }
+sp-io                          = { workspace = true, features = ["std"] }
 sp-keystore                    = { workspace = true, features = ["std"] }
 sp-keyring                     = { workspace = true }
 sp-offchain                    = { workspace = true, features = ["std"] }
@@ -84,7 +84,7 @@ cumulus-primitives-aura               = { workspace = true, features = ["std"] }
 cumulus-primitives-core               = { workspace = true, features = ["std"] }
 cumulus-primitives-parachain-inherent = { workspace = true, features = ["std"] }
 cumulus-relay-chain-interface         = { workspace = true }
-parachains-common 					  = { workspace = true, features = ["std"] }
+parachains-common                     = { workspace = true, features = ["std"] }
 color-print                           = { workspace = true }
 
 # Runtime
