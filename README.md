@@ -57,3 +57,27 @@ Simply create an external proposal and fast-track it with a small voting period 
 polkadot-js/apps, go to Developer -> JavaScript and execute the following chopsticks-dev-rpc:
 `api.rpc('dev_newBlock', { count: 10 })`. After this you can observe the blocks being created one by one until the
 proposal is executed.
+
+### Creating new production network chainspecs.
+
+We have parametrized chain-spec generation to simplify creating new production network chain-specs without manual
+copy-pasting.
+This helps to prevent human errors, and the code also serves as documentation at the same time. How to create a new
+production
+chain-spec:
+
+1. Add a new `*-fresh` entry in the [node/src/command], e.g., `bajun-westend-fresh`.
+2. Ensure that the collator and the runtime is of the most recent build, and run the
+   script: `scripts/dump_wasm_state_and_spec.sh bajun-westend-fresh`.
+3. Copy the `chain_dumps/bajun-westend-fresh-raw.json`/`-.state`/`-.wasm` into `resources/bajun/westend`.
+4. Rename the files to remove the `-fresh` suffix.
+5. Delete the unsorted chain-spec.
+6. Add a new function into `node/src/chain_spec.rs`
+
+```rust
+pub fn bajun_westend_config() -> Result<ChainSpec, String> {
+    ChainSpec::from_json_bytes(&include_bytes!("../../resources/bajun/bajun-westend-raw.json")[..])
+}
+```
+
+7. Refer to the new function in `node/src/command.rs`.

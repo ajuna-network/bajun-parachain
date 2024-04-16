@@ -25,7 +25,7 @@ ws_port = 9977
 id = 2119
 addToGenesis = true
 cumulus_based = true
-chain = "template-rococo"
+chain = "bajun-rococo-local"
 
 [[parachains.collators]]
 name = "bajun-collator01"
