@@ -13,7 +13,7 @@
     "tokenSymbol": "BAJU"
   },
   "relay_chain": "westend",
-  "para_id": 2119,
+  "para_id": 2138,
   "codeSubstitutes": {},
   "genesis": {
     "runtimeGenesis": {
@@ -40,7 +40,7 @@
           ]
         },
         "parachainInfo": {
-          "parachainId": 2119
+          "parachainId": 2138
         },
         "polkadotXcm": {
           "safeXcmVersion": 4

@@ -20,7 +20,7 @@ use crate::{
 };
 
 const KUSAMA_PARA_ID: u32 = 2119;
-const WESTEND_PARA_ID: u32 = 2119;
+const WESTEND_PARA_ID: u32 = 2138;
 const LOCAL_PARA_ID: u32 = 2119;
 
 // If we don't skipp here, each cmd expands to 5 lines. I think we have better overview like this.
