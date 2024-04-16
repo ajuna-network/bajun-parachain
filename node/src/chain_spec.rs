@@ -83,7 +83,7 @@ pub fn bajun_chain_spec(
 		endowed,
 		root,
 		gov,
-		para_id.into(),
+		para_id,
 	))
 	.build()
 }
