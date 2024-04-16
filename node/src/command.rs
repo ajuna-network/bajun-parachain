@@ -13,25 +13,32 @@ use sp_runtime::traits::AccountIdConversion;
 
 use crate::{
 	chain_spec,
-	chain_spec::bajun_config,
+	chain_spec::{bajun_chain_spec, bajun_config},
+	chain_spec_utils::{GenesisKeys, RelayChain},
 	cli::{Cli, RelayChainCli, Subcommand},
 	service::new_partial,
 };
 
+const KUSAMA_PARA_ID: u32 = 2119;
+const WESTEND_PARA_ID: u32 = 2119;
+const LOCAL_PARA_ID: u32 = 2119;
+
+// If we don't skipp here, each cmd expands to 5 lines. I think we have better overview like this.
+#[rustfmt::skip]
 fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
 		// live configs
 		"bajun" => Box::new(bajun_config()?),
 		// "bajun-westend" => Box::new(bajun_westend_config()?),
 
-		// initialize new genesis configs
-		// Todo: add helper functions to chain-spec to recreate configs for
-		// bajun and bajun-westend. so that we don't have to copy paste custom
-		// genesis keys.
+		// Create production or testnet fresh genesis configs.
+		"bajun-kusama-fresh" => Box::new(bajun_chain_spec(KUSAMA_PARA_ID.into(), GenesisKeys::Bajun, RelayChain::Kusama)),
+		"bajun-westend-fresh" => Box::new(bajun_chain_spec(WESTEND_PARA_ID.into(), GenesisKeys::BajunDev, RelayChain::Westend)),
 
 		// on the spot configs
-		"template-rococo" => Box::new(chain_spec::rococo_local_config()),
-		"" | "rococo-local" => Box::new(chain_spec::rococo_local_config()),
+		"kusama-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::KusamaLocal)),
+		"westend-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::WestendLocal)),
+		"" | "rococo-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::RococoLocal)),
 
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
 	})
