@@ -3,7 +3,7 @@ set -e
 
 RUNTIME_WEIGHT_DIR=runtime/bajun/src/weights
 COLLATOR=./target/release/bajun-node
-CHAIN=local
+CHAIN=bajun-rococo-local
 
 mkdir -p $RUNTIME_WEIGHT_DIR
 

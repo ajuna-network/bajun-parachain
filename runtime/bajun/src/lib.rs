@@ -38,7 +38,7 @@ use sp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT},
 	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult, MultiSignature,
+	ApplyExtrinsicResult, ExtrinsicInclusionMode, MultiSignature,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -64,6 +64,7 @@ use frame_support::{
 };
 use frame_system::{
 	limits::{BlockLength, BlockWeights},
+	pallet_prelude::BlockNumberFor,
 	EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
 use pallet_identity::legacy::IdentityInfo;
@@ -159,7 +160,7 @@ pub type Executive = frame_executive::Executive<
 	Migrations,
 >;
 
-type Migrations = ();
+type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
 //type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
@@ -223,7 +224,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("bajun"),
 	impl_name: create_runtime_str!("bajun"),
 	authoring_version: 1,
-	spec_version: 202,
+	spec_version: 300,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -379,6 +380,11 @@ impl frame_system::Config for Runtime {
 	/// The Block provider type
 	type Block = Block;
 	type RuntimeTask = RuntimeTask;
+	type SingleBlockMigrations = ();
+	type MultiBlockMigrator = ();
+	type PreInherents = ();
+	type PostInherents = ();
+	type PostTransactions = ();
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -769,6 +775,9 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 	type KeyLimit = KeyLimit;
 	type ValueLimit = ValueLimit;
 	type NftHandler = NftTransfer;
+	type FeeChainMaxLength = AffiliateMaxLevel;
+	type AffiliateHandler = AffiliatesAAA;
+	type TournamentHandler = TournamentAAA;
 	type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
 }
 
@@ -845,6 +854,34 @@ impl pallet_ajuna_nft_transfer::Config for Runtime {
 	type NftHelper = Nft;
 }
 
+parameter_types! {
+	pub const AffiliateMaxLevel: u32 = 2;
+}
+
+pub type AffiliatesInstanceAAA = pallet_ajuna_affiliates::Instance1;
+impl pallet_ajuna_affiliates::Config<AffiliatesInstanceAAA> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type RuleIdentifier = pallet_ajuna_awesome_avatars::types::AffiliateMethods;
+	type RuntimeRule = pallet_ajuna_awesome_avatars::FeePropagationOf<Runtime>;
+	type AffiliateMaxLevel = AffiliateMaxLevel;
+}
+
+parameter_types! {
+	pub const TournamentPalletId1: PalletId = PalletId(*b"aj/trmt1");
+	pub const MinimumTournamentPhaseDuration: BlockNumber = 100;
+}
+
+type TournamentInstance1 = pallet_ajuna_tournament::Instance1;
+impl pallet_ajuna_tournament::Config<TournamentInstance1> for Runtime {
+	type PalletId = TournamentPalletId1;
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type SeasonId = pallet_ajuna_awesome_avatars::types::SeasonId;
+	type EntityId = pallet_ajuna_awesome_avatars::AvatarIdOf<Runtime>;
+	type RankedEntity = pallet_ajuna_awesome_avatars::types::Avatar<BlockNumberFor<Runtime>>;
+	type MinimumTournamentPhaseDuration = MinimumTournamentPhaseDuration;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub struct Runtime
@@ -900,6 +937,12 @@ construct_runtime!(
 		// Indexes 60-69 should be reserved for NFT related pallets
 		Nft: pallet_nfts = 60,
 		NftTransfer: pallet_ajuna_nft_transfer = 61,
+
+		// Indexes 70-79 should be reserved for Affiliate instances
+		AffiliatesAAA: pallet_ajuna_affiliates::<Instance1> = 70,
+
+		// Indexes 80-89 should be reserved for Tournament instances
+		TournamentAAA: pallet_ajuna_tournament::<Instance1> = 80,
 	}
 );
 
@@ -987,7 +1030,7 @@ impl_runtime_apis! {
 			Executive::execute_block(block)
 		}
 
-		fn initialize_block(header: &<Block as BlockT>::Header) {
+		fn initialize_block(header: &<Block as BlockT>::Header) -> ExtrinsicInclusionMode {
 			Executive::initialize_block(header)
 		}
 	}
