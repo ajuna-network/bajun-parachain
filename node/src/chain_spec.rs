@@ -62,57 +62,7 @@ pub fn template_session_keys(keys: AuraId) -> bajun_runtime::SessionKeys {
 	bajun_runtime::SessionKeys { aura: keys }
 }
 
-pub fn development_config() -> ChainSpec {
-	// Give your base currency a unit name and decimal places
-	let mut properties = sc_chain_spec::Properties::new();
-	properties.insert("tokenSymbol".into(), "BAJU".into());
-	properties.insert("tokenDecimals".into(), 12.into());
-	properties.insert("ss58Format".into(), SS58_FORMAT.into());
-
-	ChainSpec::builder(
-		bajun_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
-		Extensions {
-			relay_chain: "rococo-local".into(),
-			// You MUST set this to the correct network!
-			para_id: PARA_ID,
-		},
-	)
-	.with_name("Bajun Dev")
-	.with_id("bajun-dev")
-	.with_chain_type(ChainType::Development)
-	.with_genesis_config_patch(testnet_genesis(
-		// initial collators.
-		vec![
-			(
-				get_account_id_from_seed::<sr25519::Public>("Alice"),
-				get_collator_keys_from_seed("Alice"),
-			),
-			(
-				get_account_id_from_seed::<sr25519::Public>("Bob"),
-				get_collator_keys_from_seed("Bob"),
-			),
-		],
-		vec![
-			get_account_id_from_seed::<sr25519::Public>("Alice"),
-			get_account_id_from_seed::<sr25519::Public>("Bob"),
-			get_account_id_from_seed::<sr25519::Public>("Charlie"),
-			get_account_id_from_seed::<sr25519::Public>("Dave"),
-			get_account_id_from_seed::<sr25519::Public>("Eve"),
-			get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-			get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-			get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-			get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-			get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-			get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-			get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
-		],
-		get_account_id_from_seed::<sr25519::Public>("Alice"),
-		PARA_ID.into(),
-	))
-	.build()
-}
-
-pub fn local_testnet_config() -> ChainSpec {
+pub fn rococo_local_config() -> ChainSpec {
 	// Give your base currency a unit name and decimal places
 	let mut properties = sc_chain_spec::Properties::new();
 	properties.insert("tokenSymbol".into(), "BAJU".into());
