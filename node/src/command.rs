@@ -31,7 +31,7 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 		"bajun-kusama" => Box::new(bajun_config()?),
 		"bajun-westend" => Box::new(bajun_westend_config()?),
 
-		// Create production or testnet fresh genesis configs.
+		// fresh production/testnet chain-specs based on the current rust code.
 		"bajun-kusama-fresh" => Box::new(bajun_chain_spec(KUSAMA_PARA_ID.into(), GenesisKeys::Bajun, RelayChain::Kusama)),
 		"bajun-westend-fresh" => Box::new(bajun_chain_spec(WESTEND_PARA_ID.into(), GenesisKeys::BajunDev, RelayChain::Westend)),
 
