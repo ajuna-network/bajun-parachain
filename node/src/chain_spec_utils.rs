@@ -10,7 +10,6 @@ pub fn pub_sr25519(ss58: &str) -> sr25519::Public {
 
 pub fn public_from_ss58<TPublic: Public + FromStr>(ss58: &str) -> TPublic
 where
-	// what's up with this weird trait bound??
 	<TPublic as FromStr>::Err: std::fmt::Debug,
 {
 	TPublic::from_ss58check(ss58).expect("supply valid ss58!")
@@ -20,10 +19,10 @@ where
 pub enum GenesisKeys {
 	/// Use Bajun production keys.
 	Bajun,
-	/// Use Keys from the keyring for a test setup
-	WellKnown,
 	/// Use Bajun Dev keys, intended for test networks.
 	BajunDev,
+	/// Use Keys from the keyring for a test setup
+	WellKnown,
 }
 
 pub struct WellKnownKeys;
