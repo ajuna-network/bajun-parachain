@@ -56,7 +56,6 @@ impl WellKnownKeys {
 	}
 }
 
-/// Dev Keys used in development testnets like Westend. Can be hot wallets.
 pub struct BajunDevKeys;
 
 impl BajunDevKeys {
@@ -82,7 +81,6 @@ impl BajunDevKeys {
 	}
 }
 
-/// Dev Keys used in development testnets like Westend. Can be hot wallets.
 pub struct BajunKeys;
 
 impl BajunKeys {

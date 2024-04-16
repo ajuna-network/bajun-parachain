@@ -66,7 +66,7 @@ This helps to prevent human errors, and the code also serves as documentation at
 production
 chain-spec:
 
-1. Generate new `*-fresh` chain-spec in the rust code, e.g., `bajun-westend-fresh`.
+1. Add a new `*-fresh` entry in the [node/src/command], e.g., `bajun-westend-fresh`.
 2. Ensure that the collator and the runtime is of the most recent build, and run the
    script: `scripts/dump_wasm_state_and_spec.sh bajun-westend-fresh`.
 3. Copy the `chain_dumps/bajun-westend-fresh-raw.json`/`-.state`/`-.wasm` into `resources/bajun/westend`.
