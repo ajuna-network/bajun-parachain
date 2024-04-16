@@ -16,6 +16,8 @@
 
 use crate::{
 	chain_spec,
+	chain_spec::{bajun_chain_spec, bajun_config, bajun_westend_config},
+	chain_spec_utils::{GenesisKeys, RelayChain},
 	cli::{Cli, RelayChainCli, Subcommand},
 	fake_runtime_api::aura::RuntimeApi,
 	service::{new_partial, Block},
@@ -31,10 +33,6 @@ use sc_cli::{
 use sc_service::config::{BasePath, PrometheusConfig};
 use sp_runtime::traits::AccountIdConversion;
 use std::{net::SocketAddr, path::PathBuf};
-use crate::{
-    chain_spec::{bajun_chain_spec, bajun_config, bajun_westend_config},
-    chain_spec_utils::{GenesisKeys, RelayChain},
-};
 
 /// Helper enum that is used for better distinction of different parachain/runtime configuration
 /// (it is based/calculated on ChainSpec's ID attribute)
