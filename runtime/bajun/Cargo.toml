@@ -239,5 +239,3 @@ try-runtime = [
     "pallet-ajuna-awesome-avatars/try-runtime",
     "pallet-ajuna-nft-transfer/try-runtime",
 ]
-
-experimental = [ "pallet-aura/experimental" ]
