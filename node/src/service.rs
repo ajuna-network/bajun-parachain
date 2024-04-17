@@ -63,13 +63,11 @@ use polkadot_primitives::CollatorPair;
 use substrate_frame_rpc_system as frame_rpc_system;
 
 #[cfg(not(feature = "runtime-benchmarks"))]
-type HostFunctions =
-	(sp_io::SubstrateHostFunctions, cumulus_client_service::storage_proof_size::HostFunctions);
+type HostFunctions = cumulus_client_service::ParachainHostFunctions;
 
 #[cfg(feature = "runtime-benchmarks")]
 type HostFunctions = (
-	sp_io::SubstrateHostFunctions,
-	cumulus_client_service::storage_proof_size::HostFunctions,
+	cumulus_client_service::ParachainHostFunctions,
 	frame_benchmarking::benchmarking::HostFunctions,
 );
 
