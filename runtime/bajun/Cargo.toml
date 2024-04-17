@@ -38,6 +38,7 @@ pallet-identity                            = { workspace = true }
 pallet-insecure-randomness-collective-flip = { workspace = true }
 pallet-membership                          = { workspace = true }
 pallet-message-queue                       = { workspace = true }
+pallet-migrations                          = { workspace = true }
 pallet-multisig                            = { workspace = true }
 pallet-nfts                                = { workspace = true }
 pallet-preimage                            = { workspace = true }
@@ -129,6 +130,7 @@ std = [
     "pallet-identity/std",
     "pallet-membership/std",
     "pallet-message-queue/std",
+    "pallet-migrations/std",
     "pallet-multisig/std",
     "pallet-nfts/std",
     "pallet-preimage/std",
@@ -179,6 +181,7 @@ runtime-benchmarks = [
     "pallet-identity/runtime-benchmarks",
     "pallet-membership/runtime-benchmarks",
     "pallet-message-queue/runtime-benchmarks",
+    "pallet-migrations/runtime-benchmarks",
     "pallet-multisig/runtime-benchmarks",
     "pallet-nfts/runtime-benchmarks",
     "pallet-preimage/runtime-benchmarks",
@@ -217,6 +220,7 @@ try-runtime = [
     "pallet-identity/try-runtime",
     "pallet-membership/try-runtime",
     "pallet-message-queue/try-runtime",
+    "pallet-migrations/try-runtime",
     "pallet-multisig/try-runtime",
     "pallet-nfts/try-runtime",
     "pallet-preimage/try-runtime",
