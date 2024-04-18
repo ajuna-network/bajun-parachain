@@ -999,6 +999,7 @@ mod benches {
 		[pallet_membership, CouncilMembership]
 		// [pallet_membership, TechnicalCommitteeMembership] // writes to the same file
 		[pallet_message_queue, MessageQueue]
+		[pallet_migrations, Migrations]
 		[pallet_multisig, Multisig]
 		[pallet_preimage, Preimage]
 		[pallet_proxy, Proxy]
