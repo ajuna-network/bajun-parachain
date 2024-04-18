@@ -395,7 +395,7 @@ impl pallet_migrations::Config for Runtime {
 	type MigrationStatusHandler = LoggerMigrationStatusHandler;
 	type FailedMigrationHandler = frame_support::migrations::FreezeChainOnFailedMigration;
 	type MaxServiceWeight = MbmServiceWeight;
-	type WeightInfo = ();
+	type WeightInfo = weights::pallet_migrations::WeightInfo<Runtime>;
 	#[cfg(feature = "runtime-benchmarks")]
 	type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
 	#[cfg(not(feature = "runtime-benchmarks"))]
@@ -1013,9 +1013,7 @@ mod benches {
 		[pallet_nfts, Nft]
 	);
 	// Use this section if you want to benchmark individual pallets
-	// define_benchmarks!(
-	// 	[orml_vesting, Vesting]
-	// )
+	// define_benchmarks!([pallet_migrations, Migrations]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]
