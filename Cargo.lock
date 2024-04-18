@@ -6045,8 +6045,9 @@ dependencies = [
 
 [[package]]
 name = "orml-vesting"
-version = "0.9.1"
-source = "git+https://github.com/ajuna-network/open-runtime-module-library.git?branch=cl/polkadot-v1.10.0-Cargo.toml#9024eeeece16562efce33ed69303f69ddf32b537"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e848c6c92c5100f98f210fe1fab797cddeceee631aa0de28cfcf97c630e2d7d8"
 dependencies = [
  "frame-support",
  "frame-system",
