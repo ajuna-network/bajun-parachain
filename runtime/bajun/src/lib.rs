@@ -377,12 +377,32 @@ impl frame_system::Config for Runtime {
 	/// The Block provider type
 	type Block = Block;
 	type RuntimeTask = RuntimeTask;
-	type SingleBlockMigrations = ();
+	type SingleBlockMigrations = SingleBlockMigrations;
 	type MultiBlockMigrator = pallet_migrations::Pallet<Runtime>;
 	type PreInherents = ();
 	type PostInherents = ();
 	type PostTransactions = ();
 }
+
+type SingleBlockMigrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
+
+use pallet_ajuna_awesome_avatars::{
+	migration,
+	migration::v6::mbm::{
+		LazyMigrationAvatarV5ToV6, LazyMigrationPlayerSeasonConfigsV5ToV6,
+		LazyMigrationSeasonStatsV5ToV6, LazyTradeStatsMapCleanup,
+	},
+};
+
+type MultiBlockMigrations = (
+	LazyMigrationPlayerSeasonConfigsV5ToV6<
+		Runtime,
+		migration::v6::weights::SubstrateWeight<Runtime>,
+	>,
+	LazyMigrationSeasonStatsV5ToV6<Runtime, migration::v6::weights::SubstrateWeight<Runtime>>,
+	LazyMigrationAvatarV5ToV6<Runtime, migration::v6::weights::SubstrateWeight<Runtime>>,
+	LazyTradeStatsMapCleanup<Runtime, migration::v6::weights::SubstrateWeight<Runtime>>,
+);
 
 parameter_types! {
 	pub MbmServiceWeight: Weight = Perbill::from_percent(80) * RuntimeBlockWeights::get().max_block;
@@ -399,7 +419,7 @@ impl pallet_migrations::Config for Runtime {
 	#[cfg(feature = "runtime-benchmarks")]
 	type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
 	#[cfg(not(feature = "runtime-benchmarks"))]
-	type Migrations = ();
+	type Migrations = MultiBlockMigrations;
 }
 
 /// Records all started and completed upgrades in `UpgradesStarted` and `UpgradesCompleted`.

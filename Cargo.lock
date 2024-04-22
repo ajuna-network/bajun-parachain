@@ -6063,7 +6063,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-affiliates"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6076,7 +6076,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6095,7 +6095,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6119,7 +6119,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-nft-transfer"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6132,7 +6132,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-tournament"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
 dependencies = [
  "frame-support",
  "frame-system",
