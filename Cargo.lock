@@ -6063,7 +6063,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-affiliates"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#063fb71ef0095960cf5539a4e89d187534aa88de"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6076,8 +6076,9 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#063fb71ef0095960cf5539a4e89d187534aa88de"
 dependencies = [
+ "frame-benchmarking",
  "frame-support",
  "frame-system",
  "hex",
@@ -6095,7 +6096,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#063fb71ef0095960cf5539a4e89d187534aa88de"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6119,7 +6120,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-nft-transfer"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#063fb71ef0095960cf5539a4e89d187534aa88de"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6132,7 +6133,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-tournament"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#1b8f8109939325db04253b4161dbbfb07546afcb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=cl/multiblock-migration#063fb71ef0095960cf5539a4e89d187534aa88de"
 dependencies = [
  "frame-support",
  "frame-system",

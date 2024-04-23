@@ -395,14 +395,14 @@ use pallet_ajuna_awesome_avatars::{
 };
 
 #[cfg(not(feature = "runtime-benchmarks"))]
+use weights::pallet_ajuna_awesome_avatars_mbm::WeightInfo as AaaMbmWeight;
+
+#[cfg(not(feature = "runtime-benchmarks"))]
 type MultiBlockMigrations = (
-	LazyMigrationPlayerSeasonConfigsV5ToV6<
-		Runtime,
-		migration::v6::weights::SubstrateWeight<Runtime>,
-	>,
-	LazyMigrationSeasonStatsV5ToV6<Runtime, migration::v6::weights::SubstrateWeight<Runtime>>,
-	LazyMigrationAvatarV5ToV6<Runtime, migration::v6::weights::SubstrateWeight<Runtime>>,
-	LazyTradeStatsMapCleanup<Runtime, migration::v6::weights::SubstrateWeight<Runtime>>,
+	LazyMigrationPlayerSeasonConfigsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+	LazyMigrationSeasonStatsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+	LazyMigrationAvatarV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+	LazyTradeStatsMapCleanup<Runtime, AaaMbmWeight<Runtime>>,
 );
 
 parameter_types! {
