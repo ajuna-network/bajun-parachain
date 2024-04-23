@@ -160,8 +160,6 @@ pub type Executive = frame_executive::Executive<
 	AllPalletsWithSystem,
 >;
 
-//type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
-
 /// Handles converting a weight scalar to a fee value, based on the scale and granularity of the
 /// node's balance type.
 ///
@@ -386,24 +384,26 @@ impl frame_system::Config for Runtime {
 
 type SingleBlockMigrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
-use pallet_ajuna_awesome_avatars::{
-	migration,
-	migration::v6::mbm::{
+#[cfg(not(feature = "runtime-benchmarks"))]
+use mbm::MultiBlockMigrations;
+
+#[cfg(not(feature = "runtime-benchmarks"))]
+mod mbm {
+	use crate::Runtime;
+	use pallet_ajuna_awesome_avatars::migration::v6::mbm::{
 		LazyMigrationAvatarV5ToV6, LazyMigrationPlayerSeasonConfigsV5ToV6,
 		LazyMigrationSeasonStatsV5ToV6, LazyTradeStatsMapCleanup,
-	},
-};
+	};
 
-#[cfg(not(feature = "runtime-benchmarks"))]
-use weights::pallet_ajuna_awesome_avatars_mbm::WeightInfo as AaaMbmWeight;
+	use crate::weights::pallet_ajuna_awesome_avatars_mbm::WeightInfo as AaaMbmWeight;
 
-#[cfg(not(feature = "runtime-benchmarks"))]
-type MultiBlockMigrations = (
-	LazyMigrationPlayerSeasonConfigsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-	LazyMigrationSeasonStatsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-	LazyMigrationAvatarV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-	LazyTradeStatsMapCleanup<Runtime, AaaMbmWeight<Runtime>>,
-);
+	pub type MultiBlockMigrations = (
+		LazyMigrationPlayerSeasonConfigsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyMigrationSeasonStatsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyMigrationAvatarV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyTradeStatsMapCleanup<Runtime, AaaMbmWeight<Runtime>>,
+	);
+}
 
 parameter_types! {
 	pub MbmServiceWeight: Weight = Perbill::from_percent(80) * RuntimeBlockWeights::get().max_block;
