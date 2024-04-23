@@ -394,6 +394,7 @@ use pallet_ajuna_awesome_avatars::{
 	},
 };
 
+#[cfg(not(feature = "runtime-benchmarks"))]
 type MultiBlockMigrations = (
 	LazyMigrationPlayerSeasonConfigsV5ToV6<
 		Runtime,
