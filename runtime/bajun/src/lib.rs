@@ -1031,10 +1031,13 @@ mod benches {
 		// [pallet_treasury, Treasury] // treasury config is broken, needs fixes
 		[pallet_utility, Utility]
 		[pallet_ajuna_awesome_avatars, AwesomeAvatarsBench::<Runtime>]
+		 // Note: We have to update the path to the `WeightInfo` definition after
+		 // running the benchmarks: `pallet_ajuna_awesome_avatars::migration::v6::WeightInfo`
+		[pallet_ajuna_awesome_avatars_mbm, AwesomeAvatars]
 		[pallet_nfts, Nft]
 	);
 	// Use this section if you want to benchmark individual pallets
-	// define_benchmarks!([pallet_migrations, Migrations]);
+	// define_benchmarks!([pallet_ajuna_awesome_avatars_mbm, AwesomeAvatars]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]

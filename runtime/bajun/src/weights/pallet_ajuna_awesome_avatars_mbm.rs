@@ -46,19 +46,57 @@ use core::marker::PhantomData;
 
 /// Weight functions for `pallet_ajuna_awesome_avatars_mbm`.
 pub struct WeightInfo<T>(PhantomData<T>);
-impl<T: frame_system::Config> pallet_ajuna_awesome_avatars::migration::v6::weights::WeightInfo for WeightInfo<T> {
+impl<T: frame_system::Config> pallet_ajuna_awesome_avatars_mbm::WeightInfo for WeightInfo<T> {
 	/// Storage: `AwesomeAvatars::PlayerSeasonConfigs` (r:2 w:1)
 	/// Proof: `AwesomeAvatars::PlayerSeasonConfigs` (`max_values`: None, `max_size`: Some(54), added: 2529, mode: `MaxEncodedLen`)
 	/// Storage: `AwesomeAvatars::TradeStatsMap` (r:0 w:1)
 	/// Proof: `AwesomeAvatars::TradeStatsMap` (`max_values`: None, `max_size`: Some(42), added: 2517, mode: `MaxEncodedLen`)
-	fn step() -> Weight {
+	fn player_season_configs_step() -> Weight {
 		// Proof Size summary in bytes:
 		//  Measured:  `156`
 		//  Estimated: `6048`
-		// Minimum execution time: 26_500_000 picoseconds.
-		Weight::from_parts(27_800_000, 0)
+		// Minimum execution time: 26_000_000 picoseconds.
+		Weight::from_parts(57_200_000, 0)
 			.saturating_add(Weight::from_parts(0, 6048))
 			.saturating_add(T::DbWeight::get().reads(2))
 			.saturating_add(T::DbWeight::get().writes(2))
+	}
+	/// Storage: `AwesomeAvatars::SeasonStats` (r:2 w:1)
+	/// Proof: `AwesomeAvatars::SeasonStats` (`max_values`: None, `max_size`: Some(54), added: 2529, mode: `MaxEncodedLen`)
+	/// Storage: `AwesomeAvatars::TradeStatsMap` (r:1 w:1)
+	/// Proof: `AwesomeAvatars::TradeStatsMap` (`max_values`: None, `max_size`: Some(42), added: 2517, mode: `MaxEncodedLen`)
+	fn season_stats_step() -> Weight {
+		// Proof Size summary in bytes:
+		//  Measured:  `199`
+		//  Estimated: `6048`
+		// Minimum execution time: 40_200_000 picoseconds.
+		Weight::from_parts(46_000_000, 0)
+			.saturating_add(Weight::from_parts(0, 6048))
+			.saturating_add(T::DbWeight::get().reads(3))
+			.saturating_add(T::DbWeight::get().writes(2))
+	}
+	/// Storage: `AwesomeAvatars::Avatars` (r:2 w:1)
+	/// Proof: `AwesomeAvatars::Avatars` (`max_values`: None, `max_size`: Some(177), added: 2652, mode: `MaxEncodedLen`)
+	fn avatar_step() -> Weight {
+		// Proof Size summary in bytes:
+		//  Measured:  `168`
+		//  Estimated: `6294`
+		// Minimum execution time: 31_400_000 picoseconds.
+		Weight::from_parts(32_900_000, 0)
+			.saturating_add(Weight::from_parts(0, 6294))
+			.saturating_add(T::DbWeight::get().reads(2))
+			.saturating_add(T::DbWeight::get().writes(1))
+	}
+	/// Storage: `AwesomeAvatars::TradeStatsMap` (r:2 w:1)
+	/// Proof: `AwesomeAvatars::TradeStatsMap` (`max_values`: None, `max_size`: Some(42), added: 2517, mode: `MaxEncodedLen`)
+	fn trade_stats_map_cleanup_step() -> Weight {
+		// Proof Size summary in bytes:
+		//  Measured:  `136`
+		//  Estimated: `6024`
+		// Minimum execution time: 25_900_000 picoseconds.
+		Weight::from_parts(32_200_000, 0)
+			.saturating_add(Weight::from_parts(0, 6024))
+			.saturating_add(T::DbWeight::get().reads(2))
+			.saturating_add(T::DbWeight::get().writes(1))
 	}
 }
