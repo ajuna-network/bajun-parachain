@@ -440,7 +440,7 @@ pub struct MockedFailedMigrationHandler;
 impl FailedMigrationHandler for MockedFailedMigrationHandler {
 	fn failed(migration: Option<u32>) -> FailedMigrationHandling {
 		log::error!("FailedMigrationHandler failed at: {migration:?}");
-		FailedMigrationHandling::KeepStuck
+		FailedMigrationHandling::ForceUnstuck
 	}
 }
 
