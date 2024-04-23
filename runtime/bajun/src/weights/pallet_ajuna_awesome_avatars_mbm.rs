@@ -46,7 +46,7 @@ use core::marker::PhantomData;
 
 /// Weight functions for `pallet_ajuna_awesome_avatars_mbm`.
 pub struct WeightInfo<T>(PhantomData<T>);
-impl<T: frame_system::Config> pallet_ajuna_awesome_avatars_mbm::WeightInfo for WeightInfo<T> {
+impl<T: frame_system::Config> pallet_ajuna_awesome_avatars::migration::v6::WeightInfo for WeightInfo<T> {
 	/// Storage: `AwesomeAvatars::PlayerSeasonConfigs` (r:2 w:1)
 	/// Proof: `AwesomeAvatars::PlayerSeasonConfigs` (`max_values`: None, `max_size`: Some(54), added: 2529, mode: `MaxEncodedLen`)
 	/// Storage: `AwesomeAvatars::TradeStatsMap` (r:0 w:1)
