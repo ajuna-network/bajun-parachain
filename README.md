@@ -40,6 +40,10 @@ good to test functionality after the runtime upgrade happened.
 The following command overrides the runtime with the local build of the upgraded runtime and will run the migration
 upon the next block, which means as soon as we send an arbitrary extrinsic.
 
+#### Test Runtime Upgrades with chopsticks
+
+We now have a zombienet setup that is intended to test runtime upgrades at `zombienet/`. See the documentation there.
+
 ```bash
 nvm use 20
 npx @acala-network/chopsticks@latest --config ./chopsticks/bajun.yml  --wasm-override ./target/release/wbuild/bajun-runtime/bajun_runtime.compact.compressed.wasm
