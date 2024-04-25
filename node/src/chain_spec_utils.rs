@@ -19,9 +19,9 @@ where
 pub enum GenesisKeys {
 	/// Use Bajun production keys.
 	Bajun,
-	/// Use Bajun Dev keys, intended for test networks.
-	BajunDev,
-	/// Use Keys from the keyring for a test setup
+	/// Keys intended for testnets like westend, or paseo.
+	TestnetDev,
+	/// Use keys from the keyring for a test setup.
 	WellKnown,
 }
 
@@ -55,9 +55,10 @@ impl WellKnownKeys {
 	}
 }
 
-pub struct BajunDevKeys;
+/// Ajuna and Bajun share the same set of keys here.
+pub struct TestnetDevKeys;
 
-impl BajunDevKeys {
+impl TestnetDevKeys {
 	pub fn root() -> AccountId {
 		pub_sr25519("5H6WjuXTrFTpiAmr2Pohzbuj7EvBHuDNht7PSSUCCDv9u4ec").into()
 	}
