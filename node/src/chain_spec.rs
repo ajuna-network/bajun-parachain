@@ -1,4 +1,4 @@
-use crate::chain_spec_utils::{BajunDevKeys, BajunKeys, GenesisKeys, RelayChain, WellKnownKeys};
+use crate::chain_spec_utils::{BajunKeys, GenesisKeys, RelayChain, TestnetDevKeys, WellKnownKeys};
 use bajun_runtime::{AccountId, AuraId, EXISTENTIAL_DEPOSIT};
 use cumulus_primitives_core::ParaId;
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
@@ -53,11 +53,11 @@ pub fn bajun_chain_spec(
 			BajunKeys::invulnerables(),
 			BajunKeys::governance(),
 		),
-		GenesisKeys::BajunDev => (
-			BajunDevKeys::root(),
-			vec![BajunDevKeys::root()],
-			BajunDevKeys::invulnerables(),
-			BajunDevKeys::governance(),
+		GenesisKeys::TestnetDev => (
+			TestnetDevKeys::root(),
+			vec![TestnetDevKeys::root()],
+			TestnetDevKeys::invulnerables(),
+			TestnetDevKeys::governance(),
 		),
 		GenesisKeys::WellKnown => (
 			WellKnownKeys::root(),

@@ -79,7 +79,7 @@ const KUSAMA_PARA_ID: u32 = 2119;
 const WESTEND_PARA_ID: u32 = 2138;
 const LOCAL_PARA_ID: u32 = 2119;
 
-// If we don't skipp here, each cmd expands to 5 lines. I think we have better overview like this.
+// If we don't skip here, each cmd expands to 5 lines. I think we have better overview like this.
 #[rustfmt::skip]
 fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
@@ -89,7 +89,7 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 
 		// fresh production/testnet chain-specs based on the current rust code.
 		"bajun-kusama-fresh" => Box::new(bajun_chain_spec(KUSAMA_PARA_ID.into(), GenesisKeys::Bajun, RelayChain::Kusama)),
-		"bajun-westend-fresh" => Box::new(bajun_chain_spec(WESTEND_PARA_ID.into(), GenesisKeys::BajunDev, RelayChain::Westend)),
+		"bajun-westend-fresh" => Box::new(bajun_chain_spec(WESTEND_PARA_ID.into(), GenesisKeys::TestnetDev, RelayChain::Westend)),
 
 		// on the spot configs
 		"bajun-kusama-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::KusamaLocal)),
