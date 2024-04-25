@@ -50,6 +50,7 @@ pallet-identity                            = { version = "32.0.0", default-featu
 pallet-insecure-randomness-collective-flip = { version = "20.0.0", default-features = false }
 pallet-message-queue                       = { version = "35.0.0", default-features = false }
 pallet-membership                          = { version = "32.0.0", default-features = false }
+pallet-migrations                          = { version = "2.0.0", default-features = false }
 pallet-multisig                            = { version = "32.0.0", default-features = false }
 pallet-nfts                                = { version = "26.0.0", default-features = false }
 pallet-preimage                            = { version = "32.0.0", default-features = false }
@@ -155,13 +156,13 @@ orml-vesting = { version = "0.10.0", default-features = false }
 bajun-runtime = { path = "runtime/bajun" }
 
 # Ajuna Pallets
-pallet-ajuna-affiliates                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.6.0", default-features = false }
-pallet-ajuna-awesome-avatars              = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.6.0", default-features = false }
-pallet-ajuna-battle-mogs                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.6.0", default-features = false }
-pallet-ajuna-awesome-avatars-benchmarking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.6.0", default-features = false }
-pallet-ajuna-nft-transfer                 = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.6.0", default-features = false }
-pallet-ajuna-nft-staking                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.6.0", default-features = false }
-pallet-ajuna-tournament                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.6.0", default-features = false }
+pallet-ajuna-affiliates                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "develop", default-features = false }
+pallet-ajuna-awesome-avatars              = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "develop", default-features = false }
+pallet-ajuna-battle-mogs                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "develop", default-features = false }
+pallet-ajuna-awesome-avatars-benchmarking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "develop", default-features = false }
+pallet-ajuna-nft-transfer                 = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "develop", default-features = false }
+pallet-ajuna-nft-staking                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "develop", default-features = false }
+pallet-ajuna-tournament                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "develop", default-features = false }
 
 [profile.production]
 codegen-units = 1

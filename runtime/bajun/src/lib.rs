@@ -49,6 +49,7 @@ use frame_support::{
 	construct_runtime,
 	dispatch::DispatchClass,
 	genesis_builder_helper::{build_config, create_default_config},
+	migrations::{FailedMigrationHandler, FailedMigrationHandling, MigrationStatusHandler},
 	pallet_prelude::ConstU32,
 	parameter_types,
 	traits::{
@@ -157,12 +158,7 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPalletsWithSystem,
-	Migrations,
 >;
-
-type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
-
-//type Migrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
 /// Handles converting a weight scalar to a fee value, based on the scale and granularity of the
 /// node's balance type.
@@ -379,11 +375,73 @@ impl frame_system::Config for Runtime {
 	/// The Block provider type
 	type Block = Block;
 	type RuntimeTask = RuntimeTask;
-	type SingleBlockMigrations = ();
-	type MultiBlockMigrator = ();
+	type SingleBlockMigrations = SingleBlockMigrations;
+	type MultiBlockMigrator = pallet_migrations::Pallet<Runtime>;
 	type PreInherents = ();
 	type PostInherents = ();
 	type PostTransactions = ();
+}
+
+type SingleBlockMigrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
+
+#[cfg(not(feature = "runtime-benchmarks"))]
+use mbm::MultiBlockMigrations;
+
+#[cfg(not(feature = "runtime-benchmarks"))]
+mod mbm {
+	use crate::Runtime;
+	use pallet_ajuna_awesome_avatars::migration::v6::mbm::{
+		LazyMigrationAvatarV5ToV6, LazyMigrationPlayerSeasonConfigsV5ToV6,
+		LazyMigrationSeasonStatsV5ToV6, LazyTradeStatsMapCleanup,
+	};
+
+	use crate::weights::pallet_ajuna_awesome_avatars_mbm::WeightInfo as AaaMbmWeight;
+
+	pub type MultiBlockMigrations = (
+		LazyMigrationPlayerSeasonConfigsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyMigrationSeasonStatsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyMigrationAvatarV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyTradeStatsMapCleanup<Runtime, AaaMbmWeight<Runtime>>,
+	);
+}
+
+parameter_types! {
+	pub MbmServiceWeight: Weight = Perbill::from_percent(80) * RuntimeBlockWeights::get().max_block;
+}
+
+impl pallet_migrations::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type CursorMaxLen = ConstU32<65_536>;
+	type IdentifierMaxLen = ConstU32<256>;
+	type MigrationStatusHandler = LoggerMigrationStatusHandler;
+	type FailedMigrationHandler = frame_support::migrations::FreezeChainOnFailedMigration;
+	type MaxServiceWeight = MbmServiceWeight;
+	type WeightInfo = weights::pallet_migrations::WeightInfo<Runtime>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
+	#[cfg(not(feature = "runtime-benchmarks"))]
+	type Migrations = MultiBlockMigrations;
+}
+
+/// Records all started and completed upgrades in `UpgradesStarted` and `UpgradesCompleted`.
+pub struct LoggerMigrationStatusHandler;
+impl MigrationStatusHandler for LoggerMigrationStatusHandler {
+	fn started() {
+		log::info!("MigrationStatusHandler started");
+	}
+
+	fn completed() {
+		log::info!("MigrationStatusHandler completed");
+	}
+}
+
+/// Records all failed upgrades in `UpgradesFailed`.
+pub struct MockedFailedMigrationHandler;
+impl FailedMigrationHandler for MockedFailedMigrationHandler {
+	fn failed(migration: Option<u32>) -> FailedMigrationHandling {
+		log::error!("FailedMigrationHandler failed at: {migration:?}");
+		FailedMigrationHandling::ForceUnstuck
+	}
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -893,6 +951,7 @@ construct_runtime!(
 		Proxy: pallet_proxy = 7,
 		Scheduler: pallet_scheduler = 8,
 		Preimage: pallet_preimage = 9,
+		Migrations: pallet_migrations = 10,
 
 		// Monetary stuff.
 		Balances: pallet_balances = 15,
@@ -961,6 +1020,7 @@ mod benches {
 		[pallet_membership, CouncilMembership]
 		// [pallet_membership, TechnicalCommitteeMembership] // writes to the same file
 		[pallet_message_queue, MessageQueue]
+		[pallet_migrations, Migrations]
 		[pallet_multisig, Multisig]
 		[pallet_preimage, Preimage]
 		[pallet_proxy, Proxy]
@@ -971,12 +1031,13 @@ mod benches {
 		// [pallet_treasury, Treasury] // treasury config is broken, needs fixes
 		[pallet_utility, Utility]
 		[pallet_ajuna_awesome_avatars, AwesomeAvatarsBench::<Runtime>]
+		 // Note: We have to update the path to the `WeightInfo` definition after
+		 // running the benchmarks: `pallet_ajuna_awesome_avatars::migration::v6::WeightInfo`
+		[pallet_ajuna_awesome_avatars_mbm, AwesomeAvatars]
 		[pallet_nfts, Nft]
 	);
 	// Use this section if you want to benchmark individual pallets
-	// define_benchmarks!(
-	// 	[orml_vesting, Vesting]
-	// )
+	// define_benchmarks!([pallet_ajuna_awesome_avatars_mbm, AwesomeAvatars]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]

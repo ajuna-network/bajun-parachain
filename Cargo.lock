@@ -769,6 +769,7 @@ dependencies = [
  "pallet-insecure-randomness-collective-flip",
  "pallet-membership",
  "pallet-message-queue",
+ "pallet-migrations",
  "pallet-multisig",
  "pallet-nfts",
  "pallet-preimage",
@@ -6062,7 +6063,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-affiliates"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6075,8 +6076,9 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
 dependencies = [
+ "frame-benchmarking",
  "frame-support",
  "frame-system",
  "hex",
@@ -6094,7 +6096,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6118,7 +6120,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-nft-transfer"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6131,7 +6133,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-tournament"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.6.0#c111195c0a49f7d710c824ca176618fd79e76cdb"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6720,6 +6722,25 @@ dependencies = [
  "sp-runtime",
  "sp-std",
  "sp-weights",
+]
+
+[[package]]
+name = "pallet-migrations"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c4fd91afd01c044f2a6c7ea1be39bbe4fd2084c9df79bccc891853735967a268"
+dependencies = [
+ "docify",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "impl-trait-for-tuples",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]
