@@ -28,7 +28,6 @@ mod weights;
 pub mod xcm_config;
 
 use crate::gov::EnsureRootOrMoreThanHalfCouncil;
-use cumulus_pallet_parachain_system::RelaychainDataProvider;
 use cumulus_primitives_core::{AggregateMessageOrigin, ParaId};
 use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use smallvec::smallvec;
@@ -319,10 +318,14 @@ impl Contains<RuntimeCall> for BaseCallFilter {
 		match call {
 			RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
 				if namespace == &AttributeNamespace::CollectionOwner =>
-				true,
+			{
+				true
+			},
 			RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
 				if namespace != &AttributeNamespace::CollectionOwner =>
-				false,
+			{
+				false
+			},
 			_ => true,
 		}
 	}
@@ -558,7 +561,7 @@ impl orml_vesting::Config for Runtime {
 	type VestedTransferOrigin = EnsureSigned<AccountId>;
 	type WeightInfo = weights::orml_vesting::WeightInfo<Runtime>;
 	type MaxVestingSchedules = frame_support::traits::ConstU32<100>;
-	type BlockNumberProvider = RelaychainDataProvider<Runtime>;
+	type BlockNumberProvider = System;
 }
 
 parameter_types! {
