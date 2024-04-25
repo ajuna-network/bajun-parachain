@@ -557,6 +557,9 @@ impl orml_vesting::Config for Runtime {
 	type VestedTransferOrigin = EnsureSigned<AccountId>;
 	type WeightInfo = weights::orml_vesting::WeightInfo<Runtime>;
 	type MaxVestingSchedules = frame_support::traits::ConstU32<100>;
+	// We use the parachain block number instead of the relay chain provider
+	// because our active schedules would get messed up if we switched to the relay
+	// chain block number instead of the parachain one
 	type BlockNumberProvider = System;
 }
 
