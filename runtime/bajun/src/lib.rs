@@ -318,14 +318,10 @@ impl Contains<RuntimeCall> for BaseCallFilter {
 		match call {
 			RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
 				if namespace == &AttributeNamespace::CollectionOwner =>
-			{
-				true
-			},
+				true,
 			RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
 				if namespace != &AttributeNamespace::CollectionOwner =>
-			{
-				false
-			},
+				false,
 			_ => true,
 		}
 	}
