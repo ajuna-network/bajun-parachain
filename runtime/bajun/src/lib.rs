@@ -28,7 +28,6 @@ mod weights;
 pub mod xcm_config;
 
 use crate::gov::EnsureRootOrMoreThanHalfCouncil;
-use cumulus_pallet_parachain_system::RelaychainDataProvider;
 use cumulus_primitives_core::{AggregateMessageOrigin, ParaId};
 use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use smallvec::smallvec;
@@ -558,7 +557,10 @@ impl orml_vesting::Config for Runtime {
 	type VestedTransferOrigin = EnsureSigned<AccountId>;
 	type WeightInfo = weights::orml_vesting::WeightInfo<Runtime>;
 	type MaxVestingSchedules = frame_support::traits::ConstU32<100>;
-	type BlockNumberProvider = RelaychainDataProvider<Runtime>;
+	// We use the parachain block number instead of the relay chain provider
+	// because our active schedules would get messed up if we switched to the relay
+	// chain block number instead of the parachain one
+	type BlockNumberProvider = System;
 }
 
 parameter_types! {
