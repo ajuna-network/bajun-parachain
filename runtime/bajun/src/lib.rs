@@ -1013,6 +1013,7 @@ mod benches {
 		[cumulus_pallet_parachain_system, ParachainSystem]
 		[cumulus_pallet_xcmp_queue, XcmpQueue]
 		[frame_system, SystemBench::<Runtime>]
+		[orml_vesting, OrmlVestingBench::<Runtime>]
 		[pallet_balances, Balances]
 		[pallet_collator_selection, CollatorSelection]
 		[pallet_collective, Council]
@@ -1039,7 +1040,7 @@ mod benches {
 		[pallet_nfts, Nft]
 	);
 	// Use this section if you want to benchmark individual pallets
-	// define_benchmarks!([pallet_ajuna_awesome_avatars_mbm, AwesomeAvatars]);
+	// define_benchmarks!([orml_vesting, OrmlVestingBench::<Runtime>]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]
@@ -1220,6 +1221,7 @@ impl_runtime_apis! {
 			use frame_system_benchmarking::Pallet as SystemBench;
 			use cumulus_pallet_session_benchmarking::Pallet as SessionBench;
 			use pallet_ajuna_awesome_avatars_benchmarking::Pallet as AwesomeAvatarsBench;
+			use orml_pallets_benchmarking::vesting::Pallet as OrmlVestingBench;
 
 			let mut list = Vec::<BenchmarkList>::new();
 			list_benchmarks!(list, extra);
@@ -1251,6 +1253,9 @@ impl_runtime_apis! {
 
 			use pallet_ajuna_awesome_avatars_benchmarking::Pallet as AwesomeAvatarsBench;
 			impl pallet_ajuna_awesome_avatars_benchmarking::Config for Runtime {}
+
+			use orml_pallets_benchmarking::vesting::Pallet as OrmlVestingBench;
+			impl orml_pallets_benchmarking::vesting::Config for Runtime {}
 
 			let whitelist: Vec<TrackedStorageKey> = vec![
 				// Block Number

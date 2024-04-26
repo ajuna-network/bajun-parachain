@@ -753,6 +753,7 @@ dependencies = [
  "frame-try-runtime",
  "hex-literal",
  "log",
+ "orml-pallets-benchmarking",
  "orml-vesting",
  "pallet-ajuna-affiliates",
  "pallet-ajuna-awesome-avatars",
@@ -4111,7 +4112,7 @@ dependencies = [
  "iana-time-zone-haiku",
  "js-sys",
  "wasm-bindgen",
- "windows-core 0.52.0",
+ "windows-core",
 ]
 
 [[package]]
@@ -6045,6 +6046,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "orml-pallets-benchmarking"
+version = "0.6.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#93291ac9265a0cb38d4a2fe8770341d975113925"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "orml-vesting",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "orml-vesting"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6063,7 +6081,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-affiliates"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#93291ac9265a0cb38d4a2fe8770341d975113925"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6076,7 +6094,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#93291ac9265a0cb38d4a2fe8770341d975113925"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6096,7 +6114,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#93291ac9265a0cb38d4a2fe8770341d975113925"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6120,7 +6138,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-nft-transfer"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#93291ac9265a0cb38d4a2fe8770341d975113925"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6133,7 +6151,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-tournament"
 version = "0.6.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#3d70756e8e9a5dc87af53d6037a2c5bf45e295a0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=develop#93291ac9265a0cb38d4a2fe8770341d975113925"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -14549,7 +14567,7 @@ version = "0.51.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca229916c5ee38c2f2bc1e9d8f04df975b4bd93f9955dc69fabb5d91270045c9"
 dependencies = [
- "windows-core 0.51.1",
+ "windows-core",
  "windows-targets 0.48.5",
 ]
 
@@ -14560,15 +14578,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f1f8cf84f35d2db49a46868f947758c7a1138116f7fac3bc844f43ade1292e64"
 dependencies = [
  "windows-targets 0.48.5",
-]
-
-[[package]]
-name = "windows-core"
-version = "0.52.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33ab640c8d7e35bf8ba19b884ba838ceb4fba93a4e8c65a9059d08afcfc683d9"
-dependencies = [
- "windows-targets 0.52.5",
 ]
 
 [[package]]
