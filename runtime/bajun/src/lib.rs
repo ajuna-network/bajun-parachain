@@ -413,7 +413,7 @@ impl pallet_migrations::Config for Runtime {
 	type CursorMaxLen = ConstU32<65_536>;
 	type IdentifierMaxLen = ConstU32<256>;
 	type MigrationStatusHandler = LoggerMigrationStatusHandler;
-	type FailedMigrationHandler = frame_support::migrations::FreezeChainOnFailedMigration;
+	type FailedMigrationHandler = UnstuckFailedMigration;
 	type MaxServiceWeight = MbmServiceWeight;
 	type WeightInfo = weights::pallet_migrations::WeightInfo<Runtime>;
 	#[cfg(feature = "runtime-benchmarks")]
@@ -435,8 +435,8 @@ impl MigrationStatusHandler for LoggerMigrationStatusHandler {
 }
 
 /// Records all failed upgrades in `UpgradesFailed`.
-pub struct MockedFailedMigrationHandler;
-impl FailedMigrationHandler for MockedFailedMigrationHandler {
+pub struct UnstuckFailedMigration;
+impl FailedMigrationHandler for UnstuckFailedMigration {
 	fn failed(migration: Option<u32>) -> FailedMigrationHandling {
 		log::error!("FailedMigrationHandler failed at: {migration:?}");
 		FailedMigrationHandling::ForceUnstuck
