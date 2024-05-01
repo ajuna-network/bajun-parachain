@@ -126,6 +126,11 @@ jobs:
       - name: Copy network config and tests
         run: cp .maintain/zombienet-* zombienet-tests/
 
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: "3.6.1"
+
       - name: Fetch cache
         uses: Swatinem/rust-cache@a95ba195448af2da9b00fb742d14ffaaf3c21f43 # v2.7.0
         with:
@@ -134,7 +139,6 @@ jobs:
 
       - name: Build and copy collator binary to zombienet binaries
         run: |
-          sudo apt-get install -y protobuf-compiler
           cargo build --release
           cp target/release/${{ matrix.binary }} zombienet-tests/bin/collator
 
