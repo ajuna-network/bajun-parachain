@@ -27,7 +27,6 @@ env:
 
 jobs:
   fmt:
-    if: ${{ !startsWith(github.head_ref, 'release/') }}
     name: Rustfmt
     runs-on: ubuntu-latest
     container:
@@ -40,7 +39,6 @@ jobs:
       - run: cargo +nightly fmt --all -- --check
 
   lint:
-    if: ${{ !startsWith(github.head_ref, 'release/') }}
     name: Clippy
     runs-on: ubuntu-latest
     continue-on-error: false
@@ -83,7 +81,6 @@ jobs:
         run: zepter run check
 
   test:
-    if: ${{ !startsWith(github.head_ref, 'release/') }}
     name: Test
     runs-on: ubuntu-latest
     continue-on-error: false
