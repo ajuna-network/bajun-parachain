@@ -81,7 +81,7 @@ jobs:
         run: zepter run check
 
   test:
-    name: Test
+    name: Cargo test (all features)
     runs-on: ubuntu-latest
     continue-on-error: false
     strategy:
