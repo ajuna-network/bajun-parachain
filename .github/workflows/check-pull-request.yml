@@ -136,7 +136,7 @@ jobs:
         run: |
           sudo apt-get install -y protobuf-compiler
           cargo build --release
-          cp target/release/${{ matrix.bajun-node }} zombienet-tests/bin/collator
+          cp target/release/${{ matrix.binary }} zombienet-tests/bin/collator
 
       - name: Run zombienet tests
         run: ./zombienet-tests/bin/zombienet -l "text" -p native test ./zombienet-tests/zombienet-tests.zndsl
