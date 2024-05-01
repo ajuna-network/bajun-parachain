@@ -60,7 +60,8 @@ jobs:
           restore-keys: ${{ runner.os }}-cargo-lint-
       - run: cargo clippy --workspace --all-features --all-targets ${{ env.CARGO_ARGS }} -- -D warnings
 
-  check:
+  Check:
+    name: Cargo Zepter
     runs-on: ubuntu-latest
 
     steps:
@@ -107,7 +108,7 @@ jobs:
       - run: cargo test --all-features --all-targets ${{ env.CARGO_ARGS }} -p ${{ matrix.runtime }}
 
   release-check-zombienet:
-    name: zombienet tests
+    name: Zombienet tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
