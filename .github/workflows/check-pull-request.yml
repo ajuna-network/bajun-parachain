@@ -86,11 +86,11 @@ jobs:
       - run: cargo test --all-features --all-targets ${{ env.CARGO_ARGS }} -p ${{ matrix.runtime }}
 
   release-check-zombienet:
-    name: Zombienet tests
+    name: zombienet tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        runtime: [ bajun ]
+        binary: [ bajun-node ]
     env:
       ZOMBIENET_VERSION: v1.3.82
     steps:
@@ -116,8 +116,8 @@ jobs:
       - name: Build and copy collator binary to zombienet binaries
         run: |
           sudo apt-get install -y protobuf-compiler
-          cargo build-${{ matrix.runtime }}
-          cp target/release/${{ matrix.runtime }}-para zombienet-tests/bin/collator
+          cargo build --release
+          cp target/release/${{ matrix.bajun-node }} zombienet-tests/bin/collator
 
       - name: Run zombienet tests
         run: ./zombienet-tests/bin/zombienet -l "text" -p native test ./zombienet-tests/zombienet-tests.zndsl
