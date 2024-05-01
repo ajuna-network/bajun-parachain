@@ -84,3 +84,40 @@ jobs:
           key: ${{ runner.os }}-cargo-test-${{ matrix.runtime }}-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-test-${{ matrix.runtime }}-
       - run: cargo test --all-features --all-targets ${{ env.CARGO_ARGS }} -p ${{ matrix.runtime }}
+
+  release-check-zombienet:
+    name: Zombienet tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime: [ bajun ]
+    env:
+      ZOMBIENET_VERSION: v1.3.82
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create testing directories
+        run: mkdir -p zombienet-tests/bin
+
+      - name: Setup zombienet binaries
+        run: |
+          cd zombienet-tests/bin
+          wget -q "https://github.com/paritytech/zombienet/releases/download/${{ env.ZOMBIENET_VERSION }}/zombienet-linux-x64"
+          chmod +x zombienet-linux-x64
+          mv zombienet-linux-x64 zombienet
+          ./zombienet setup polkadot -y || :
+          ./zombienet version
+
+      - name: Copy network config and tests
+        run: cp .maintain/zombienet-* zombienet-tests/
+
+      - name: Build and copy collator binary to zombienet binaries
+        run: |
+          sudo apt-get install -y protobuf-compiler
+          cargo build-${{ matrix.runtime }}
+          cp target/release/${{ matrix.runtime }}-para zombienet-tests/bin/collator
+
+      - name: Run zombienet tests
+        run: ./zombienet-tests/bin/zombienet -l "text" -p native test ./zombienet-tests/zombienet-tests.zndsl
