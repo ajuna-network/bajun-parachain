@@ -21,7 +21,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  CARGO_ARGS: ${{ github.ref == 'refs/heads/develop' && '--release' || '' }}
   CARGO_TERM_COLOR: always
 
 jobs:
@@ -52,7 +51,7 @@ jobs:
           # consistent cache across jobs
           shared-key: "bajun-cache-cargo-debug"
 
-      - run: cargo clippy --workspace --all-features --all-targets ${{ env.CARGO_ARGS }} -- -D warnings
+      - run: cargo clippy --workspace --all-features --all-targets -- -D warnings
         env:
           SKIP_WASM_BUILD: 1
 
@@ -94,7 +93,7 @@ jobs:
           # consistent cache across jobs
           shared-key: "bajun-cache-cargo-release"
 
-      - run: cargo test --all-features --all-targets ${{ env.CARGO_ARGS }}
+      - run: cargo test --release --all-features --all-targets
         env:
           RUSTFLAGS: "-C debug-assertions -D warnings"
           SKIP_WASM_BUILD: 1
