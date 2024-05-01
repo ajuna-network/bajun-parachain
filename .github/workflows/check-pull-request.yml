@@ -60,6 +60,27 @@ jobs:
           restore-keys: ${{ runner.os }}-cargo-lint-
       - run: cargo clippy --workspace --all-features --all-targets ${{ env.CARGO_ARGS }} -- -D warnings
 
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install stable Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+
+      - name: Install Zepter
+        run: cargo install --locked -q zepter && zepter --version
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Don't clone historic commits.
+
+      - name: Check features
+        run: zepter run check
+
   test:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     name: Test
