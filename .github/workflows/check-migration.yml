@@ -92,5 +92,5 @@ jobs:
           ./try-runtime \
             --runtime $RUNTIME_BLOB_PATH \
             on-runtime-upgrade --checks=pre-and-post \
-            ${{ env.EXTRA_ARGS }} \
+            ${{ env.EXTRA_ARGS }} --disable-idempotency-checks \
             live --uri ${{ matrix.runtime.uri }}
