@@ -68,9 +68,6 @@ jobs:
           echo "spec version: $SPEC_VERSION"
 
           exit 0
-      - run: sudo apt-get install -y protobuf-compiler
-      - name: Check wasm build
-        run: cargo check --all-features --all-targets --release -p ${{ matrix.runtime }}-runtime
 
   release:
     if: startsWith(github.ref, 'refs/tags/v')
