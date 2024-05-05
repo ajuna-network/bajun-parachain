@@ -22,6 +22,7 @@ parity-scale-codec = { workspace = true }
 scale-info         = { workspace = true, features = [ "derive" ] }
 
 # Substrate
+assets-common                              = { workspace = true }
 frame-benchmarking                         = { workspace = true, optional = true }
 frame-executive                            = { workspace = true }
 frame-support                              = { workspace = true }
@@ -29,6 +30,7 @@ frame-system                               = { workspace = true }
 frame-system-benchmarking                  = { workspace = true, optional = true }
 frame-system-rpc-runtime-api               = { workspace = true }
 frame-try-runtime                          = { workspace = true, optional = true }
+pallet-assets                              = { workspace = true }
 pallet-aura                                = { workspace = true }
 pallet-authorship                          = { workspace = true }
 pallet-balances                            = { workspace = true }
@@ -88,6 +90,7 @@ parachains-common                   = { workspace = true }
 staging-parachain-info              = { workspace = true }
 
 # ORML
+orml-traits = { workspace = true }
 orml-vesting = { workspace = true }
 orml-xcm = { workspace = true }
 orml-xcm-support = { workspace = true }
@@ -103,10 +106,12 @@ orml-pallets-benchmarking                 = { workspace = true, optional = true 
 
 # integritee pallets
 pallet-asset-registry = { workspace = true }
+xcm-primitives = { workspace = true }
 
 [features]
 default = [ "std" ]
 std = [
+    "assets-common/std",
     "parity-scale-codec/std",
     "log/std",
     "scale-info/std",
@@ -126,11 +131,13 @@ std = [
     "frame-system-rpc-runtime-api/std",
     "frame-system/std",
     "frame-try-runtime/std",
+    "orml-traits/std",
     "orml-vesting/std",
     "orml-xcm/std",
     "orml-xcm-support/std",
     "orml-xtokens/std",
     "orml-pallets-benchmarking?/std",
+    "pallet-assets/std",
     "pallet-aura/std",
     "pallet-authorship/std",
     "pallet-balances/std",
@@ -178,6 +185,7 @@ std = [
     "staging-xcm-executor/std",
     # integritee
     "pallet-asset-registry/std",
+    "xcm-primitives/std",
     # ajuna
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking?/std",
@@ -185,6 +193,7 @@ std = [
 ]
 
 runtime-benchmarks = [
+    "assets-common/runtime-benchmarks",
     "cumulus-pallet-parachain-system/runtime-benchmarks",
     "cumulus-pallet-session-benchmarking/runtime-benchmarks",
     "cumulus-pallet-xcmp-queue/runtime-benchmarks",
@@ -198,6 +207,7 @@ runtime-benchmarks = [
     "orml-vesting/runtime-benchmarks",
     "orml-xtokens/runtime-benchmarks",
     "orml-pallets-benchmarking/runtime-benchmarks",
+    "pallet-assets/runtime-benchmarks",
     "pallet-balances/runtime-benchmarks",
     "pallet-collator-selection/runtime-benchmarks",
     "pallet-collective/runtime-benchmarks",
@@ -244,6 +254,7 @@ try-runtime = [
     "orml-vesting/try-runtime",
     "orml-xcm/try-runtime",
     "orml-xtokens/try-runtime",
+    "pallet-assets/try-runtime",
     "pallet-aura/try-runtime",
     "pallet-authorship/try-runtime",
     "pallet-balances/try-runtime",

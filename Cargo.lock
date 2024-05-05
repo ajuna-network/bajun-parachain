@@ -439,6 +439,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b34d609dfbaf33d6889b2b7106d3ca345eacad44200913df5ba02bfd31d2ba9"
 
 [[package]]
+name = "assets-common"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3c72ef4a7873eb1aeaf57fa0aa2d330c1ef6e2ba2bfcb26b338612d6133c789f"
+dependencies = [
+ "cumulus-primitives-core",
+ "frame-support",
+ "impl-trait-for-tuples",
+ "log",
+ "pallet-asset-conversion",
+ "pallet-xcm",
+ "parachains-common",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-api",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "substrate-wasm-builder",
+]
+
+[[package]]
 name = "async-channel"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -736,6 +760,7 @@ dependencies = [
 name = "bajun-runtime"
 version = "0.4.0-rc4"
 dependencies = [
+ "assets-common",
  "cumulus-pallet-aura-ext",
  "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
@@ -754,6 +779,7 @@ dependencies = [
  "hex-literal",
  "log",
  "orml-pallets-benchmarking",
+ "orml-traits",
  "orml-vesting",
  "orml-xcm",
  "orml-xcm-support",
@@ -762,6 +788,7 @@ dependencies = [
  "pallet-ajuna-awesome-avatars-benchmarking",
  "pallet-ajuna-nft-transfer",
  "pallet-asset-registry",
+ "pallet-assets",
  "pallet-aura",
  "pallet-authorship",
  "pallet-balances",
@@ -812,6 +839,7 @@ dependencies = [
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
+ "xcm-primitives",
 ]
 
 [[package]]
@@ -6531,15 +6559,16 @@ dependencies = [
 
 [[package]]
 name = "pallet-collator-selection"
-version = "13.0.0"
+version = "13.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dbd0b29c3c85742de720c8ec41e6aea30a007a6a14a4b3c346bceaeb74c153c7"
+checksum = "7e0724831b2b1775542055c80918e78478953ee8d6777962a947404f22001c75"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "log",
  "pallet-authorship",
+ "pallet-balances",
  "pallet-session",
  "parity-scale-codec",
  "rand",

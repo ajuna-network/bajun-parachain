@@ -32,6 +32,7 @@ parity-scale-codec = { version = "3.0.0", default-features = false }
 scale-info         = { version = "2.1.1", default-features = false }
 
 # Substrate
+assets-common                              = { version = "0.11.0", default-features = false }
 frame-benchmarking                         = { version = "32.0.0", default-features = false }
 frame-benchmarking-cli                     = { version = "36.0.0" }
 frame-executive                            = { version = "32.0.0", default-features = false }
@@ -40,6 +41,7 @@ frame-system                               = { version = "32.0.0", default-featu
 frame-system-benchmarking                  = { version = "32.0.0", default-features = false }
 frame-system-rpc-runtime-api               = { version = "30.0.0", default-features = false }
 frame-try-runtime                          = { version = "0.38.0", default-features = false }
+pallet-assets                              = { version = "33.0.0", default-features = false }
 pallet-aura                                = { version = "31.0.0", default-features = false }
 pallet-authorship                          = { version = "32.0.0", default-features = false }
 pallet-balances                            = { version = "33.0.0", default-features = false }
@@ -145,7 +147,7 @@ cumulus-relay-chain-inprocess-interface = { version = "0.11.0", default-features
 cumulus-relay-chain-interface           = { version = "0.11.0" }
 cumulus-relay-chain-minimal-node        = { version = "0.11.0", default-features = false }
 cumulus-relay-chain-rpc-interface       = { version = "0.11.0", default-features = false }
-pallet-collator-selection               = { version = "13.0.0", default-features = false }
+pallet-collator-selection               = { version = "13.0.1", default-features = false }
 parachains-common                       = { version = "11.0.0", default-features = false }
 staging-parachain-info                  = { version = "0.11.0", default-features = false }
 
@@ -171,6 +173,7 @@ orml-pallets-benchmarking                 = { git = "https://github.com/ajuna-ne
 
 # integritee pallets
 pallet-asset-registry = { default-features = false, git = "https://github.com/integritee-network/pallets.git", branch = "cl/polkadot-v1.10.0" }
+xcm-primitives = { default-features = false, git = "https://github.com/integritee-network/pallets.git", branch = "cl/polkadot-v1.10.0" }
 
 [profile.production]
 codegen-units = 1
