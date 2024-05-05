@@ -32,7 +32,7 @@ use frame_support::{
 };
 use frame_system::EnsureRoot;
 use orml_traits::{
-	// location::{RelativeReserveProvider, Reserve},
+	location::{RelativeReserveProvider, Reserve},
 	parameter_type_with_key,
 };
 use orml_xcm_support::IsNativeConcrete;
@@ -87,7 +87,7 @@ pub enum CurrencyId {
 	BAJUN,
 }
 
-/// Converts a Mulitloaction into a CurrencyId. Used by XCMP LocalAssetTransactor for asset
+/// Converts a Locaction into a CurrencyId. Used by XCMP LocalAssetTransactor for asset
 /// filtering: we only accept Assets that are convertable to a "CurrencyId".
 /// other assets will be handled through AssetRegistry pallet
 impl Convert<Location, Option<CurrencyId>> for CurrencyIdConvert {
@@ -475,68 +475,71 @@ impl Convert<CurrencyId, Option<Location>> for CurrencyIdConvert {
 	}
 }
 
-// parameter_types! {
-// 	pub SelfReserveAlias: Location = Location {
-// 		parents:0,
-// 		interior: Junctions::X1(BAJUN_GENERAL_KEY)
-// 	};
-// 	// This is how we are going to detect whether the asset is a Reserve asset
-// 	pub SelfLocation: Location = Location::here();
-// 	// We need this to be able to catch when someone is trying to execute a non-
-// 	// cross-chain transfer in xtokens through the absolute path way
-// 	pub SelfLocationAbsolute: Location = Location {
-// 		parents:1,
-// 		interior: Junctions::X1(
-// 			Parachain(ParachainInfo::parachain_id().into())
-// 		)
-// 	};
-//
-// }
-//
-// /// This struct offers uses RelativeReserveProvider to output relative views of Locations
-// /// However, additionally accepts a Location that aims at representing the chain part
-// /// (parent: 1, Parachain(paraId)) of the absolute representation of our chain.
-// /// If a token reserve matches against this absolute view, we return  Some(Location::here())
-// /// This helps users by preventing errors when they try to transfer a token through xtokens
-// /// to our chain (either inserting the relative or the absolute value).
-// pub struct AbsoluteAndRelativeReserve<AbsoluteLocation>(PhantomData<AbsoluteLocation>);
-// impl<AbsoluteLocation> Reserve for AbsoluteAndRelativeReserve<AbsoluteLocation>
-// where
-// 	AbsoluteLocation: Get<Location>,
-// {
-// 	fn reserve(asset: &Asset) -> Option<Location> {
-// 		RelativeReserveProvider::reserve(asset).map(|relative_reserve| {
-// 			if relative_reserve == AbsoluteLocation::get() {
-// 				Location::here()
-// 			} else {
-// 				relative_reserve
-// 			}
-// 		})
-// 	}
-// }
-//
-// pub struct AccountIdToLocation;
-// impl Convert<AccountId, Location> for AccountIdToLocation {
-// 	fn convert(account: AccountId) -> Location {
-// 		Junctions::X1(AccountId32 { network: None, id: account.into() }).into()
-// 	}
-// }
-//
-// impl orml_xtokens::Config for Runtime {
-// 	type RuntimeEvent = RuntimeEvent;
-// 	type Balance = Balance;
-// 	type CurrencyId = CurrencyId;
-// 	type CurrencyIdConvert = CurrencyIdConvert;
-// 	type AccountIdToLocation = AccountIdToLocation;
-// 	type SelfLocation = SelfLocation;
-// 	type MinXcmFee = ParachainMinFee;
-// 	type XcmExecutor = XcmExecutor<XcmConfig>;
-// 	type LocationsFilter = Everything;
-// 	type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
-// 	type BaseXcmWeight = BaseXcmWeight;
-// 	type UniversalLocation = UniversalLocation;
-// 	type MaxAssetsForTransfer = MaxAssetsForTransfer;
-// 	type ReserveProvider = AbsoluteAndRelativeReserve<SelfLocationAbsolute>;
-// 	type RateLimiter = ();
-// 	type RateLimiterId = ();
-// }
+parameter_types! {
+	pub SelfReserveAlias: Location = Location::new(
+		0,
+		[BAJUN_GENERAL_KEY]
+	);
+	// This is how we are going to detect whether the asset is a Reserve asset
+	pub SelfLocation: Location = Location::here();
+	// We need this to be able to catch when someone is trying to execute a non-
+	// cross-chain transfer in xtokens through the absolute path way
+	pub SelfLocationAbsolute: Location = Location::new(
+		1,
+		Parachain(ParachainInfo::parachain_id().into())
+	);
+
+}
+
+/// This struct offers uses RelativeReserveProvider to output relative views of Locations
+/// However, additionally accepts a Location that aims at representing the chain part
+/// (parent: 1, Parachain(paraId)) of the absolute representation of our chain.
+/// If a token reserve matches against this absolute view, we return  Some(Location::here())
+/// This helps users by preventing errors when they try to transfer a token through xtokens
+/// to our chain (either inserting the relative or the absolute value).
+pub struct AbsoluteAndRelativeReserve<AbsoluteLocation>(PhantomData<AbsoluteLocation>);
+impl<AbsoluteLocation> Reserve for AbsoluteAndRelativeReserve<AbsoluteLocation>
+where
+	AbsoluteLocation: Get<Location>,
+{
+	fn reserve(asset: &Asset) -> Option<Location> {
+		RelativeReserveProvider::reserve(asset).map(|relative_reserve| {
+			if relative_reserve == AbsoluteLocation::get() {
+				Location::here()
+			} else {
+				relative_reserve
+			}
+		})
+	}
+}
+
+pub struct AccountIdToLocation;
+impl Convert<AccountId, Location> for AccountIdToLocation {
+	fn convert(account: AccountId) -> Location {
+		[AccountId32 { network: None, id: account.into() }].into()
+	}
+}
+
+impl orml_xcm::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type SovereignOrigin = EnsureRoot<AccountId>;
+}
+
+impl orml_xtokens::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type CurrencyId = CurrencyId;
+	type CurrencyIdConvert = CurrencyIdConvert;
+	type AccountIdToLocation = AccountIdToLocation;
+	type SelfLocation = SelfLocation;
+	type MinXcmFee = ParachainMinFee;
+	type XcmExecutor = XcmExecutor<XcmConfig>;
+	type LocationsFilter = Everything;
+	type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
+	type BaseXcmWeight = BaseXcmWeight;
+	type UniversalLocation = UniversalLocation;
+	type MaxAssetsForTransfer = MaxAssetsForTransfer;
+	type ReserveProvider = AbsoluteAndRelativeReserve<SelfLocationAbsolute>;
+	type RateLimiter = ();
+	type RateLimiterId = ();
+}

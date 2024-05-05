@@ -959,6 +959,8 @@ construct_runtime!(
 		CumulusXcm: cumulus_pallet_xcm = 32,
 		// DmpQueue: cumulus_pallet_dmp_queue = 33,
 		MessageQueue: pallet_message_queue = 34,
+		XTokens: orml_xtokens = 35,
+		OrmlXcm: orml_xcm = 36,
 
 		// Governance
 		Sudo: pallet_sudo = 40,
