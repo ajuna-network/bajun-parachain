@@ -35,8 +35,8 @@ impl EnsureOriginWithArg<RuntimeOrigin, AssetIdForTrustBackedAssets> for NoAsset
 	fn try_origin(
 		o: RuntimeOrigin,
 		_a: &AssetIdForTrustBackedAssets,
-	) -> sp_std::result::Result<Self::Success, RuntimeOrigin> {
-		return Err(o)
+	) -> Result<Self::Success, RuntimeOrigin> {
+		Err(o)
 	}
 
 	#[cfg(feature = "runtime-benchmarks")]
@@ -49,7 +49,7 @@ pub type MainAssetsInstance = pallet_assets::Instance1;
 impl pallet_assets::Config<MainAssetsInstance> for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type Balance = AssetBalance;
-	type RemoveItemsLimit = frame_support::traits::ConstU32<1000>;
+	type RemoveItemsLimit = ConstU32<1000>;
 	type AssetId = AssetIdForTrustBackedAssets;
 	type AssetIdParameter = parity_scale_codec::Compact<AssetIdForTrustBackedAssets>;
 	type Currency = Balances;
