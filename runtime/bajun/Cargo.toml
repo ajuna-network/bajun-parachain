@@ -101,6 +101,9 @@ pallet-ajuna-nft-transfer                 = { workspace = true }
 #pallet-ajuna-tournament                   = { workspace = true }
 orml-pallets-benchmarking                 = { workspace = true, optional = true }
 
+# integritee pallets
+pallet-asset-registry = { workspace = true }
+
 [features]
 default = [ "std" ]
 std = [
@@ -173,6 +176,8 @@ std = [
     "staging-xcm/std",
     "staging-xcm-builder/std",
     "staging-xcm-executor/std",
+    # integritee
+    "pallet-asset-registry/std",
     # ajuna
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking?/std",
@@ -217,6 +222,8 @@ runtime-benchmarks = [
     "sp-runtime/runtime-benchmarks",
     "staging-xcm-builder/runtime-benchmarks",
     "staging-xcm-executor/runtime-benchmarks",
+    # integritee
+    "pallet-asset-registry/runtime-benchmarks",
     # ajuna
 #    "pallet-ajuna-affiliates/runtime-benchmarks",
     "pallet-ajuna-awesome-avatars/runtime-benchmarks",
@@ -263,6 +270,8 @@ try-runtime = [
     "polkadot-runtime-common/try-runtime",
     "sp-runtime/try-runtime",
     "staging-parachain-info/try-runtime",
+    # integritee
+    "pallet-asset-registry/try-runtime",
     # ajuna
 #    "pallet-ajuna-affiliates/try-runtime",
     "pallet-ajuna-awesome-avatars/try-runtime",

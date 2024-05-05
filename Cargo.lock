@@ -761,6 +761,7 @@ dependencies = [
  "pallet-ajuna-awesome-avatars",
  "pallet-ajuna-awesome-avatars-benchmarking",
  "pallet-ajuna-nft-transfer",
+ "pallet-asset-registry",
  "pallet-aura",
  "pallet-authorship",
  "pallet-balances",
@@ -6253,6 +6254,24 @@ dependencies = [
  "sp-core",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-asset-registry"
+version = "0.0.1"
+source = "git+https://github.com/integritee-network/pallets.git?branch=cl/polkadot-v1.10.0#81fa886ff4ce61097351ca2c18ada29087c111fb"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "pallet-assets",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "xcm-primitives",
 ]
 
 [[package]]
@@ -14934,6 +14953,18 @@ dependencies = [
  "sp-std",
  "sp-weights",
  "staging-xcm",
+]
+
+[[package]]
+name = "xcm-primitives"
+version = "0.0.1"
+source = "git+https://github.com/integritee-network/pallets.git?branch=cl/polkadot-v1.10.0#81fa886ff4ce61097351ca2c18ada29087c111fb"
+dependencies = [
+ "frame-support",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-executor",
 ]
 
 [[package]]
