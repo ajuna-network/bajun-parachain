@@ -458,7 +458,7 @@ parameter_type_with_key! {
 
 const fn bajun_general_key() -> Junction {
 	const BAJUN_KEY: [u8; 32] = *b"BAJUN\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
-	GeneralKey { length: 4, data: BAJUN_KEY }
+	GeneralKey { length: 5, data: BAJUN_KEY }
 }
 const BAJUN_GENERAL_KEY: Junction = bajun_general_key();
 
