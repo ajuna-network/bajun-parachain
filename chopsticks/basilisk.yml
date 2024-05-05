@@ -1,19 +1,12 @@
 # In the future we want to add this config to https://github.com/AcalaNetwork/chopsticks/tree/master/configs.
 # But we should wait until we have the governance pallets included because this will change this config.
 endpoint:
-  - wss://rpc-parachain.bajun.network
-  - wss://bajun.api.onfinality.io/public-ws
-  - wss://bajun.public.curie.radiumblock.co/ws
+  - wss://basilisk-rpc.dwellir.com
 mock-signature-host: true
-block: ${env.BAJUN_PARACHAIN_BLOCK_NUMBER}
-db: ./chopsticks/dbs/bajun/db.sqlite
+db: ./chopsticks/dbs/basilisk/db.sqlite
 runtime-log-level: 5
-# wasm-override: bajun_runtime.wasm
 
-# Once we have governance we want to make Alice single councillor and technical committee member.
 import-storage:
-  Sudo:
-    Key: 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY # Alice
   System:
     Account: # Give our dev accounts some funds
       - - - 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY # Alice
@@ -28,3 +21,9 @@ import-storage:
         - providers: 1
           data:
             free: 1000000000000000
+  Council:
+    Members:
+      - 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY
+  TechnicalCommittee:
+    Members:
+      - 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY

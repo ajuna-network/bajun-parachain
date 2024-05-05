@@ -53,7 +53,13 @@ Then we can send an arbitrary extrinsic to trigger the next block and observe th
 
 ### Test XCM stuff
 
-TBD when we actually start setting up XCM.
+Test Basilisk integration.
+
+1. Setup local network
+   with `npx @acala-network/chopsticks@latest xcm --p=chopsticks/bajun.yml --p=chopsticks/basilisk.yml`
+2. Try create new asset on Basilisk (Note: xts broken on Kusama side
+   currently), [encoded xt](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2Flocalhost%3A8001#/extrinsics/decode/0x0a020464001442414a554e0000e40b540200000000000000000000000113000000011442414a554e0c010102001d21060542414a554e00000000000000000000000000000000000000000000000000000000419c)
+3. TBD: Transfer to Basilisk
 
 ### Test Governance execution
 
