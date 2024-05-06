@@ -1,7 +1,5 @@
 {
-  "bootNodes": [
-    "/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWBG7igCj39N4oDZX8HxCmhygRRseSA4YNei7DMuDbVV32"
-  ],
+  "bootNodes": [],
   "chainType": "Live",
   "codeSubstitutes": {},
   "genesis": {
@@ -83,15 +81,15 @@
       }
     }
   },
-  "id": "bajun-westend",
+  "id": "bajun-paseo",
   "name": "Bajun",
-  "para_id": 2138,
+  "para_id": 2119,
   "properties": {
     "ss58Format": 1337,
     "tokenDecimals": 12,
     "tokenSymbol": "BAJU"
   },
-  "protocolId": "bajun-w",
-  "relay_chain": "westend",
+  "protocolId": "bajun-pas",
+  "relay_chain": "paseo",
   "telemetryEndpoints": null
 }
