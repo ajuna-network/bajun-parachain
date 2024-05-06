@@ -106,8 +106,10 @@ impl BajunKeys {
 
 pub enum RelayChain {
 	Kusama,
+	Paseo,
 	Westend,
 	KusamaLocal,
+	PaseoLocal,
 	RococoLocal,
 	WestendLocal,
 }
@@ -116,8 +118,10 @@ impl ToString for RelayChain {
 	fn to_string(&self) -> String {
 		match self {
 			RelayChain::Kusama => "kusama".into(),
+			RelayChain::Paseo => "paseo".into(),
 			RelayChain::Westend => "westend".into(),
 			RelayChain::KusamaLocal => "kusama-local".into(),
+			RelayChain::PaseoLocal => "paseo-local".into(),
 			RelayChain::RococoLocal => "rococo-local".into(),
 			RelayChain::WestendLocal => "westend-local".into(),
 		}
@@ -128,8 +132,10 @@ impl RelayChain {
 	pub(crate) fn chain_type(&self) -> ChainType {
 		match self {
 			RelayChain::Kusama => ChainType::Live,
+			RelayChain::Paseo => ChainType::Live,
 			RelayChain::Westend => ChainType::Live,
 			RelayChain::KusamaLocal => ChainType::Local,
+			RelayChain::PaseoLocal => ChainType::Local,
 			RelayChain::RococoLocal => ChainType::Local,
 			RelayChain::WestendLocal => ChainType::Local,
 		}
@@ -137,8 +143,10 @@ impl RelayChain {
 	pub(crate) fn protocol_id(&self) -> &str {
 		match self {
 			RelayChain::Kusama => "bajun-k",
+			RelayChain::Paseo => "bajun-pas",
 			RelayChain::Westend => "bajun-w",
 			RelayChain::KusamaLocal => "bajun-kl",
+			RelayChain::PaseoLocal => "bajun-pasl",
 			RelayChain::RococoLocal => "bajun-rl",
 			RelayChain::WestendLocal => "bajun-wl",
 		}

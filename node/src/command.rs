@@ -16,7 +16,7 @@
 
 use crate::{
 	chain_spec,
-	chain_spec::{bajun_chain_spec, bajun_config, bajun_westend_config},
+	chain_spec::{bajun_chain_spec, bajun_config, bajun_paseo_config, bajun_westend_config},
 	chain_spec_utils::{GenesisKeys, RelayChain},
 	cli::{Cli, RelayChainCli, Subcommand},
 	fake_runtime_api::aura::RuntimeApi,
@@ -76,6 +76,7 @@ fn runtime(_id: &str) -> Runtime {
 }
 
 const KUSAMA_PARA_ID: u32 = 2119;
+const PASEO_PARA_ID: u32 = 2119;
 const WESTEND_PARA_ID: u32 = 2138;
 const LOCAL_PARA_ID: u32 = 2119;
 
@@ -86,14 +87,17 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 		// live configs
 		"bajun-kusama" => Box::new(bajun_config()?),
 		"bajun-westend" => Box::new(bajun_westend_config()?),
+		"bajun-paseo" => Box::new(bajun_paseo_config()?),
 
 		// fresh production/testnet chain-specs based on the current rust code.
 		"bajun-kusama-fresh" => Box::new(bajun_chain_spec(KUSAMA_PARA_ID.into(), GenesisKeys::Bajun, RelayChain::Kusama)),
 		"bajun-westend-fresh" => Box::new(bajun_chain_spec(WESTEND_PARA_ID.into(), GenesisKeys::TestnetDev, RelayChain::Westend)),
+		"bajun-paseo-fresh" => Box::new(bajun_chain_spec(PASEO_PARA_ID.into(), GenesisKeys::TestnetDev, RelayChain::Paseo)),
 
 		// on the spot configs
 		"bajun-kusama-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::KusamaLocal)),
 		"bajun-westend-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::WestendLocal)),
+		"bajun-paseo-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::PaseoLocal)),
 		"" | "bajun-rococo-local" => Box::new(bajun_chain_spec(LOCAL_PARA_ID.into(), GenesisKeys::WellKnown, RelayChain::RococoLocal)),
 
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
