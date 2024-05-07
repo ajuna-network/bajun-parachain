@@ -940,8 +940,6 @@ construct_runtime!(
 		Migrations: pallet_migrations = 10,
 
 		// Monetary stuff.
-		Assets: pallet_assets::<Instance1> = 11,
-		AssetRegistry: pallet_asset_registry = 12,
 		Balances: pallet_balances = 15,
 		TransactionPayment: pallet_transaction_payment = 16,
 		Vesting: orml_vesting = 17,
@@ -988,6 +986,10 @@ construct_runtime!(
 
 		// Indexes 80-89 should be reserved for Tournament instances
 		// TournamentAAA: pallet_ajuna_tournament::<Instance1> = 80,
+
+		// Assets related stuff
+		Assets: pallet_assets::<Instance1> = 90,
+		AssetRegistry: pallet_asset_registry = 91,
 	}
 );
 
