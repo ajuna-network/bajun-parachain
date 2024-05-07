@@ -52,13 +52,13 @@ rpc_port = 9956
 [[parachains.collators]]
 name = "bajun-collator-1"
 validator = true
-command = "~/bin/bajun-node-v300"
+command = "~/bin/bajun-node-v400"
 args = ["-lxcm=trace,runtime=debug"]
 ws_port = 9954
 
 [[parachains.collators]]
 name = "bajun-collator-2"
 validator = true
-command = "~/bin/bajun-node-v300"
+command = "~/bin/bajun-node-v400"
 args = ["-lxcm=trace,runtime=debug"]
 ws_port = 9955
