@@ -96,12 +96,12 @@ impl Convert<Location, Option<CurrencyId>> for CurrencyIdConvert {
 
 		match location.unpack() {
 			// that's how xTokens with Karura, Bifrost, Moonriver refers to BAJUN
-			(1, [Parachain(id), BAJUN_GENERAL_KEY]) if *id == self_para_id =>
+			(1, [Parachain(id), BAJU_GENERAL_KEY]) if *id == self_para_id =>
 				Some(CurrencyId::BAJUN),
 			// that's how the Asset Hub refers to BAJUN
 			(1, [Parachain(id)]) if *id == self_para_id => Some(CurrencyId::BAJUN),
 			// same for local location spec. we don't care if parents is 0 or 1
-			(0, [BAJUN_GENERAL_KEY]) => Some(CurrencyId::BAJUN),
+			(0, [BAJU_GENERAL_KEY]) => Some(CurrencyId::BAJUN),
 			(0, []) => Some(CurrencyId::BAJUN),
 			_ => None,
 		}
@@ -319,7 +319,7 @@ pub type Traders = (
 parameter_types! {
 	pub const MaxAssetsIntoHolding: u32 = 64;
 	pub NativePerSecond: (AssetId, u128,u128) = (Location::new(0,Here).into(), BAJUN * 70, 0u128);
-	pub NativeAliasPerSecond: (AssetId, u128,u128) = (Location::new(0,[BAJUN_GENERAL_KEY]).into(), BAJUN * 70, 0u128);
+	pub NativeAliasPerSecond: (AssetId, u128,u128) = (Location::new(0,[BAJU_GENERAL_KEY]).into(), BAJUN * 70, 0u128);
 	pub RelayNativePerSecond: (AssetId, u128,u128) = (Location::new(1,Here).into(), BAJUN * 70, 0u128);
 	// Weight for one XCM operation.
 	pub UnitWeightCost: Weight = Weight::from_parts(1_000_000u64, DEFAULT_PROOF_SIZE);
@@ -456,11 +456,11 @@ parameter_type_with_key! {
 	};
 }
 
-const fn bajun_general_key() -> Junction {
-	const BAJUN_KEY: [u8; 32] = *b"BAJUN\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
-	GeneralKey { length: 5, data: BAJUN_KEY }
+const fn baju_general_key() -> Junction {
+	const BAJU_KEY: [u8; 32] = *b"BAJU\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
+	GeneralKey { length: 4, data: BAJU_KEY }
 }
-const BAJUN_GENERAL_KEY: Junction = bajun_general_key();
+const BAJU_GENERAL_KEY: Junction = baju_general_key();
 
 /// Converts a CurrencyId into a Location, used by xtoken for XCMP.
 pub struct CurrencyIdConvert;
@@ -469,7 +469,7 @@ impl Convert<CurrencyId, Option<Location>> for CurrencyIdConvert {
 		match id {
 			CurrencyId::BAJUN => Some(Location::new(
 				1,
-				[Parachain(ParachainInfo::parachain_id().into()), BAJUN_GENERAL_KEY],
+				[Parachain(ParachainInfo::parachain_id().into()), BAJU_GENERAL_KEY],
 			)),
 		}
 	}
@@ -478,7 +478,7 @@ impl Convert<CurrencyId, Option<Location>> for CurrencyIdConvert {
 parameter_types! {
 	pub SelfReserveAlias: Location = Location::new(
 		0,
-		[BAJUN_GENERAL_KEY]
+		[BAJU_GENERAL_KEY]
 	);
 	// This is how we are going to detect whether the asset is a Reserve asset
 	pub SelfLocation: Location = Location::here();
