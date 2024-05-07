@@ -6046,7 +6046,7 @@ dependencies = [
 [[package]]
 name = "orml-pallets-benchmarking"
 version = "0.1.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#a26395602dd7f7bbde711772994c7ef083e3e59c"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#24b4c3d666af902e8d024e615647ab3f552f0f14"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6079,7 +6079,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars"
 version = "0.1.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#a26395602dd7f7bbde711772994c7ef083e3e59c"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#24b4c3d666af902e8d024e615647ab3f552f0f14"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6096,7 +6096,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
 version = "0.1.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#a26395602dd7f7bbde711772994c7ef083e3e59c"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#24b4c3d666af902e8d024e615647ab3f552f0f14"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6118,7 +6118,7 @@ dependencies = [
 [[package]]
 name = "pallet-ajuna-nft-transfer"
 version = "0.1.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#a26395602dd7f7bbde711772994c7ef083e3e59c"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?branch=v0.1.0-polkadot-v1.10.0#24b4c3d666af902e8d024e615647ab3f552f0f14"
 dependencies = [
  "frame-support",
  "frame-system",
