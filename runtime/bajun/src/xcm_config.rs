@@ -84,7 +84,7 @@ parameter_types! {
 	MaxEncodedLen,
 )]
 pub enum CurrencyId {
-	BAJUN,
+	BAJU,
 }
 
 /// Converts a Locaction into a CurrencyId. Used by XCMP LocalAssetTransactor for asset
@@ -96,13 +96,12 @@ impl Convert<Location, Option<CurrencyId>> for CurrencyIdConvert {
 
 		match location.unpack() {
 			// that's how xTokens with Karura, Bifrost, Moonriver refers to BAJUN
-			(1, [Parachain(id), BAJU_GENERAL_KEY]) if *id == self_para_id =>
-				Some(CurrencyId::BAJUN),
+			(1, [Parachain(id), BAJU_GENERAL_KEY]) if *id == self_para_id => Some(CurrencyId::BAJU),
 			// that's how the Asset Hub refers to BAJUN
-			(1, [Parachain(id)]) if *id == self_para_id => Some(CurrencyId::BAJUN),
+			(1, [Parachain(id)]) if *id == self_para_id => Some(CurrencyId::BAJU),
 			// same for local location spec. we don't care if parents is 0 or 1
-			(0, [BAJU_GENERAL_KEY]) => Some(CurrencyId::BAJUN),
-			(0, []) => Some(CurrencyId::BAJUN),
+			(0, [BAJU_GENERAL_KEY]) => Some(CurrencyId::BAJU),
+			(0, []) => Some(CurrencyId::BAJU),
 			_ => None,
 		}
 	}
@@ -467,7 +466,7 @@ pub struct CurrencyIdConvert;
 impl Convert<CurrencyId, Option<Location>> for CurrencyIdConvert {
 	fn convert(id: CurrencyId) -> Option<Location> {
 		match id {
-			CurrencyId::BAJUN => Some(Location::new(
+			CurrencyId::BAJU => Some(Location::new(
 				1,
 				[Parachain(ParachainInfo::parachain_id().into()), BAJU_GENERAL_KEY],
 			)),
