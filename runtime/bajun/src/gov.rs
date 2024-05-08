@@ -32,6 +32,11 @@ pub type EnsureRootOrMoreThanHalfCouncil = EitherOfDiverse<
 	EnsureProportionMoreThan<AccountId, CouncilCollectiveInstance, 1, 2>,
 >;
 
+pub type EnsureRootOrAllCouncil = EitherOfDiverse<
+	EnsureRoot<AccountId>,
+	EnsureProportionMoreThan<AccountId, CouncilCollectiveInstance, 1, 1>,
+>;
+
 pub type EnsureRootOrMoreThanHalfTechnicalCommittee = EitherOfDiverse<
 	EnsureRoot<AccountId>,
 	EnsureProportionAtLeast<AccountId, TechnicalCommitteeInstance, 1, 2>,
@@ -75,10 +80,10 @@ type CouncilMembershipInstance = pallet_membership::Instance2;
 impl pallet_membership::Config<CouncilMembershipInstance> for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type AddOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type RemoveOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type SwapOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type ResetOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type PrimeOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type RemoveOrigin = EnsureRootOrAllCouncil;
+	type SwapOrigin = EnsureRootOrAllCouncil;
+	type ResetOrigin = EnsureRootOrAllCouncil;
+	type PrimeOrigin = EnsureRootOrAllCouncil;
 	type MembershipInitialized = Council;
 	type MembershipChanged = Council;
 	type MaxMembers = CouncilMaxMembers;
