@@ -157,15 +157,18 @@ impl pallet_democracy::Config for Runtime {
 	type SubmitOrigin = frame_system::EnsureSignedBy<crate::CouncilMembership, AccountId>;
 	#[cfg(feature = "runtime-benchmarks")]
 	type SubmitOrigin = frame_system::EnsureSigned<AccountId>;
+	// Allows to fast track a proposal with `voting_period` > `FastTrackVotingPeriod`
 	type FastTrackOrigin = EnsureRootOrMoreThanHalfTechnicalCommittee;
+	// Allows to fast track a proposal with `voting_period` < `FastTrackVotingPeriod`
 	type InstantOrigin = EnsureRootOrMoreThanHalfTechnicalCommittee;
 	// To cancel a proposal that has passed.
 	type CancellationOrigin = EnsureRoot<AccountId>;
+	// Forever blacklist a proposal hash such that it can never be executed.
 	type BlacklistOrigin = EnsureRootOrMoreThanHalfCouncil;
 	// To cancel a proposal before it has passed, and slash its backers.
 	type CancelProposalOrigin = EnsureRootOrAllTechnicalCommittee;
-	// Any single technical committee member may veto a coming council proposal, however they can
-	// only do it once and it lasts only for the cooloff period.
+	// Any single technical committee member may veto a coming council proposal. However, they can
+	// only do it once, and it lasts only for the cool-off period.
 	type VetoOrigin = EnsureMember<AccountId, TechnicalCommitteeInstance>;
 	type PalletsOrigin = OriginCaller;
 	type Slash = pallet_treasury::Pallet<Runtime>;
