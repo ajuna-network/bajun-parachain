@@ -132,7 +132,7 @@ parameter_types! {
 	pub const TwentyEightDays: BlockNumber = 28 * DAYS;
 	pub const ThirtyDays: BlockNumber = 30 * DAYS;
 	pub EnactmentPeriod: BlockNumber = 7 * DAYS;
-	pub const MinimumDeposit: Balance = BAJUN;
+	pub const MinimumDeposit: Balance = 500 * BAJUN;
 }
 
 impl pallet_democracy::Config for Runtime {
