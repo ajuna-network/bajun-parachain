@@ -71,7 +71,7 @@ impl pallet_collective::Config<CouncilCollectiveInstance> for Runtime {
 	type MaxMembers = CouncilMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
 	type WeightInfo = weights::pallet_collective::WeightInfo<Runtime>;
-	type SetMembersOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type SetMembersOrigin = ();
 	type MaxProposalWeight = MaxProposalWeight;
 }
 
@@ -108,7 +108,7 @@ impl pallet_collective::Config<TechnicalCommitteeInstance> for Runtime {
 	type MaxMembers = TechnicalCommitteeMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
 	type WeightInfo = weights::pallet_collective::WeightInfo<Runtime>;
-	type SetMembersOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type SetMembersOrigin = ();
 	type MaxProposalWeight = MaxProposalWeight;
 }
 
@@ -117,10 +117,10 @@ type TechnicalCommitteeMembershipInstance = pallet_membership::Instance1;
 impl pallet_membership::Config<TechnicalCommitteeMembershipInstance> for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type AddOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type RemoveOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type SwapOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type ResetOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type PrimeOrigin = EnsureRootOrMoreThanHalfCouncil;
+	type RemoveOrigin = EnsureRootOrAllCouncil;
+	type SwapOrigin = EnsureRootOrAllCouncil;
+	type ResetOrigin = EnsureRootOrAllCouncil;
+	type PrimeOrigin = EnsureRootOrAllCouncil;
 	type MembershipInitialized = TechnicalCommittee;
 	type MembershipChanged = TechnicalCommittee;
 	type MaxMembers = TechnicalCommitteeMaxMembers;
