@@ -11,6 +11,21 @@
 A game platform [parachain](https://wiki.polkadot.network/docs/learn-parachains) built
 with [Substrate](https://docs.substrate.io/).
 
+## Build
+
+- Using `cargo`:
+
+  ```bash
+  # parachain with Bajun runtime
+  cargo build --release
+  ```
+- Using `Docker`:
+
+  ```bash
+  # parachain with Bajun runtime
+  docker build -f docker/Dockerfile -t ajuna/parachain-bajun:latest . --build-arg features=bajun --build-arg bin=bajun-para
+  ```
+
 ## Chopsticks
 
 Chopsticks can be used to create a local fork of a life network, copying all its storage values and override specific
