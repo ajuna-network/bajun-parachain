@@ -91,11 +91,11 @@ staging-parachain-info              = { workspace = true }
 orml-vesting = { workspace = true }
 
 # Ajuna Pallets
-#pallet-ajuna-affiliates                   = { workspace = true }
+pallet-ajuna-affiliates                   = { workspace = true }
 pallet-ajuna-awesome-avatars              = { workspace = true }
 pallet-ajuna-awesome-avatars-benchmarking = { workspace = true, optional = true }
 pallet-ajuna-nft-transfer                 = { workspace = true }
-#pallet-ajuna-tournament                   = { workspace = true }
+pallet-ajuna-tournament                   = { workspace = true }
 orml-pallets-benchmarking                 = { workspace = true, optional = true }
 
 [features]
@@ -168,8 +168,10 @@ std = [
     "staging-xcm-builder/std",
     "staging-xcm-executor/std",
     # ajuna
+    "pallet-ajuna-affiliates/std",
     "pallet-ajuna-awesome-avatars/std",
     "pallet-ajuna-awesome-avatars-benchmarking?/std",
+    "pallet-ajuna-tournament/std",
     "pallet-ajuna-nft-transfer/std",
 ]
 
@@ -211,11 +213,11 @@ runtime-benchmarks = [
     "staging-xcm-builder/runtime-benchmarks",
     "staging-xcm-executor/runtime-benchmarks",
     # ajuna
-#    "pallet-ajuna-affiliates/runtime-benchmarks",
+    "pallet-ajuna-affiliates/runtime-benchmarks",
     "pallet-ajuna-awesome-avatars/runtime-benchmarks",
     "pallet-ajuna-awesome-avatars-benchmarking/runtime-benchmarks",
     "pallet-ajuna-nft-transfer/runtime-benchmarks",
-#    "pallet-ajuna-tournament/runtime-benchmarks",
+    "pallet-ajuna-tournament/runtime-benchmarks",
 ]
 
 try-runtime = [
@@ -255,9 +257,9 @@ try-runtime = [
     "sp-runtime/try-runtime",
     "staging-parachain-info/try-runtime",
     # ajuna
-#    "pallet-ajuna-affiliates/try-runtime",
+    "pallet-ajuna-affiliates/try-runtime",
     "pallet-ajuna-awesome-avatars/try-runtime",
     "pallet-ajuna-awesome-avatars-benchmarking/try-runtime",
-#    "pallet-ajuna-tournament/try-runtime",
+    "pallet-ajuna-tournament/try-runtime",
     "pallet-ajuna-nft-transfer/try-runtime",
 ]
