@@ -39,26 +39,33 @@ cumulus_based = true
 # I use this to test the runtime upgrade. Run the new collators
 # but use the old chain spec that has been generated with a node
 # based on the current production runtime.
-# Currently: v201.
-chain_spec_path = "zombienet/bajun-rococo-localv201.json"
-#chain_spec_path = "chain_dumps/template-rococo.json"
+# Currently: v400.
+chain_spec_path = "zombienet/bajun-rococo-localv400.json"
 
 [parachains.collator]
 name = "bajun-collator"
-command = "~/bin/bajun-node-v300"
-ws_port = 9955
-rpc_port = 9956
+# This should ideally be the old collator as this is used
+# to build the modified chain-spec.
+command = "~/bin/bajun-node-v400"
 
 [[parachains.collators]]
 name = "bajun-collator-1"
 validator = true
-command = "~/bin/bajun-node-v400"
+command = "~/bin/bajun-node-v401"
 args = ["-lxcm=trace,runtime=debug"]
 ws_port = 9954
 
 [[parachains.collators]]
 name = "bajun-collator-2"
 validator = true
-command = "~/bin/bajun-node-v400"
+command = "~/bin/bajun-node-v401"
 args = ["-lxcm=trace,runtime=debug"]
 ws_port = 9955
+
+
+[[parachains.collators]]
+name = "bajun-collator-3"
+validator = true
+command = "~/bin/bajun-node-v401"
+args = ["-lxcm=trace,runtime=debug"]
+ws_port = 9956
