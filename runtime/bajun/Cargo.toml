@@ -91,11 +91,11 @@ staging-parachain-info              = { workspace = true }
 orml-vesting = { workspace = true }
 
 # Ajuna Pallets
-#pallet-ajuna-affiliates                   = { workspace = true }
+pallet-ajuna-affiliates                   = { workspace = true }
 pallet-ajuna-awesome-avatars              = { workspace = true }
 pallet-ajuna-awesome-avatars-benchmarking = { workspace = true, optional = true }
 pallet-ajuna-nft-transfer                 = { workspace = true }
-#pallet-ajuna-tournament                   = { workspace = true }
+pallet-ajuna-tournament                   = { workspace = true }
 orml-pallets-benchmarking                 = { workspace = true, optional = true }
 
 [features]
