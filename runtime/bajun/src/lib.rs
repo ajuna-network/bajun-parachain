@@ -64,9 +64,9 @@ use frame_support::{
 };
 use frame_system::{
 	limits::{BlockLength, BlockWeights},
+	pallet_prelude::BlockNumberFor,
 	EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
-use frame_system::pallet_prelude::BlockNumberFor;
 use pallet_identity::legacy::IdentityInfo;
 use pallet_transaction_payment::CurrencyAdapter;
 use scale_info::TypeInfo;
@@ -381,8 +381,7 @@ impl frame_system::Config for Runtime {
 	type PostTransactions = ();
 }
 
-type SingleBlockMigrations =
-(pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
+type SingleBlockMigrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
 #[cfg(not(feature = "runtime-benchmarks"))]
 use mbm::MultiBlockMigrations;
