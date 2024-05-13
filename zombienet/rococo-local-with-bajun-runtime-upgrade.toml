@@ -47,8 +47,6 @@ name = "bajun-collator"
 # This should ideally be the old collator as this is used
 # to build the modified chain-spec.
 command = "~/bin/bajun-node-v400"
-ws_port = 9955
-rpc_port = 9956
 
 [[parachains.collators]]
 name = "bajun-collator-1"
@@ -63,3 +61,11 @@ validator = true
 command = "~/bin/bajun-node-v401"
 args = ["-lxcm=trace,runtime=debug"]
 ws_port = 9955
+
+
+[[parachains.collators]]
+name = "bajun-collator-3"
+validator = true
+command = "~/bin/bajun-node-v401"
+args = ["-lxcm=trace,runtime=debug"]
+ws_port = 9956
