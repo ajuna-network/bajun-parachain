@@ -97,5 +97,5 @@ pub fn bajun_westend_config() -> Result<ChainSpec, String> {
 
   ```bash
   # parachain with Bajun runtime
-  docker build -f docker/Dockerfile -t ajuna/parachain-bajun:latest . --build-arg features=bajun --build-arg bin=bajun-para
+  docker build -f docker/Dockerfile -t ajuna/parachain-bajun:latest . --build-arg bin=bajun-node
   ```
