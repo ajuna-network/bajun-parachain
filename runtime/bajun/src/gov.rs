@@ -108,7 +108,7 @@ impl pallet_collective::Config<TechnicalCommitteeInstance> for Runtime {
 	type MaxMembers = TechnicalCommitteeMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
 	type WeightInfo = weights::pallet_collective::WeightInfo<Runtime>;
-	type SetMembersOrigin = ();
+	type SetMembersOrigin = EnsureRootOrAllCouncil;
 	type MaxProposalWeight = MaxProposalWeight;
 }
 
