@@ -67,6 +67,7 @@ substrate-prometheus-endpoint  = { workspace = true }
 substrate-state-trie-migration-rpc = { workspace = true }
 
 # Polkadot
+# `rococo-native` is an ajuna adjustement, so we can run local setups.
 polkadot-cli        = { workspace = true, features = ["rococo-native"] }
 polkadot-primitives = { workspace = true, features = ["std"] }
 staging-xcm         = { workspace = true, features = ["std"] }
