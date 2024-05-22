@@ -67,7 +67,7 @@ substrate-prometheus-endpoint  = { workspace = true }
 substrate-state-trie-migration-rpc = { workspace = true }
 
 # Polkadot
-polkadot-cli        = { workspace = true }
+polkadot-cli        = { workspace = true, features = ["rococo-native"] }
 polkadot-primitives = { workspace = true, features = ["std"] }
 staging-xcm         = { workspace = true, features = ["std"] }
 
