@@ -78,7 +78,84 @@ jobs:
       - name: Check features
         run: zepter run check
 
-  test:
+  build-runtimes:
+    name: Build Runtimes
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime: [ "bajun" ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache target dir
+        uses: actions/cache@v3
+        with:
+          path: "${{ github.workspace }}/runtime/${{ matrix.runtime }}/target"
+          key: srtool-target-${{ matrix.runtime }}-${{ github.sha }}
+          restore-keys: |
+            srtool-target-${{ matrix.runtime }}-
+            srtool-target-
+
+      - name: Srtool build
+        id: srtool_build
+        uses: chevdor/srtool-actions@v0.9.2
+        with:
+          image: paritytech/srtool
+          chain: ${{ matrix.runtime }}
+          runtime_dir: polkadot-parachains/${{ matrix.runtime }}-runtime
+
+      - name: Summary
+        run: |
+          echo '${{ steps.srtool_build.outputs.json }}' | jq > ${{ matrix.runtime }}-srtool-digest.json
+          cat ${{ matrix.runtime }}-srtool-digest.json
+          echo "Compressed Runtime: ${{ steps.srtool_build.outputs.wasm_compressed }}"
+
+      # It takes a while to build the runtime, so let's save the artifact as soon as we have it.
+      - name: Archive Artifacts for ${{ matrix.runtime }}
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+        with:
+          name: ${{ matrix.runtime }}-runtime-${{ github.sha }}
+          path: |
+            ${{ steps.srtool_build.outputs.wasm_compressed }}
+
+      # We now get extra information thanks to subwasm
+      - name: Install subwasm
+        run: |
+          wget https://github.com/chevdor/subwasm/releases/download/v${{ env.SUBWASM_VERSION }}/subwasm_linux_amd64_v${{ env.SUBWASM_VERSION }}.deb
+          sudo dpkg -i subwasm_linux_amd64_v${{ env.SUBWASM_VERSION }}.deb
+          subwasm --version
+
+      - name: Show Runtime information
+        shell: bash
+        run: |
+          subwasm info ${{ steps.srtool_build.outputs.wasm_compressed }}
+          subwasm --json info ${{ steps.srtool_build.outputs.wasm_compressed }} > ${{ matrix.runtime }}-compressed-info.json
+
+      - name: Extract the metadata
+        shell: bash
+        run: |
+          subwasm meta ${{ steps.srtool_build.outputs.wasm }}
+          subwasm --json meta ${{ steps.srtool_build.outputs.wasm }} > ${{ matrix.runtime }}-metadata.json
+
+      # This is unsupported it wants to diff the metadata with a running chain. i.e. wss://kusama-<matrix.chain>-rpc.parity.io
+      #      - name: Check the metadata diff
+      #        shell: bash
+      #        run: |
+      #          subwasm diff ${{ steps.srtool_build.outputs.wasm }} --chain-b ${{ matrix.chain }} > ${{ matrix.chain }}-diff.txt
+      #          cat ${{ matrix.chain }}-diff.txt
+
+      - name: Archive Subwasm results
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+        with:
+          name: ${{ matrix.runtime }}-srtool-json-${{ github.sha }}
+          path: |
+            ${{ matrix.runtime }}-srtool-digest.json
+            ${{ matrix.runtime }}-info.json
+            ${{ matrix.runtime }}-compressed-info.json
+            ${{ matrix.runtime }}-metadata.json
+            ${{ matrix.runtime }}-diff.txt
+
+  build-binary:
     name: Cargo test (all features)
     runs-on: ubuntu-latest
     continue-on-error: false
@@ -93,6 +170,32 @@ jobs:
         with:
           # consistent cache across jobs
           shared-key: "bajun-cache-cargo-release"
+          cache-on-failure: true
+
+      - name: Build release binary
+        run: cargo build --release --locked
+
+      - name: Upload bajun-node
+        uses: actions/upload-artifact@v3
+        with:
+          name: bajun-node-${{ github.sha }}
+          path: target/release/bajun-node
+
+  test:
+    name: Cargo test (all features)
+    runs-on: ubuntu-latest
+    continue-on-error: false
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./.github/scripts/free_disk_space.sh
+      - run: sudo apt-get install -y protobuf-compiler
+
+      - name: Fetch cache
+        uses: Swatinem/rust-cache@a95ba195448af2da9b00fb742d14ffaaf3c21f43 # v2.7.0
+        with:
+          # consistent cache across jobs
+          shared-key: "bajun-cache-cargo-release-test"
           cache-on-failure: true
 
       - run: cargo test --release --all-features --all-targets
@@ -133,17 +236,55 @@ jobs:
         with:
           version: "3.6.1"
 
-      - name: Fetch cache
-        uses: Swatinem/rust-cache@a95ba195448af2da9b00fb742d14ffaaf3c21f43 # v2.7.0
+      - uses: actions/download-artifact@v3
         with:
-          # consistent cache across jobs
-          shared-key: "bajun-cache-zombienet"
-          cache-on-failure: true
+          bajun-node-${{ github.sha }}
 
-      - name: Build and copy collator binary to zombienet binaries
+      - name: 'Setup Bajun-Node'
         run: |
-          cargo build --release
-          cp target/release/${{ matrix.binary }} zombienet-tests/bin/collator
+          chmod +x ./bajun-node
+          cp ./bajun-node zombienet-tests/bin/collator
 
       - name: Run zombienet tests
         run: ./zombienet-tests/bin/zombienet -l "text" -p native test ./zombienet-tests/zombienet-tests.zndsl
+
+  create_artifacts:
+    needs: [ build-binary, build-runtimes ]
+    runs-on: ubuntu-22.04
+    env:
+      CHAIN_SPEC: ${{ matrix.chain }}-${{ matrix.config }}
+    strategy:
+      fail-fast: false
+      matrix:
+        chain: [ integritee ]
+        config: [ kusama, paseo, westend ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          bajun-node-${{ github.sha }}
+
+      - name: 'Create binaries for artifacts'
+        run: |
+          chmod +x ./bajun-node
+          ./bajun-node export-genesis-state --chain ${{ env.CHAIN_SPEC }} >  ${{ env.CHAIN_SPEC }}.state
+          ./bajun-node build-spec --chain ${{ env.CHAIN_SPEC }} --disable-default-bootnode --raw > ${{ env.CHAIN_SPEC }}.json
+
+      - name: Compute file metadata
+        id: vars
+        run: |
+          sha256sum ${{ env.CHAIN_SPEC }}.state >> checksums.txt
+          sha256sum ${{ env.CHAIN_SPEC }}.json >> checksums.txt
+
+      - name: Upload ${{ env.CHAIN_SPEC }} Files
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+        with:
+          name: ${{ env.CHAIN_SPEC }}-${{ github.sha }}
+          path: |
+            checksums.txt
+            ${{ env.CHAIN_SPEC }}.state
+            ${{ env.CHAIN_SPEC }}.json
+
