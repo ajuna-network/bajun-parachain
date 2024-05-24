@@ -206,6 +206,7 @@ jobs:
   zombienet-tests:
     name: Zombienet tests
     runs-on: ubuntu-latest
+    needs: [ build-binary ]
     strategy:
       matrix:
         binary: [ bajun-node ]
