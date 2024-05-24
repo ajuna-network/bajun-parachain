@@ -122,7 +122,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.runtime }}-artifact-bin
-          path: "/target/release/bajun-node"
+          path: "target/release/bajun-node"
           if-no-files-found: error
 
   release-draft:
