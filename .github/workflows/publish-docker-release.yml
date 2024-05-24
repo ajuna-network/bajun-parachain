@@ -43,6 +43,7 @@ jobs:
         with:
           push: true
           context: .
+          file: docker/Dockerfile
           tags: |
             ajuna/parachain-bajun:latest
             ajuna/parachain-bajun:${{ github.event.release.tag_name }}
