@@ -84,6 +84,8 @@ jobs:
     strategy:
       matrix:
         runtime: [ "bajun" ]
+    env:
+      SUBWASM_VERSION: v0.20.0
     steps:
       - uses: actions/checkout@v3
 
@@ -119,11 +121,10 @@ jobs:
             ${{ steps.srtool_build.outputs.wasm_compressed }}
 
       # We now get extra information thanks to subwasm
-      - name: Install subwasm
+      - name: Install subwasm {{ env.SUBWASM_VERSION }}
         run: |
-          wget https://github.com/chevdor/subwasm/releases/download/v${{ env.SUBWASM_VERSION }}/subwasm_linux_amd64_v${{ env.SUBWASM_VERSION }}.deb
-          sudo dpkg -i subwasm_linux_amd64_v${{ env.SUBWASM_VERSION }}.deb
-          subwasm --version
+          wget https://github.com/chevdor/subwasm/releases/download/${{ env.SUBWASM_VERSION }}/subwasm_linux_amd64_${{ env.SUBWASM_VERSION }}.deb -O subwasm.deb
+          sudo dpkg -i subwasm.deb
 
       - name: Show Runtime information
         shell: bash
@@ -232,14 +233,9 @@ jobs:
       - name: Copy network config and tests
         run: cp .maintain/zombienet-* zombienet-tests/
 
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v1
-        with:
-          version: "3.6.1"
-
       - uses: actions/download-artifact@v3
         with:
-          bajun-node-${{ github.sha }}
+          name: bajun-node-${{ github.sha }}
 
       - name: 'Setup Bajun-Node'
         run: |
