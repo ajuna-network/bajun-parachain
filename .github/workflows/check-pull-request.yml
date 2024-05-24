@@ -248,7 +248,7 @@ jobs:
       - name: Run zombienet tests
         run: ./zombienet-tests/bin/zombienet -l "text" -p native test ./zombienet-tests/zombienet-tests.zndsl
 
-  create_artifacts:
+  create-artifacts:
     needs: [ build-binary, build-runtimes ]
     runs-on: ubuntu-22.04
     env:
@@ -256,7 +256,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chain: [ integritee ]
+        chain: [ bajun ]
         config: [ kusama, paseo, westend ]
 
     steps:
@@ -288,3 +288,76 @@ jobs:
             ${{ env.CHAIN_SPEC }}.state
             ${{ env.CHAIN_SPEC }}.json
 
+  release:
+    name: Draft Release
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    needs: [ create-artifacts, build-binaries ]
+    outputs:
+      release_url: ${{ steps.create-release.outputs.html_url }}
+      asset_upload_url: ${{ steps.create-release.outputs.upload_url }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Bajun Collator
+        uses: actions/download-artifact@v3
+        with:
+          name: bajun-node-${{ github.sha }}
+
+      - name: Create required package.json
+        run: test -f package.json || echo '{}' >package.json
+
+      - name: Changelog
+        uses: scottbrenner/generate-changelog-action@master
+        id: Changelog
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: .
+
+      - name: Release
+        id: create-release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
+          draft: true
+          files: |
+            bajun-node
+
+  publish-runtimes:
+    name: Publish Runtimes
+    runs-on: ubuntu-latest
+    needs: [ "release" ]
+    strategy:
+      matrix:
+        runtime: [ "bajun" ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+
+      - name: Set up Ruby 3
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+
+      - name: Get runtime version
+        id: get-runtime-ver
+        run: |
+          ls
+          ls "${{ matrix.runtime }}-runtime-${{ github.sha }}"
+          runtime_ver="$(ruby -e 'require "./scripts/github/lib.rb"; puts get_runtime("${{ matrix.runtime }}")')"
+          echo "Found version: >$runtime_ver<"
+          echo "runtime_ver={$runtime_ver}" >> $GITHUB_OUTPUT
+
+      - name: Upload compressed ${{ matrix.runtime }} wasm
+        uses: shogo82148/actions-upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.asset_upload_url }}
+          asset_path: "${{ matrix.runtime }}-runtime-${{ github.sha }}/${{ matrix.runtime }}_runtime.compact.compressed.wasm"
+          asset_name: ${{ matrix.runtime }}_runtime-v${{ steps.get-runtime-ver.outputs.runtime_ver }}.compact.compressed.wasm
+          asset_content_type: application/wasm
