@@ -46,8 +46,6 @@ jobs:
     continue-on-error: false
     steps:
       - uses: actions/checkout@v4
-      - run: ./.github/scripts/free_disk_space.sh
-      - run: sudo apt-get install -y protobuf-compiler
 
       - name: Fetch cache
         uses: Swatinem/rust-cache@v2
@@ -134,8 +132,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: ./.github/scripts/free_disk_space.sh
-      - run: sudo apt-get install -y protobuf-compiler
+
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
 
       - name: Fetch cache
         uses: Swatinem/rust-cache@v2
@@ -160,8 +159,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: ./.github/scripts/free_disk_space.sh
-      - run: sudo apt-get install -y protobuf-compiler
 
       - name: Fetch cache
         uses: Swatinem/rust-cache@v2
