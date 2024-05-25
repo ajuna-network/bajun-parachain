@@ -271,26 +271,65 @@ jobs:
         with:
           name: bajun-node-${{ github.sha }}
 
-      - name: Create required package.json
-        run: test -f package.json || echo '{}' >package.json
+      - name: Download srtool json output
+        uses: actions/download-artifact@v3
 
-      - name: Changelog
-        uses: scottbrenner/generate-changelog-action@master
-        id: Changelog
+      - name: Archive context output
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-notes-context
+          path: |
+            **/*_srtool_output.json
 
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: .
+      # Adapted version from fellowship runtimes
+      - name: Add runtime info to changelog
+        run: |
+          CONTEXT=$(find . -name '*_srtool_output.json')
+          SRTOOL() { <$(<<<$CONTEXT head -n1) jq -r .$1; }
+          WASM() { <${JSON} jq -r ".runtimes.compressed.subwasm.$1"; }
+          
+          touch DRAFT
+          
+          tee -a DRAFT <<-EOF
+          # Runtime info
+          *These runtimes were built with **$(SRTOOL rustc)** using **[$(SRTOOL gen)](https://github.com/paritytech/srtool)***
+          
+                    To replicate the build, use the following command:
+          \`\`\`sh
+          srtool build
+                 --root --profile production
+                 --package CRATE_NAME --runtime-dir PATH_TO_CRATE
+          \`\`\`
+          EOF
+          
+          for JSON in $(<<<$CONTEXT sort -sr)
+          do
+          SPEC_NAME=$(WASM 'core_version.specName')
+
+          HEADING=$(WASM 'core_version.specName / "-" | map(. / "" | first |= ascii_upcase | add) | join(" ")')
+          
+          tee -a DRAFT <<-EOF
+          
+          ## $HEADING
+          ~~~
+          🏋️ Runtime Size:           $(numfmt --to iec-i --format "%.2f" $(WASM size)) ($(WASM size) bytes)
+          🗜 Compressed:              $(WASM 'compression | if .compressed then "Yes: \(1 - .size_compressed / .size_decompressed | . * 10000 | round / 100)%" else "No" end')
+          🔥 Core Version:           $(WASM 'core_version | "\(.specName)-\(.specVersion) \(.implName)-\(.implVersion).tx\(.transactionVersion).au\(.authoringVersion)"')
+          🎁 Metadata version:       V$(WASM metadata_version)
+          🗳️ Blake2-256 hash:        $(WASM blake2_256)
+          📦 IPFS:                   $(WASM ipfs_hash)
+          ~~~
+          EOF
+          done
 
       - name: Release
-        id: create-release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
+        # Generate relase notes with commit history and append srtool output from above.
         with:
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
           draft: true
+          generate_release_notes: true
+          append_body: true
+          body_path: DRAFT
           files: |
             bajun-node
 
