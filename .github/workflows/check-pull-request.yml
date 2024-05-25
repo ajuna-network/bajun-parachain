@@ -92,7 +92,7 @@ jobs:
       - name: Cache target dir
         uses: actions/cache@v4
         with:
-          safe-always: true
+          save-always: true
           path: "${{ github.workspace }}/runtime/${{ matrix.runtime }}/target"
           key: srtool-target-${{ matrix.runtime }}-${{ github.sha }}
           restore-keys: |
