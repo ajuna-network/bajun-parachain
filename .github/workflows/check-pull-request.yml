@@ -228,7 +228,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          bajun-node-${{ github.sha }}
+          name: bajun-node-${{ github.sha }}
 
       - name: Create binaries for artifacts
         run: |
