@@ -294,7 +294,8 @@ jobs:
           # Runtime info
           *These runtimes were built with **$(SRTOOL rustc)** using **[$(SRTOOL gen)](https://github.com/paritytech/srtool)***
           
-                    To replicate the build, use the following command:
+          To replicate the build, use the following command:
+          
           \`\`\`sh
           srtool build
                  --root --profile production
@@ -335,35 +336,32 @@ jobs:
 
   publish-runtimes:
     name: Publish Runtimes
-    runs-on: ubuntu-latest
     needs: [ release ]
+    continue-on-error: true
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         runtime: [ bajun ]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v3
+      - name: Checkout sources
+        uses: actions/checkout@v4
 
-      - name: Set up Ruby 3
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
 
-      - name: Get runtime version
-        id: get-runtime-ver
+      - name: Get runtime info
+        env:
+          JSON: release-notes-context/${{ matrix.runtime }}-srtool-json/${{ matrix.runtime }}_srtool_output.json
         run: |
-          ls
-          ls "${{ matrix.runtime }}-runtime-${{ github.sha }}"
-          runtime_ver="$(ruby -e 'require "./scripts/github/lib.rb"; puts get_runtime("${{ matrix.runtime }}")')"
-          echo "Found version: >$runtime_ver<"
-          echo "runtime_ver={$runtime_ver}" >> $GITHUB_OUTPUT
+          >>$GITHUB_ENV echo ASSET=$(find ${{ matrix.runtime }} -name '*.compact.compressed.wasm')
+          >>$GITHUB_ENV echo SPEC=$(<${JSON} jq -r .runtimes.compact.subwasm.core_version.specVersion)
 
-      - name: Upload compressed ${{ matrix.runtime }} wasm
-        uses: shogo82148/actions-upload-release-asset@v1
+      - name: Upload compressed ${{ matrix.runtime }} v${{ env.SPEC }} wasm
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.release.outputs.asset_upload_url }}
-          asset_path: "${{ matrix.runtime }}-runtime-${{ github.sha }}/${{ matrix.runtime }}_runtime.compact.compressed.wasm"
-          asset_name: ${{ matrix.runtime }}_runtime-v${{ steps.get-runtime-ver.outputs.runtime_ver }}.compact.compressed.wasm
+          upload_url: ${{ needs.publish-release.outputs.asset_upload_url }}
+          asset_path: ${{ env.ASSET }}
+          asset_name: ${{ matrix.runtime.name }}_runtime-v${{ env.SPEC }}.compact.compressed.wasm
           asset_content_type: application/wasm
