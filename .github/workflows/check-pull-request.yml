@@ -295,8 +295,6 @@ jobs:
           # Runtime info
           *These runtimes were built with **$(SRTOOL rustc)** using **[$(SRTOOL gen)](https://github.com/paritytech/srtool)***
           
-          To replicate the build, use the following command:
-          
           \`\`\`sh
           srtool build
                  --root --profile production
