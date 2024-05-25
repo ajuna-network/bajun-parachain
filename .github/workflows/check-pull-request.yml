@@ -280,6 +280,7 @@ jobs:
           done
 
       - name: Release
+        id: create-release
         uses: softprops/action-gh-release@v2
         # Generate relase notes with commit history and append srtool output from above.
         with:
