@@ -11,13 +11,13 @@ on:
       - "rust-toolchain.toml"
       - "rustfmt.toml"
       - ".github/workflows/*.yml"
+  push:
+    branches:
+      - develop
     tags:
       - v[0-9]+.[0-9]+.[0-9]
       # Matches tags containing an arbitrary suffix starting with '-'.
       - v[0-9]+.[0-9]+.[0-9]+-*
-  push:
-    branches:
-      - develop
 
 # Ensures only one build is run per branch, unless pushing to develop
 concurrency:
