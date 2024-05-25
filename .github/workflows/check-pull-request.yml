@@ -166,7 +166,7 @@ jobs:
         uses: Swatinem/rust-cache@a95ba195448af2da9b00fb742d14ffaaf3c21f43 # v2.7.0
         with:
           # consistent cache across jobs
-          shared-key: "bajun-cache-cargo-release-test"
+          shared-key: "bajun-cache-cargo-test"
           cache-on-failure: true
 
       - run: cargo test --release --all-features --all-targets
