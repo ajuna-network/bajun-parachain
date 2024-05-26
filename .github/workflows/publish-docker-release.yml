@@ -6,7 +6,7 @@ on:
       - published
 
 jobs:
-  main:
+  release-docker:
     name: Push to Dockerhub
     runs-on: ubuntu-latest
     steps:
