@@ -47,6 +47,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+
       - name: Fetch cache
         uses: Swatinem/rust-cache@v2
         with:
@@ -248,28 +251,28 @@ jobs:
           CONTEXT=$(find . -name '*_srtool_output.json')
           SRTOOL() { <$(<<<$CONTEXT head -n1) jq -r .$1; }
           WASM() { <${JSON} jq -r ".runtimes.compressed.subwasm.$1"; }
-          
+
           touch DRAFT
-          
+
           tee -a DRAFT <<-EOF
           # Runtime info
           *These runtimes were built with **$(SRTOOL rustc)** using **[$(SRTOOL gen)](https://github.com/paritytech/srtool)***
-          
+
           \`\`\`sh
           srtool build
                  --root --profile production
                  --package CRATE_NAME --runtime-dir PATH_TO_CRATE
           \`\`\`
           EOF
-          
+
           for JSON in $(<<<$CONTEXT sort -sr)
           do
           SPEC_NAME=$(WASM 'core_version.specName')
 
           HEADING=$(WASM 'core_version.specName / "-" | map(. / "" | first |= ascii_upcase | add) | join(" ")')
-          
+
           tee -a DRAFT <<-EOF
-          
+
           ## $HEADING
           ~~~
           🏋️ Runtime Size:           $(numfmt --to iec-i --format "%.2f" $(WASM size)) ($(WASM size) bytes)
