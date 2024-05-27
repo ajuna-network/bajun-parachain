@@ -65,6 +65,7 @@ use frame_support::{
 };
 use frame_system::{
 	limits::{BlockLength, BlockWeights},
+	pallet_prelude::BlockNumberFor,
 	EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
 use pallet_identity::legacy::IdentityInfo;
@@ -369,36 +370,35 @@ impl frame_system::Config for Runtime {
 	/// The Block provider type
 	type Block = Block;
 	type RuntimeTask = RuntimeTask;
-	type SingleBlockMigrations = ();
+	type SingleBlockMigrations = SingleBlockMigrations;
 	type MultiBlockMigrator = pallet_migrations::Pallet<Runtime>;
 	type PreInherents = ();
 	type PostInherents = ();
 	type PostTransactions = ();
 }
 
-// type SingleBlockMigrations =
-// (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
+type SingleBlockMigrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
 
-// #[cfg(not(feature = "runtime-benchmarks"))]
-// use mbm::MultiBlockMigrations;
-//
-// #[cfg(not(feature = "runtime-benchmarks"))]
-// mod mbm {
-// 	use crate::Runtime;
-// 	use pallet_ajuna_awesome_avatars::migration::v6::mbm::{
-// 		LazyMigrationAvatarV5ToV6, LazyMigrationPlayerSeasonConfigsV5ToV6,
-// 		LazyMigrationSeasonStatsV5ToV6, LazyTradeStatsMapCleanup,
-// 	};
-//
-// 	use crate::weights::pallet_ajuna_awesome_avatars_mbm::WeightInfo as AaaMbmWeight;
-//
-// 	pub type MultiBlockMigrations = (
-// 		LazyMigrationPlayerSeasonConfigsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-// 		LazyMigrationSeasonStatsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-// 		LazyMigrationAvatarV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-// 		LazyTradeStatsMapCleanup<Runtime, AaaMbmWeight<Runtime>>,
-// 	);
-// }
+#[cfg(not(feature = "runtime-benchmarks"))]
+use mbm::MultiBlockMigrations;
+
+#[cfg(not(feature = "runtime-benchmarks"))]
+mod mbm {
+	use crate::Runtime;
+	use pallet_ajuna_awesome_avatars::migration::v6::mbm::{
+		LazyMigrationAvatarV5ToV6, LazyMigrationPlayerSeasonConfigsV5ToV6,
+		LazyMigrationSeasonStatsV5ToV6, LazyTradeStatsMapCleanup,
+	};
+
+	use crate::weights::pallet_ajuna_awesome_avatars_mbm::WeightInfo as AaaMbmWeight;
+
+	pub type MultiBlockMigrations = (
+		LazyMigrationPlayerSeasonConfigsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyMigrationSeasonStatsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyMigrationAvatarV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
+		LazyTradeStatsMapCleanup<Runtime, AaaMbmWeight<Runtime>>,
+	);
+}
 
 parameter_types! {
 	pub MbmServiceWeight: Weight = Perbill::from_percent(80) * RuntimeBlockWeights::get().max_block;
@@ -415,7 +415,7 @@ impl pallet_migrations::Config for Runtime {
 	#[cfg(feature = "runtime-benchmarks")]
 	type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
 	#[cfg(not(feature = "runtime-benchmarks"))]
-	type Migrations = ();
+	type Migrations = MultiBlockMigrations;
 }
 
 /// Records all started and completed upgrades in `UpgradesStarted` and `UpgradesCompleted`.
@@ -815,9 +815,9 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 	type KeyLimit = KeyLimit;
 	type ValueLimit = ValueLimit;
 	type NftHandler = NftTransfer;
-	// type FeeChainMaxLength = AffiliateMaxLevel;
-	// type AffiliateHandler = AffiliatesAAA;
-	// type TournamentHandler = TournamentAAA;
+	type FeeChainMaxLength = AffiliateMaxLevel;
+	type AffiliateHandler = AffiliatesAAA;
+	type TournamentHandler = TournamentAAA;
 	type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
 }
 
@@ -894,33 +894,33 @@ impl pallet_ajuna_nft_transfer::Config for Runtime {
 	type NftHelper = Nft;
 }
 
-// parameter_types! {
-// 	pub const AffiliateMaxLevel: u32 = 2;
-// }
-//
-// pub type AffiliatesInstanceAAA = pallet_ajuna_affiliates::Instance1;
-// impl pallet_ajuna_affiliates::Config<AffiliatesInstanceAAA> for Runtime {
-// 	type RuntimeEvent = RuntimeEvent;
-// 	type RuleIdentifier = pallet_ajuna_awesome_avatars::types::AffiliateMethods;
-// 	type RuntimeRule = pallet_ajuna_awesome_avatars::FeePropagationOf<Runtime>;
-// 	type AffiliateMaxLevel = AffiliateMaxLevel;
-// }
-//
-// parameter_types! {
-// 	pub const TournamentPalletId1: PalletId = PalletId(*b"aj/trmt1");
-// 	pub const MinimumTournamentPhaseDuration: BlockNumber = 100;
-// }
-//
-// type TournamentInstance1 = pallet_ajuna_tournament::Instance1;
-// impl pallet_ajuna_tournament::Config<TournamentInstance1> for Runtime {
-// 	type PalletId = TournamentPalletId1;
-// 	type RuntimeEvent = RuntimeEvent;
-// 	type Currency = Balances;
-// 	type SeasonId = pallet_ajuna_awesome_avatars::types::SeasonId;
-// 	type EntityId = pallet_ajuna_awesome_avatars::AvatarIdOf<Runtime>;
-// 	type RankedEntity = pallet_ajuna_awesome_avatars::types::Avatar<BlockNumberFor<Runtime>>;
-// 	type MinimumTournamentPhaseDuration = MinimumTournamentPhaseDuration;
-// }
+parameter_types! {
+	pub const AffiliateMaxLevel: u32 = 2;
+}
+
+pub type AffiliatesInstanceAAA = pallet_ajuna_affiliates::Instance1;
+impl pallet_ajuna_affiliates::Config<AffiliatesInstanceAAA> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type RuleIdentifier = pallet_ajuna_awesome_avatars::types::AffiliateMethods;
+	type RuntimeRule = pallet_ajuna_awesome_avatars::FeePropagationOf<Runtime>;
+	type AffiliateMaxLevel = AffiliateMaxLevel;
+}
+
+parameter_types! {
+	pub const TournamentPalletId1: PalletId = PalletId(*b"aj/trmt1");
+	pub const MinimumTournamentPhaseDuration: BlockNumber = 100;
+}
+
+type TournamentInstance1 = pallet_ajuna_tournament::Instance1;
+impl pallet_ajuna_tournament::Config<TournamentInstance1> for Runtime {
+	type PalletId = TournamentPalletId1;
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type SeasonId = pallet_ajuna_awesome_avatars::types::SeasonId;
+	type EntityId = pallet_ajuna_awesome_avatars::AvatarIdOf<Runtime>;
+	type RankedEntity = pallet_ajuna_awesome_avatars::types::Avatar<BlockNumberFor<Runtime>>;
+	type MinimumTournamentPhaseDuration = MinimumTournamentPhaseDuration;
+}
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
@@ -982,10 +982,10 @@ construct_runtime!(
 		NftTransfer: pallet_ajuna_nft_transfer = 61,
 
 		// Indexes 70-79 should be reserved for Affiliate instances
-		// AffiliatesAAA: pallet_ajuna_affiliates::<Instance1> = 70,
+		AffiliatesAAA: pallet_ajuna_affiliates::<Instance1> = 70,
 
 		// Indexes 80-89 should be reserved for Tournament instances
-		// TournamentAAA: pallet_ajuna_tournament::<Instance1> = 80,
+		TournamentAAA: pallet_ajuna_tournament::<Instance1> = 80,
 
 		// Assets related stuff
 		Assets: pallet_assets::<Instance1> = 90,

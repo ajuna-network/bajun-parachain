@@ -92,3 +92,17 @@ pub fn bajun_westend_config() -> Result<ChainSpec, String> {
 ```
 
 7. Refer to the new function in `node/src/command.rs`.
+## Build
+
+- Using `cargo`:
+
+  ```bash
+  # parachain with Bajun runtime
+  cargo build --release
+  ```
+- Using `Docker`:
+
+  ```bash
+  # parachain with Bajun runtime
+  docker build -f docker/Dockerfile -t ajuna/parachain-bajun:latest . --build-arg features=bajun --build-arg bin=bajun-para
+  ```

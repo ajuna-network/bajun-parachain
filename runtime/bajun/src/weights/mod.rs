@@ -26,7 +26,7 @@ pub mod cumulus_pallet_parachain_system;
 pub mod cumulus_pallet_xcmp_queue;
 pub mod frame_system;
 pub mod orml_vesting;
-// pub mod pallet_ajuna_awesome_avatars_mbm;
+pub mod pallet_ajuna_awesome_avatars_mbm;
 pub mod pallet_asset_registry;
 pub mod pallet_assets;
 pub mod pallet_balances;

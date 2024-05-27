@@ -162,14 +162,14 @@ orml-xtokens = { version = "0.10.0", default-features = false }
 bajun-runtime = { path = "runtime/bajun" }
 
 # Ajuna Pallets
-#pallet-ajuna-affiliates                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.0", default-features = false }
-pallet-ajuna-awesome-avatars              = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "v0.1.0-polkadot-v1.10.0", default-features = false }
-pallet-ajuna-battle-mogs                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "v0.1.0-polkadot-v1.10.0", default-features = false }
-pallet-ajuna-awesome-avatars-benchmarking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "v0.1.0-polkadot-v1.10.0", default-features = false }
-pallet-ajuna-nft-transfer                 = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "v0.1.0-polkadot-v1.10.0", default-features = false }
-pallet-ajuna-nft-staking                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "v0.1.0-polkadot-v1.10.0", default-features = false }
-#pallet-ajuna-tournament                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.0", default-features = false }
-orml-pallets-benchmarking                 = { git = "https://github.com/ajuna-network/ajuna-pallets.git", branch = "v0.1.0-polkadot-v1.10.0", default-features = false }
+pallet-ajuna-affiliates                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
+pallet-ajuna-awesome-avatars              = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
+pallet-ajuna-battle-mogs                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
+pallet-ajuna-awesome-avatars-benchmarking = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
+pallet-ajuna-nft-transfer                 = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
+pallet-ajuna-nft-staking                  = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
+pallet-ajuna-tournament                   = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
+orml-pallets-benchmarking                 = { git = "https://github.com/ajuna-network/ajuna-pallets.git", tag = "v0.7.1", default-features = false }
 
 # integritee pallets
 pallet-asset-registry = { default-features = false, git = "https://github.com/integritee-network/pallets.git", branch = "cl/polkadot-v1.10.0" }
