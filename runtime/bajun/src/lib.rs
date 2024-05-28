@@ -377,27 +377,14 @@ impl frame_system::Config for Runtime {
 	type PostTransactions = ();
 }
 
-type SingleBlockMigrations = (pallet_ajuna_awesome_avatars::migration::v6::MigrateToV6<Runtime>,);
+type SingleBlockMigrations = (pallet_collator_selection::migration::v2::MigrationToV2<Runtime>,);
 
 #[cfg(not(feature = "runtime-benchmarks"))]
 use mbm::MultiBlockMigrations;
 
 #[cfg(not(feature = "runtime-benchmarks"))]
 mod mbm {
-	use crate::Runtime;
-	use pallet_ajuna_awesome_avatars::migration::v6::mbm::{
-		LazyMigrationAvatarV5ToV6, LazyMigrationPlayerSeasonConfigsV5ToV6,
-		LazyMigrationSeasonStatsV5ToV6, LazyTradeStatsMapCleanup,
-	};
-
-	use crate::weights::pallet_ajuna_awesome_avatars_mbm::WeightInfo as AaaMbmWeight;
-
-	pub type MultiBlockMigrations = (
-		LazyMigrationPlayerSeasonConfigsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-		LazyMigrationSeasonStatsV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-		LazyMigrationAvatarV5ToV6<Runtime, AaaMbmWeight<Runtime>>,
-		LazyTradeStatsMapCleanup<Runtime, AaaMbmWeight<Runtime>>,
-	);
+	pub type MultiBlockMigrations = ();
 }
 
 parameter_types! {
