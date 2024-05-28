@@ -440,6 +440,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b34d609dfbaf33d6889b2b7106d3ca345eacad44200913df5ba02bfd31d2ba9"
 
 [[package]]
+name = "assets-common"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3c72ef4a7873eb1aeaf57fa0aa2d330c1ef6e2ba2bfcb26b338612d6133c789f"
+dependencies = [
+ "cumulus-primitives-core",
+ "frame-support",
+ "impl-trait-for-tuples",
+ "log",
+ "pallet-asset-conversion",
+ "pallet-xcm",
+ "parachains-common",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-api",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "substrate-wasm-builder",
+]
+
+[[package]]
 name = "async-channel"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -657,7 +681,7 @@ dependencies = [
 
 [[package]]
 name = "bajun-node"
-version = "0.4.1"
+version = "0.5.0"
 dependencies = [
  "async-trait",
  "bajun-runtime",
@@ -734,8 +758,9 @@ dependencies = [
 
 [[package]]
 name = "bajun-runtime"
-version = "0.4.1"
+version = "0.5.0"
 dependencies = [
+ "assets-common",
  "cumulus-pallet-aura-ext",
  "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
@@ -754,12 +779,18 @@ dependencies = [
  "hex-literal",
  "log",
  "orml-pallets-benchmarking",
+ "orml-traits",
  "orml-vesting",
+ "orml-xcm",
+ "orml-xcm-support",
+ "orml-xtokens",
  "pallet-ajuna-affiliates",
  "pallet-ajuna-awesome-avatars",
  "pallet-ajuna-awesome-avatars-benchmarking",
  "pallet-ajuna-nft-transfer",
  "pallet-ajuna-tournament",
+ "pallet-asset-registry",
+ "pallet-assets",
  "pallet-aura",
  "pallet-authorship",
  "pallet-balances",
@@ -810,6 +841,7 @@ dependencies = [
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
+ "xcm-primitives",
 ]
 
 [[package]]
@@ -6065,6 +6097,43 @@ dependencies = [
 ]
 
 [[package]]
+name = "orml-traits"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "598e41658df928ddcb07743ab376fdd0c2467ca0f1124c15e82283dfd96dc5d0"
+dependencies = [
+ "frame-support",
+ "impl-trait-for-tuples",
+ "num-traits",
+ "orml-utilities",
+ "parity-scale-codec",
+ "paste",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+]
+
+[[package]]
+name = "orml-utilities"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "539cb12181b6cd6587ea3501acc05de3190ae9498fcc08fb54afad01c3ccc99a"
+dependencies = [
+ "frame-support",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "orml-vesting"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6078,6 +6147,58 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "orml-xcm"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "66ad1094bb068a95738ca9f25df77f1a4cd32990662409a7d24c85d358b046d7"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-std",
+ "staging-xcm",
+]
+
+[[package]]
+name = "orml-xcm-support"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4d05104ca96aa79b4dd48bd2d9e43ed58520a029108ecee26924fe1e909f0046"
+dependencies = [
+ "frame-support",
+ "orml-traits",
+ "parity-scale-codec",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-executor",
+]
+
+[[package]]
+name = "orml-xtokens"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e50b4d05d1c4a15cf672580f4253404dd9c8c31282d7ec291b69b2148c4ba222"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "log",
+ "orml-traits",
+ "orml-xcm-support",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-executor",
 ]
 
 [[package]]
@@ -6198,6 +6319,24 @@ dependencies = [
  "sp-core",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-asset-registry"
+version = "0.0.1"
+source = "git+https://github.com/integritee-network/pallets.git?branch=cl/polkadot-v1.10.0#81fa886ff4ce61097351ca2c18ada29087c111fb"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "pallet-assets",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "xcm-primitives",
 ]
 
 [[package]]
@@ -14879,6 +15018,18 @@ dependencies = [
  "sp-std",
  "sp-weights",
  "staging-xcm",
+]
+
+[[package]]
+name = "xcm-primitives"
+version = "0.0.1"
+source = "git+https://github.com/integritee-network/pallets.git?branch=cl/polkadot-v1.10.0#81fa886ff4ce61097351ca2c18ada29087c111fb"
+dependencies = [
+ "frame-support",
+ "sp-runtime",
+ "sp-std",
+ "staging-xcm",
+ "staging-xcm-executor",
 ]
 
 [[package]]

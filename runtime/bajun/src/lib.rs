@@ -22,13 +22,14 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+mod assets;
 mod gov;
 mod proxy_type;
 mod weights;
 pub mod xcm_config;
 
 use crate::gov::EnsureRootOrMoreThanHalfCouncil;
-use cumulus_primitives_core::{AggregateMessageOrigin, ParaId};
+use cumulus_primitives_core::AggregateMessageOrigin;
 use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use smallvec::smallvec;
 use sp_api::impl_runtime_apis;
@@ -54,7 +55,7 @@ use frame_support::{
 	traits::{
 		fungible::HoldConsideration,
 		tokens::{PayFromAccount, UnityAssetBalanceConversion},
-		AsEnsureOriginWithArg, ConstBool, Contains, LinearStoragePrice, TransformOrigin,
+		AsEnsureOriginWithArg, ConstBool, Contains, LinearStoragePrice,
 	},
 	weights::{
 		constants::WEIGHT_REF_TIME_PER_SECOND, ConstantMultiplier, Weight, WeightToFeeCoefficient,
@@ -72,7 +73,6 @@ use pallet_transaction_payment::CurrencyAdapter;
 use scale_info::TypeInfo;
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
-use xcm_config::XcmOriginToTransactDispatchOrigin;
 
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -86,11 +86,7 @@ use weights::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
 use staging_xcm::latest::prelude::BodyId;
 
 use pallet_nfts::{AttributeNamespace, Call as NftsCall};
-use parachains_common::{
-	message_queue::{NarrowOriginToSibling, ParaIdToSibling},
-	BlockNumber, Hash, Header,
-};
-use polkadot_runtime_common::xcm_sender::NoPriceForMessageDelivery;
+use parachains_common::{message_queue::NarrowOriginToSibling, BlockNumber, Hash, Header};
 use sp_runtime::traits::{IdentifyAccount, IdentityLookup, Verify};
 
 parameter_types! {
@@ -219,7 +215,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("bajun"),
 	impl_name: create_runtime_str!("bajun"),
 	authoring_version: 1,
-	spec_version: 401,
+	spec_version: 500,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -581,18 +577,6 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 impl staging_parachain_info::Config for Runtime {}
 
 impl cumulus_pallet_aura_ext::Config for Runtime {}
-
-impl cumulus_pallet_xcmp_queue::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type ChannelInfo = ParachainSystem;
-	type VersionWrapper = ();
-	type MaxInboundSuspended = sp_core::ConstU32<1_000>;
-	type ControllerOrigin = EnsureRoot<AccountId>;
-	type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
-	type WeightInfo = weights::cumulus_pallet_xcmp_queue::WeightInfo<Runtime>;
-	type PriceForSiblingDelivery = NoPriceForMessageDelivery<ParaId>;
-	type XcmpQueue = TransformOrigin<MessageQueue, AggregateMessageOrigin, ParaId, ParaIdToSibling>;
-}
 
 parameter_types! {
 	pub MessageQueueServiceWeight: Weight = Perbill::from_percent(35) * RuntimeBlockWeights::get().max_block;
@@ -960,6 +944,8 @@ construct_runtime!(
 		CumulusXcm: cumulus_pallet_xcm = 32,
 		// DmpQueue: cumulus_pallet_dmp_queue = 33,
 		MessageQueue: pallet_message_queue = 34,
+		XTokens: orml_xtokens = 35,
+		OrmlXcm: orml_xcm = 36,
 
 		// Governance
 		Sudo: pallet_sudo = 40,
@@ -987,6 +973,10 @@ construct_runtime!(
 
 		// Indexes 80-89 should be reserved for Tournament instances
 		TournamentAAA: pallet_ajuna_tournament::<Instance1> = 80,
+
+		// Assets related stuff
+		Assets: pallet_assets::<Instance1> = 90,
+		AssetRegistry: pallet_asset_registry = 91,
 	}
 );
 

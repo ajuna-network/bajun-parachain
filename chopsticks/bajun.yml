@@ -6,7 +6,7 @@ endpoint:
   - wss://bajun.public.curie.radiumblock.co/ws
 mock-signature-host: true
 block: ${env.BAJUN_PARACHAIN_BLOCK_NUMBER}
-db: ./chopsticks/bajun-parachain.db.sqlite
+db: ./chopsticks/dbs/bajun/db.sqlite
 runtime-log-level: 5
 # wasm-override: bajun_runtime.wasm
 

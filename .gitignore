@@ -35,7 +35,7 @@ build/
 /target
 
 # Chopsticks
-/chopsticks/*.db.sqlite*
+/chopsticks/dbs/
 
 # genesis state and chain-spec dumps
 /chain_dumps

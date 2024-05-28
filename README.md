@@ -53,7 +53,14 @@ Then we can send an arbitrary extrinsic to trigger the next block and observe th
 
 ### Test XCM stuff
 
-TBD when we actually start setting up XCM.
+Test Basilisk integration. Note: the tx links will work only if the local setup with chopsticks is running.
+
+1. Setup local network
+   with `npx @acala-network/chopsticks@latest xcm --p=chopsticks/bajun.yml --p=chopsticks/basilisk.yml`
+2. Transfer from Bajun to Basilisk: Our token has token id 18 on basilisk, so you can send this
+   tx: [Transfer Bajun to Alice on Basilisk](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2Flocalhost%3A8000#/extrinsics/decode/0x2300000010a5d4e8000000000000000000000003010200a9200100d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d00)
+3. Transfer from Basilisk to
+   Bajun: [Transfer Bajun to Alice Stash on Bajun](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2Flocalhost%3A8001#/extrinsics/decode/0x9a001200000000e87648170000000000000000000000030102001d210100be5ddb1579b72e84524fc29e78609e3caf42e85aa118ebfe0b0ad404b5bdd25f00)
 
 ### Test Governance execution
 
