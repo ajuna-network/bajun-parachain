@@ -31,6 +31,7 @@ use sp_runtime::{
 	ApplyExtrinsicResult,
 };
 
+#[allow(dead_code)]
 pub struct Runtime;
 
 sp_api::impl_runtime_apis! {

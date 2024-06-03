@@ -452,6 +452,7 @@ impl<R> BuildOnAccess<R> {
 	}
 }
 
+#[allow(dead_code)]
 /// Special [`ParachainConsensus`] implementation that waits for the upgrade from
 /// shell to a parachain runtime that implements Aura.
 struct WaitForAuraConsensus<Client, AuraId> {

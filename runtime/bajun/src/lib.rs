@@ -69,6 +69,7 @@ use frame_system::{
 	EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
 use pallet_identity::legacy::IdentityInfo;
+#[allow(deprecated)]
 use pallet_transaction_payment::CurrencyAdapter;
 use scale_info::TypeInfo;
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -475,6 +476,7 @@ parameter_types! {
 
 impl pallet_transaction_payment::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
+	#[allow(deprecated)]
 	type OnChargeTransaction = CurrencyAdapter<Balances, Treasury>;
 	type WeightToFee = WeightToFee;
 	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;

@@ -114,6 +114,7 @@ pub enum RelayChain {
 	WestendLocal,
 }
 
+#[allow(clippy::to_string_trait_impl)]
 impl ToString for RelayChain {
 	fn to_string(&self) -> String {
 		match self {
