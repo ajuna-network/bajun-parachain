@@ -27,6 +27,8 @@ use sp_runtime::{
 	ApplyExtrinsicResult,
 };
 
+// We don't need the runtime, but we need the `RuntimeApi` that is generated
+// by `impl_runtime_apis`.
 #[allow(dead_code)]
 pub struct Runtime;
 
