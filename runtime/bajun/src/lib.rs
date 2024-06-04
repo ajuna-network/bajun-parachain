@@ -69,10 +69,14 @@ use frame_system::{
 	EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
 use pallet_identity::legacy::IdentityInfo;
-use pallet_transaction_payment::CurrencyAdapter;
 use scale_info::TypeInfo;
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
+
+// Wait until more upstream code has migrated, see:
+// https://github.com/paritytech/polkadot-sdk/pull/2292
+#[allow(deprecated)]
+use pallet_transaction_payment::CurrencyAdapter;
 
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -475,6 +479,9 @@ parameter_types! {
 
 impl pallet_transaction_payment::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
+	// Wait until more upstream code has migrated, see:
+	// https://github.com/paritytech/polkadot-sdk/pull/2292
+	#[allow(deprecated)]
 	type OnChargeTransaction = CurrencyAdapter<Balances, Treasury>;
 	type WeightToFee = WeightToFee;
 	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
