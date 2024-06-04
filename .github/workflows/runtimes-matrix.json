@@ -4,5 +4,12 @@
     "package": "bajun-runtime",
     "path": "runtime/bajun-runtime",
     "uri": "wss://rpc-parachain.bajun.network:443"
+  },
+  {
+    "name": "bajun-paseo",
+    "package": "bajun-runtime",
+    "path": "runtime/bajun-runtime",
+    "uri": "wss://rococo.bajun.network:443",
+    "is_relay": false
   }
 ]
