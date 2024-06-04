@@ -157,6 +157,7 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPalletsWithSystem,
+	SingleBlockMigrations,
 >;
 
 /// Handles converting a weight scalar to a fee value, based on the scale and granularity of the
@@ -374,7 +375,12 @@ impl frame_system::Config for Runtime {
 	/// The Block provider type
 	type Block = Block;
 	type RuntimeTask = RuntimeTask;
-	type SingleBlockMigrations = SingleBlockMigrations;
+	// Note: Single block migrations are currently run in the classical way in the `Executive`
+	// because try-runtime doesn't support the pallet-migrations yet.
+	//
+	// Once it is supported, we want to switch to the pallet-migrations, but we **must** ensure
+	// that we remove the migrations from the `Executive` to prevent running the migrations twice.
+	type SingleBlockMigrations = ();
 	type MultiBlockMigrator = pallet_migrations::Pallet<Runtime>;
 	type PreInherents = ();
 	type PostInherents = ();
