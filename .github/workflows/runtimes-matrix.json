@@ -9,7 +9,7 @@
     "name": "bajun-paseo",
     "package": "bajun-runtime",
     "path": "runtime/bajun-runtime",
-    "uri": "wss://rococo.bajun.network:443",
+    "uri": "wss://rpc-paseo.bajun.network:443",
     "is_relay": false
   }
 ]
