@@ -475,7 +475,9 @@ parameter_types! {
 
 impl pallet_transaction_payment::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	#[allow(deprecated)] // wait until more upstream code has migrated
+	// Wait until more upstream code has migrated, see:
+	// https://github.com/paritytech/polkadot-sdk/pull/2292
+	#[allow(deprecated)]
 	type OnChargeTransaction = CurrencyAdapter<Balances, Treasury>;
 	type WeightToFee = WeightToFee;
 	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
