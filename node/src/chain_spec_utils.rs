@@ -2,7 +2,7 @@ use bajun_runtime::{AccountId, AuraId};
 use sc_chain_spec::ChainType;
 use sp_core::{crypto::Ss58Codec, sr25519, Public};
 use sp_keyring::AccountKeyring::{Alice, Bob, Charlie, Dave, Eve, Ferdie};
-use std::str::FromStr;
+use std::{fmt::Display, str::FromStr};
 
 pub fn pub_sr25519(ss58: &str) -> sr25519::Public {
 	public_from_ss58::<sr25519::Public>(ss58)
@@ -114,17 +114,18 @@ pub enum RelayChain {
 	WestendLocal,
 }
 
-impl ToString for RelayChain {
-	fn to_string(&self) -> String {
-		match self {
-			RelayChain::Kusama => "kusama".into(),
-			RelayChain::Paseo => "paseo".into(),
-			RelayChain::Westend => "westend".into(),
-			RelayChain::KusamaLocal => "kusama-local".into(),
-			RelayChain::PaseoLocal => "paseo-local".into(),
-			RelayChain::RococoLocal => "rococo-local".into(),
-			RelayChain::WestendLocal => "westend-local".into(),
-		}
+impl Display for RelayChain {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let str = match self {
+			RelayChain::Kusama => "kusama",
+			RelayChain::Paseo => "paseo",
+			RelayChain::Westend => "westend",
+			RelayChain::KusamaLocal => "kusama-local",
+			RelayChain::PaseoLocal => "paseo-local",
+			RelayChain::RococoLocal => "rococo-local",
+			RelayChain::WestendLocal => "westend-local",
+		};
+		write!(f, "{}", str)
 	}
 }
 
