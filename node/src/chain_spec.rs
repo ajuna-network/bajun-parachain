@@ -73,7 +73,7 @@ pub fn bajun_chain_spec(
 		Extensions { relay_chain: relay_chain.to_string(), para_id: para_id.into() },
 	)
 	.with_name("Bajun")
-	.with_id(&format!("bajun-{}", relay_chain.to_string()))
+	.with_id(&format!("bajun-{}", relay_chain))
 	.with_protocol_id(relay_chain.protocol_id())
 	.with_chain_type(relay_chain.chain_type())
 	.with_properties(properties)
