@@ -17,11 +17,7 @@
 //! These are used to provide a type that implements these runtime APIs without requiring to import
 //! the native runtimes.
 
-use bajun_runtime::RuntimeGenesisConfig;
-use frame_support::{
-	genesis_builder_helper::{build_state, get_preset},
-	weights::Weight,
-};
+use frame_support::weights::Weight;
 use parachains_common::{AccountId, AuraId, Balance, Nonce};
 use polkadot_primitives::Block;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
@@ -31,6 +27,7 @@ use sp_runtime::{
 	ApplyExtrinsicResult,
 };
 
+#[allow(dead_code)]
 pub struct Runtime;
 
 sp_api::impl_runtime_apis! {
@@ -193,16 +190,16 @@ sp_api::impl_runtime_apis! {
 	}
 
 	impl sp_genesis_builder::GenesisBuilder<Block> for Runtime {
-		fn build_state(config: Vec<u8>) -> sp_genesis_builder::Result {
-			build_state::<RuntimeGenesisConfig>(config)
+		fn build_state(_: Vec<u8>) -> sp_genesis_builder::Result {
+			unimplemented!()
 		}
 
-		fn get_preset(id: &Option<sp_genesis_builder::PresetId>) -> Option<Vec<u8>> {
-			get_preset::<RuntimeGenesisConfig>(id, |_| None)
+		fn get_preset(_id: &Option<sp_genesis_builder::PresetId>) -> Option<Vec<u8>> {
+			unimplemented!()
 		}
 
 		fn preset_names() -> Vec<sp_genesis_builder::PresetId> {
-			Default::default()
+			unimplemented!()
 		}
 	}
 }
