@@ -381,7 +381,7 @@ impl frame_system::Config for Runtime {
 	// Once it is supported, we want to switch to the pallet-migrations, but we **must** ensure
 	// that we remove the migrations from the `Executive` to prevent running the migrations twice.
 	type SingleBlockMigrations = ();
-	type MultiBlockMigrator = ();
+	type MultiBlockMigrator = pallet_migrations::Pallet<Runtime>;
 	type PreInherents = ();
 	type PostInherents = ();
 	type PostTransactions = ();
