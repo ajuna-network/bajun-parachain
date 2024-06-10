@@ -36,6 +36,7 @@ assets-common                              = { version = "0.13.0", default-featu
 frame-benchmarking                         = { version = "34.0.0", default-features = false }
 frame-benchmarking-cli                     = { version = "38.0.0" }
 frame-executive                            = { version = "34.0.0", default-features = false }
+frame-metadata-hash-extension              = { version = "0.1.0", default-features = false }
 frame-support                              = { version = "34.0.0", default-features = false }
 frame-system                               = { version = "34.0.1", default-features = false }
 frame-system-benchmarking                  = { version = "34.0.0", default-features = false }
@@ -109,7 +110,7 @@ sp-version                                 = { version = "35.0.0", default-featu
 substrate-build-script-utils               = { version = "11.0.0" }
 substrate-frame-rpc-system                 = { version = "34.0.0" }
 substrate-prometheus-endpoint              = { version = "0.17.0" }
-substrate-wasm-builder                     = { version = "22.0.0" }
+substrate-wasm-builder                     = { version = "18.0.1" }
 substrate-state-trie-migration-rpc         = { version = "33.0.0" }
 try-runtime-cli                            = { version = "0.42.0", default-features = false }
 

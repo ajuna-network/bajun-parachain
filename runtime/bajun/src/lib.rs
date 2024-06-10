@@ -132,6 +132,7 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 
 /// The SignedExtension to the basic transaction logic.
+#[cfg(not(feature = "metadata-hash"))]
 pub type SignedExtra = (
 	frame_system::CheckNonZeroSender<Runtime>,
 	frame_system::CheckSpecVersion<Runtime>,
@@ -141,6 +142,19 @@ pub type SignedExtra = (
 	frame_system::CheckNonce<Runtime>,
 	frame_system::CheckWeight<Runtime>,
 	pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+);
+
+#[cfg(feature = "metadata-hash")]
+pub type SignedExtra = (
+	frame_system::CheckNonZeroSender<Runtime>,
+	frame_system::CheckSpecVersion<Runtime>,
+	frame_system::CheckTxVersion<Runtime>,
+	frame_system::CheckGenesis<Runtime>,
+	frame_system::CheckEra<Runtime>,
+	frame_system::CheckNonce<Runtime>,
+	frame_system::CheckWeight<Runtime>,
+	pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+	frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
 );
 
 /// Unchecked extrinsic type as expected by this runtime.

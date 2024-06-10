@@ -1,5 +1,5 @@
 [alias]
-build-bajun            = "build --release --no-default-features --bin bajun-node"
+build-bajun            = "build --release --no-default-features --bin bajun-node --features metadata-hash"
 build-bajun-benchmarks = [ "build-bajun", "--features", "runtime-benchmarks" ]
 
 [target.'cfg(feature = "cargo-clippy")']
