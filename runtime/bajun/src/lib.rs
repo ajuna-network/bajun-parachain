@@ -387,7 +387,7 @@ impl frame_system::Config for Runtime {
 	type PostTransactions = ();
 }
 
-type SingleBlockMigrations = (pallet_collator_selection::migration::v2::MigrationToV2<Runtime>,);
+type SingleBlockMigrations = ();
 
 #[cfg(not(feature = "runtime-benchmarks"))]
 use mbm::MultiBlockMigrations;
