@@ -16,7 +16,7 @@
 
 use crate::{
 	weights, AccountId, Balance, BlockNumber, Council, OriginCaller, Runtime, RuntimeBlockWeights,
-	RuntimeCall, RuntimeEvent, RuntimeOrigin, TechnicalCommittee, BAJUN, DAYS,
+	RuntimeCall, RuntimeEvent, RuntimeOrigin, TechnicalCommittee, BAJU, DAYS,
 };
 use frame_support::{
 	parameter_types,
@@ -128,7 +128,7 @@ parameter_types! {
 	pub const TwentyEightDays: BlockNumber = 28 * DAYS;
 	pub const ThirtyDays: BlockNumber = 30 * DAYS;
 	pub EnactmentPeriod: BlockNumber = 7 * DAYS;
-	pub const MinimumDeposit: Balance = 500 * BAJUN;
+	pub const MinimumDeposit: Balance = 500 * BAJU;
 }
 
 impl pallet_democracy::Config for Runtime {

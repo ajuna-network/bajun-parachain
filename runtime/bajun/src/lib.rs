@@ -174,9 +174,9 @@ pub struct WeightToFee;
 impl WeightToFeePolynomial for WeightToFee {
 	type Balance = Balance;
 	fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-		// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLI_BAJUN:
-		// in our template, we map to 1/10 of that, or 1/10 MILLI_BAJUN
-		let p = MILLI_BAJUN / 10;
+		// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLI_BAJU:
+		// in our template, we map to 1/10 of that, or 1/10 MILLI_BAJU
+		let p = MILLI_BAJU / 10;
 		let q = 100 * Balance::from(ExtrinsicBaseWeight::get().ref_time());
 		smallvec![WeightToFeeCoefficient {
 			degree: 1,
@@ -244,14 +244,14 @@ pub const HOURS: BlockNumber = MINUTES * 60;
 pub const DAYS: BlockNumber = HOURS * 24;
 
 // Unit = the base number of indivisible units for balances
-pub const BAJUN: Balance = 1_000_000_000_000;
-pub const MILLI_BAJUN: Balance = 1_000_000_000;
-pub const MICRO_BAJUN: Balance = 1_000_000;
-pub const NANO_BAJUN: Balance = 1_000;
-pub const PICO_BAJUN: Balance = 1;
+pub const BAJU: Balance = 1_000_000_000_000;
+pub const MILLI_BAJU: Balance = 1_000_000_000;
+pub const MICRO_BAJU: Balance = 1_000_000;
+pub const NANO_BAJU: Balance = 1_000;
+pub const PICO_BAJU: Balance = 1;
 
 /// The existential deposit. Set to 1/10 of the Connected Relay Chain.
-pub const EXISTENTIAL_DEPOSIT: Balance = MILLI_BAJUN;
+pub const EXISTENTIAL_DEPOSIT: Balance = MILLI_BAJU;
 
 /// We assume that ~5% of the block weight is consumed by `on_initialize` handlers. This is
 /// used to limit the maximal weight of a single extrinsic.
@@ -479,7 +479,7 @@ impl pallet_balances::Config for Runtime {
 
 parameter_types! {
 	/// Relay Chain `TransactionByteFee` / 10
-	pub const TransactionByteFee: Balance = 10 * MICRO_BAJUN;
+	pub const TransactionByteFee: Balance = 10 * MICRO_BAJU;
 	pub const OperationalFeeMultiplier: u8 = 5;
 }
 
@@ -500,8 +500,8 @@ parameter_types! {
 	pub const ZeroPercent: Permill = Permill::from_percent(0);
 	pub const FivePercent: Permill = Permill::from_percent(5);
 	pub const FiftyPercent: Permill = Permill::from_percent(50);
-	pub const MinimumProposalBond: Balance = BAJUN;
-	pub const MaximumProposalBond: Balance = 500 * BAJUN;
+	pub const MinimumProposalBond: Balance = BAJU;
+	pub const MaximumProposalBond: Balance = 500 * BAJU;
 	pub const Fortnightly: BlockNumber = 14 * DAYS;
 	pub const Weekly: BlockNumber = 7 * DAYS;
 	pub const Daily: BlockNumber = DAYS;
@@ -543,7 +543,7 @@ impl pallet_treasury::Config for Runtime {
 }
 
 parameter_types! {
-	pub const MinVestedTransfer: Balance = MILLI_BAJUN;
+	pub const MinVestedTransfer: Balance = MILLI_BAJU;
 }
 
 impl orml_vesting::Config for Runtime {
@@ -675,7 +675,7 @@ impl pallet_collator_selection::Config for Runtime {
 }
 
 pub const fn deposit(items: u32, bytes: u32) -> Balance {
-	items as Balance * 20 * BAJUN + (bytes as Balance) * 1_000 * MICRO_BAJUN
+	items as Balance * 20 * BAJU + (bytes as Balance) * 1_000 * MICRO_BAJU
 }
 
 parameter_types! {
@@ -822,8 +822,8 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 }
 
 parameter_types! {
-	pub const CollectionDeposit: Balance = 100 * BAJUN;
-	pub const ItemDeposit: Balance = BAJUN / 10;
+	pub const CollectionDeposit: Balance = 100 * BAJU;
+	pub const ItemDeposit: Balance = BAJU / 10;
 	pub const StringLimit: u32 = 128;
 	pub const MetadataDepositBase: Balance = deposit(1, 129);
 	pub const AttributeDepositBase: Balance = deposit(1, 0);
