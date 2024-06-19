@@ -54,7 +54,7 @@ use frame_support::{
 	parameter_types,
 	traits::{
 		fungible::HoldConsideration,
-		tokens::{PayFromAccount, UnityAssetBalanceConversion},
+		tokens::{imbalance::ResolveTo, PayFromAccount, UnityAssetBalanceConversion},
 		AsEnsureOriginWithArg, ConstBool, Contains, LinearStoragePrice,
 	},
 	weights::{
@@ -69,14 +69,10 @@ use frame_system::{
 	EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
 use pallet_identity::legacy::IdentityInfo;
+use pallet_transaction_payment::FungibleAdapter;
 use scale_info::TypeInfo;
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
-
-// Wait until more upstream code has migrated, see:
-// https://github.com/paritytech/polkadot-sdk/pull/2292
-#[allow(deprecated)]
-use pallet_transaction_payment::CurrencyAdapter;
 
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -174,9 +170,9 @@ pub struct WeightToFee;
 impl WeightToFeePolynomial for WeightToFee {
 	type Balance = Balance;
 	fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-		// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLI_BAJUN:
-		// in our template, we map to 1/10 of that, or 1/10 MILLI_BAJUN
-		let p = MILLI_BAJUN / 10;
+		// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLI_BAJU:
+		// in our template, we map to 1/10 of that, or 1/10 MILLI_BAJU
+		let p = MILLI_BAJU / 10;
 		let q = 100 * Balance::from(ExtrinsicBaseWeight::get().ref_time());
 		smallvec![WeightToFeeCoefficient {
 			degree: 1,
@@ -244,14 +240,14 @@ pub const HOURS: BlockNumber = MINUTES * 60;
 pub const DAYS: BlockNumber = HOURS * 24;
 
 // Unit = the base number of indivisible units for balances
-pub const BAJUN: Balance = 1_000_000_000_000;
-pub const MILLI_BAJUN: Balance = 1_000_000_000;
-pub const MICRO_BAJUN: Balance = 1_000_000;
-pub const NANO_BAJUN: Balance = 1_000;
-pub const PICO_BAJUN: Balance = 1;
+pub const BAJU: Balance = 1_000_000_000_000;
+pub const MILLI_BAJU: Balance = 1_000_000_000;
+pub const MICRO_BAJU: Balance = 1_000_000;
+pub const NANO_BAJU: Balance = 1_000;
+pub const PICO_BAJU: Balance = 1;
 
 /// The existential deposit. Set to 1/10 of the Connected Relay Chain.
-pub const EXISTENTIAL_DEPOSIT: Balance = MILLI_BAJUN;
+pub const EXISTENTIAL_DEPOSIT: Balance = MILLI_BAJU;
 
 /// We assume that ~5% of the block weight is consumed by `on_initialize` handlers. This is
 /// used to limit the maximal weight of a single extrinsic.
@@ -329,22 +325,35 @@ impl Contains<RuntimeCall> for BaseCallFilter {
 }
 
 impl frame_system::Config for Runtime {
-	/// The identifier used to distinguish between accounts.
-	type AccountId = AccountId;
+	/// The ubiquitous event type.
+	type RuntimeEvent = RuntimeEvent;
+	/// The basic call filter to use in dispatchable.
+	type BaseCallFilter = BaseCallFilter;
+	/// Block & extrinsics weights: base values and limits.
+	type BlockWeights = RuntimeBlockWeights;
+	/// The maximum length of a block (in bytes).
+	type BlockLength = RuntimeBlockLength;
+	/// The ubiquitous origin type.
+	type RuntimeOrigin = RuntimeOrigin;
 	/// The aggregated dispatch type that is available for extrinsics.
 	type RuntimeCall = RuntimeCall;
-	/// The lookup mechanism to get account ID from whatever is passed in dispatchers.
-	type Lookup = AccountIdLookup<AccountId, ()>;
+	type RuntimeTask = RuntimeTask;
+	/// The Nonce value type
+	type Nonce = Nonce;
 	/// The type for hashing blocks and tries.
 	type Hash = Hash;
 	/// The hashing algorithm used.
 	type Hashing = BlakeTwo256;
-	/// The ubiquitous event type.
-	type RuntimeEvent = RuntimeEvent;
-	/// The ubiquitous origin type.
-	type RuntimeOrigin = RuntimeOrigin;
+	/// The identifier used to distinguish between accounts.
+	type AccountId = AccountId;
+	/// The lookup mechanism to get account ID from whatever is passed in dispatchers.
+	type Lookup = AccountIdLookup<AccountId, ()>;
+	/// The Block provider type
+	type Block = Block;
 	/// Maximum number of block number to block hash mappings to keep (oldest pruned first).
 	type BlockHashCount = BlockHashCount;
+	/// The weight of database operations that the runtime can invoke.
+	type DbWeight = RocksDbWeight;
 	/// Runtime version.
 	type Version = Version;
 	/// Converts a module to an index of this module in the runtime.
@@ -355,26 +364,13 @@ impl frame_system::Config for Runtime {
 	type OnNewAccount = ();
 	/// What to do if an account is fully reaped from the system.
 	type OnKilledAccount = ();
-	/// The weight of database operations that the runtime can invoke.
-	type DbWeight = RocksDbWeight;
-	/// The basic call filter to use in dispatchable.
-	type BaseCallFilter = BaseCallFilter;
 	/// Weight information for the extrinsics of this pallet.
 	type SystemWeightInfo = weights::frame_system::WeightInfo<Runtime>;
-	/// Block & extrinsics weights: base values and limits.
-	type BlockWeights = RuntimeBlockWeights;
-	/// The maximum length of a block (in bytes).
-	type BlockLength = RuntimeBlockLength;
 	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
 	type SS58Prefix = SS58Prefix;
 	/// The action to take on a Runtime Upgrade
 	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
-	/// The Nonce value type
-	type Nonce = Nonce;
-	/// The Block provider type
-	type Block = Block;
-	type RuntimeTask = RuntimeTask;
 	// Note: Single block migrations are currently run in the classical way in the `Executive`
 	// because try-runtime doesn't support the pallet-migrations yet.
 	//
@@ -479,16 +475,13 @@ impl pallet_balances::Config for Runtime {
 
 parameter_types! {
 	/// Relay Chain `TransactionByteFee` / 10
-	pub const TransactionByteFee: Balance = 10 * MICRO_BAJUN;
+	pub const TransactionByteFee: Balance = 10 * MICRO_BAJU;
 	pub const OperationalFeeMultiplier: u8 = 5;
 }
 
 impl pallet_transaction_payment::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	// Wait until more upstream code has migrated, see:
-	// https://github.com/paritytech/polkadot-sdk/pull/2292
-	#[allow(deprecated)]
-	type OnChargeTransaction = CurrencyAdapter<Balances, Treasury>;
+	type OnChargeTransaction = FungibleAdapter<Balances, ResolveTo<TreasuryAccount, Balances>>;
 	type WeightToFee = WeightToFee;
 	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
 	type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
@@ -500,8 +493,8 @@ parameter_types! {
 	pub const ZeroPercent: Permill = Permill::from_percent(0);
 	pub const FivePercent: Permill = Permill::from_percent(5);
 	pub const FiftyPercent: Permill = Permill::from_percent(50);
-	pub const MinimumProposalBond: Balance = BAJUN;
-	pub const MaximumProposalBond: Balance = 500 * BAJUN;
+	pub const MinimumProposalBond: Balance = BAJU;
+	pub const MaximumProposalBond: Balance = 500 * BAJU;
 	pub const Fortnightly: BlockNumber = 14 * DAYS;
 	pub const Weekly: BlockNumber = 7 * DAYS;
 	pub const Daily: BlockNumber = DAYS;
@@ -543,7 +536,7 @@ impl pallet_treasury::Config for Runtime {
 }
 
 parameter_types! {
-	pub const MinVestedTransfer: Balance = MILLI_BAJUN;
+	pub const MinVestedTransfer: Balance = MILLI_BAJU;
 }
 
 impl orml_vesting::Config for Runtime {
@@ -675,7 +668,7 @@ impl pallet_collator_selection::Config for Runtime {
 }
 
 pub const fn deposit(items: u32, bytes: u32) -> Balance {
-	items as Balance * 20 * BAJUN + (bytes as Balance) * 1_000 * MICRO_BAJUN
+	items as Balance * 20 * BAJU + (bytes as Balance) * 1_000 * MICRO_BAJU
 }
 
 parameter_types! {
@@ -822,8 +815,8 @@ impl pallet_ajuna_awesome_avatars::Config for Runtime {
 }
 
 parameter_types! {
-	pub const CollectionDeposit: Balance = 100 * BAJUN;
-	pub const ItemDeposit: Balance = BAJUN / 10;
+	pub const CollectionDeposit: Balance = 100 * BAJU;
+	pub const ItemDeposit: Balance = BAJU / 10;
 	pub const StringLimit: u32 = 128;
 	pub const MetadataDepositBase: Balance = deposit(1, 129);
 	pub const AttributeDepositBase: Balance = deposit(1, 0);
