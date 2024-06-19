@@ -19,7 +19,7 @@
 use super::{
 	AccountId, AssetRegistry, Assets, Balance, Balances, MessageQueue, ParachainInfo,
 	ParachainSystem, PolkadotXcm, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin,
-	TreasuryAccount, XcmpQueue, BAJUN,
+	TreasuryAccount, XcmpQueue, BAJU,
 };
 use crate::weights;
 use core::marker::PhantomData;
@@ -68,7 +68,7 @@ parameter_types! {
 	pub const MaxInstructions: u32 = 100;
 }
 
-/// Supported local Currencies. Keep this to BAJUN,
+/// Supported local Currencies. Keep this to BAJU,
 /// other assets will be handled through AssetRegistry pallet
 #[derive(
 	Encode,
@@ -95,9 +95,9 @@ impl Convert<Location, Option<CurrencyId>> for CurrencyIdConvert {
 		let self_para_id: u32 = ParachainInfo::parachain_id().into();
 
 		match location.unpack() {
-			// that's how xTokens with Karura, Bifrost, Moonriver refers to BAJUN
+			// that's how xTokens with Karura, Bifrost, Moonriver refers to BAJU
 			(1, [Parachain(id), BAJU_GENERAL_KEY]) if *id == self_para_id => Some(CurrencyId::BAJU),
-			// that's how the Asset Hub refers to BAJUN
+			// that's how the Asset Hub refers to BAJU
 			(1, [Parachain(id)]) if *id == self_para_id => Some(CurrencyId::BAJU),
 			// same for local location spec. we don't care if parents is 0 or 1
 			(0, [BAJU_GENERAL_KEY]) => Some(CurrencyId::BAJU),
@@ -141,7 +141,7 @@ pub type LocationToAccountId = (
 	HashedDescription<AccountId, DescribeFamily<DescribeAllTerminal>>,
 );
 
-/// Means for transacting BAJUN only.
+/// Means for transacting BAJU only.
 #[allow(deprecated)]
 pub type LocalNativeTransactor = CurrencyAdapter<
 	// Use this currency:
@@ -298,12 +298,12 @@ impl Contains<(Location, Vec<Asset>)> for OnlyTeleportNative {
 }
 
 pub type Traders = (
-	// for BAJUN
+	// for BAJU
 	FixedRateOfFungible<
 		NativePerSecond,
 		XcmFeesTo32ByteAccount<LocalNativeTransactor, AccountId, TreasuryAccount>,
 	>,
-	// for BAJUN for XCM from Karura, Bifrost, Moonriver
+	// for BAJU for XCM from Karura, Bifrost, Moonriver
 	FixedRateOfFungible<
 		NativeAliasPerSecond,
 		XcmFeesTo32ByteAccount<LocalNativeTransactor, AccountId, TreasuryAccount>,
@@ -317,9 +317,9 @@ pub type Traders = (
 
 parameter_types! {
 	pub const MaxAssetsIntoHolding: u32 = 64;
-	pub NativePerSecond: (AssetId, u128,u128) = (Location::new(0,Here).into(), BAJUN * 70, 0u128);
-	pub NativeAliasPerSecond: (AssetId, u128,u128) = (Location::new(0,[BAJU_GENERAL_KEY]).into(), BAJUN * 70, 0u128);
-	pub RelayNativePerSecond: (AssetId, u128,u128) = (Location::new(1,Here).into(), BAJUN * 70, 0u128);
+	pub NativePerSecond: (AssetId, u128,u128) = (Location::new(0,Here).into(), BAJU * 70, 0u128);
+	pub NativeAliasPerSecond: (AssetId, u128,u128) = (Location::new(0,[BAJU_GENERAL_KEY]).into(), BAJU * 70, 0u128);
+	pub RelayNativePerSecond: (AssetId, u128,u128) = (Location::new(1,Here).into(), BAJU * 70, 0u128);
 	// Weight for one XCM operation.
 	pub UnitWeightCost: Weight = Weight::from_parts(1_000_000u64, DEFAULT_PROOF_SIZE);
 	pub const BajunNative: AssetFilter = Wild(AllOf { fun: WildFungible, id: AssetId(Location::here()) });
@@ -440,7 +440,7 @@ parameter_types! {
 	pub const MaxAssetsForTransfer: usize = 2;
 }
 
-// What follows here are specialties only used for xToken reserve-transferring BAJUN to Karura,
+// What follows here are specialties only used for xToken reserve-transferring BAJU to Karura,
 // Bifrost and Moonriver
 
 // The min fee amount in fee asset is split into two parts:
