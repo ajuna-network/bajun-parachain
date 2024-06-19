@@ -15,8 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-	weights, AccountId, Assets, Balance, Balances, Runtime, RuntimeEvent, RuntimeOrigin, BAJUN,
-	MILLI_BAJUN,
+	weights, AccountId, Assets, Balance, Balances, Runtime, RuntimeEvent, RuntimeOrigin, BAJU,
+	MILLI_BAJU,
 };
 use frame_support::{
 	pallet_prelude::ConstU32,
@@ -55,11 +55,11 @@ impl pallet_assets::Config<MainAssetsInstance> for Runtime {
 	type Currency = Balances;
 	type CreateOrigin = NoAssetCreators; //assets can only be created by root
 	type ForceOrigin = EnsureRoot<AccountId>;
-	type AssetDeposit = ConstU128<{ BAJUN }>;
-	type AssetAccountDeposit = ConstU128<{ BAJUN }>;
-	type MetadataDepositBase = ConstU128<{ BAJUN }>;
-	type MetadataDepositPerByte = ConstU128<{ 10 * MILLI_BAJUN }>;
-	type ApprovalDeposit = ConstU128<{ 10 * MILLI_BAJUN }>;
+	type AssetDeposit = ConstU128<{ BAJU }>;
+	type AssetAccountDeposit = ConstU128<{ BAJU }>;
+	type MetadataDepositBase = ConstU128<{ BAJU }>;
+	type MetadataDepositPerByte = ConstU128<{ 10 * MILLI_BAJU }>;
+	type ApprovalDeposit = ConstU128<{ 10 * MILLI_BAJU }>;
 	type StringLimit = ConstU32<50>;
 	type Freezer = ();
 	type Extra = ();
