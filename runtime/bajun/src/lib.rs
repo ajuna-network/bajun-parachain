@@ -383,7 +383,7 @@ impl frame_system::Config for Runtime {
 	type PostTransactions = ();
 }
 
-type SingleBlockMigrations = ();
+type SingleBlockMigrations = (cumulus_pallet_xcmp_queue::migration::v5::MigrateV4ToV5<Runtime>, );
 
 #[cfg(not(feature = "runtime-benchmarks"))]
 use mbm::MultiBlockMigrations;
