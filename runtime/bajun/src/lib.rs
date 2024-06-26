@@ -399,16 +399,16 @@ parameter_types! {
 
 impl pallet_migrations::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
+	#[cfg(feature = "runtime-benchmarks")]
+	type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
+	#[cfg(not(feature = "runtime-benchmarks"))]
+	type Migrations = MultiBlockMigrations;
 	type CursorMaxLen = ConstU32<65_536>;
 	type IdentifierMaxLen = ConstU32<256>;
 	type MigrationStatusHandler = LoggerMigrationStatusHandler;
 	type FailedMigrationHandler = UnstuckFailedMigration;
 	type MaxServiceWeight = MbmServiceWeight;
 	type WeightInfo = weights::pallet_migrations::WeightInfo<Runtime>;
-	#[cfg(feature = "runtime-benchmarks")]
-	type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
-	#[cfg(not(feature = "runtime-benchmarks"))]
-	type Migrations = MultiBlockMigrations;
 }
 
 /// Records all started and completed upgrades in `UpgradesStarted` and `UpgradesCompleted`.
@@ -458,19 +458,19 @@ parameter_types! {
 }
 
 impl pallet_balances::Config for Runtime {
-	type MaxLocks = MaxLocks;
-	type Balance = Balance;
 	type RuntimeEvent = RuntimeEvent;
+	type RuntimeHoldReason = RuntimeHoldReason;
+	type RuntimeFreezeReason = ();
+	type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
+	type Balance = Balance;
 	type DustRemoval = ();
 	type ExistentialDeposit = ExistentialDeposit;
 	type AccountStore = System;
-	type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
-	type MaxReserves = MaxReserves;
 	type ReserveIdentifier = [u8; 8];
 	type FreezeIdentifier = ();
+	type MaxLocks = MaxLocks;
+	type MaxReserves = MaxReserves;
 	type MaxFreezes = ();
-	type RuntimeHoldReason = RuntimeHoldReason;
-	type RuntimeFreezeReason = ();
 }
 
 parameter_types! {
@@ -569,15 +569,15 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type OnSystemEvent = ();
 	type SelfParaId = staging_parachain_info::Pallet<Runtime>;
-	type ReservedDmpWeight = ReservedDmpWeight;
 	type OutboundXcmpMessageSource = XcmpQueue;
+	type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
+	type ReservedDmpWeight = ReservedDmpWeight;
 	type XcmpMessageHandler = XcmpQueue;
 	type ReservedXcmpWeight = ReservedXcmpWeight;
 	type CheckAssociatedRelayNumber =
 		cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
-	type ConsensusHook = ConsensusHook;
-	type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
 	type WeightInfo = weights::cumulus_pallet_parachain_system::WeightInfo<Runtime>;
+	type ConsensusHook = ConsensusHook;
 }
 
 impl staging_parachain_info::Config for Runtime {}
@@ -657,6 +657,7 @@ impl pallet_collator_selection::Config for Runtime {
 	type UpdateOrigin = CollatorSelectionUpdateOrigin;
 	type PotId = PotId;
 	type MaxCandidates = MaxCandidates;
+	type MinEligibleCollators = MinEligibleCollators;
 	type MaxInvulnerables = MaxInvulnerables;
 	// should be a multiple of session or things will get inconsistent
 	type KickThreshold = Period;
@@ -664,7 +665,6 @@ impl pallet_collator_selection::Config for Runtime {
 	type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
 	type ValidatorRegistration = Session;
 	type WeightInfo = weights::pallet_collator_selection::WeightInfo<Runtime>;
-	type MinEligibleCollators = MinEligibleCollators;
 }
 
 pub const fn deposit(items: u32, bytes: u32) -> Balance {
