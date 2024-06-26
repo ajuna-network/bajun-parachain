@@ -441,9 +441,12 @@ impl cumulus_pallet_xcmp_queue::Config for Runtime {
 
 pub struct BajunActiveXCMChannels;
 
+/// Kusama Basilisk parachain identifier
+pub const BASILISK_PARA_ID: ParaId = ParaId::new(2090);
+
 impl ListChannelInfos for BajunActiveXCMChannels {
 	fn outgoing_channels() -> Vec<ParaId> {
-		Vec::with_capacity(0)
+		vec![BASILISK_PARA_ID]
 	}
 }
 
