@@ -23,7 +23,7 @@ use super::{
 };
 use crate::weights;
 use core::marker::PhantomData;
-use cumulus_primitives_core::{AggregateMessageOrigin, GlobalConsensus, ListChannelInfos, ParaId};
+use cumulus_primitives_core::{AggregateMessageOrigin, GlobalConsensus, ParaId};
 use cumulus_primitives_utility::XcmFeesTo32ByteAccount;
 use frame_support::{
 	pallet_prelude::{Get, PalletInfoAccess, Weight},
@@ -437,21 +437,6 @@ impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
 	type PriceForSiblingDelivery = NoPriceForMessageDelivery<ParaId>;
 	type WeightInfo = weights::cumulus_pallet_xcmp_queue::WeightInfo<Runtime>;
-}
-
-pub struct BajunActiveXCMChannels;
-
-/// Kusama Basilisk parachain identifier
-pub const BASILISK_PARA_ID: ParaId = ParaId::new(2090);
-
-impl ListChannelInfos for BajunActiveXCMChannels {
-	fn outgoing_channels() -> Vec<ParaId> {
-		vec![BASILISK_PARA_ID]
-	}
-}
-
-impl cumulus_pallet_xcmp_queue::migration::v5::V5Config for Runtime {
-	type ChannelList = BajunActiveXCMChannels;
 }
 
 /// Copied from moonbeam: https://github.com/PureStake/moonbeam/blob/095031d171b0c163e5649ee35acbc36eef681a82/primitives/xcm/src/ethereum_xcm.rs#L34
