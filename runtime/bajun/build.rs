@@ -22,7 +22,7 @@ fn main() {
 #[cfg(all(feature = "std", feature = "metadata-hash"))]
 fn main() {
 	substrate_wasm_builder::WasmBuilder::init_with_defaults()
-		.enable_metadata_hash("AJUN", 12)
+		.enable_metadata_hash("BAJU", 12)
 		.build()
 }
 
