@@ -41,19 +41,19 @@ cumulus_based = true
 name = "bajun-collator"
 # This should ideally be the old collator as this is used
 # to build the modified chain-spec.
-command = "~/bin/bajun-node-v600-rc1"
+command = "~/bin/bajun-node-v500"
 
 [[parachains.collators]]
 name = "bajun-collator-1"
 validator = true
-command = "~/bin/bajun-node-v700-rc2"
+command = "~/bin/bajun-node-v600-rc1"
 args = ["-lxcm=trace,runtime=debug"]
 ws_port = 9954
 
 [[parachains.collators]]
 name = "bajun-collator-2"
 validator = true
-command = "~/bin/bajun-node-v700-rc2"
+command = "~/bin/bajun-node-v600-rc1"
 args = ["-lxcm=trace,runtime=debug"]
 ws_port = 9955
 
