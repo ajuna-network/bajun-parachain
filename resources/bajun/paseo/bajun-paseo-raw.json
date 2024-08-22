@@ -1,6 +1,9 @@
 {
   "bootNodes": [
-    "/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWGQRr5fYqkjQrpgtA49uaEZNBKCjioDEGMLo239wZo6UG"
+    "/dns/paseo-bubblebobble.bajun.network/tcp/23803/p2p/12D3KooWRmaYDcPYPECiN7iGqaANaHyDA57HJqqzUfJb2dnzD6hR",
+    "/dns/paseo-bubblebobble.bajun.network/tcp/23804/ws/p2p/12D3KooWRmaYDcPYPECiN7iGqaANaHyDA57HJqqzUfJb2dnzD6hR",
+    "/dns/paseo-lemmings.bajun.network/tcp/23803/p2p/12D3KooWJRDsenqB8h2SpZG913eTLMjmZTDE5br5s4ncdyxSwB2s",
+    "/dns/paseo-lemmings.bajun.network/tcp/23804/ws/p2p/12D3KooWJRDsenqB8h2SpZG913eTLMjmZTDE5br5s4ncdyxSwB2s"
   ],
   "chainType": "Live",
   "codeSubstitutes": {},
