@@ -35,10 +35,10 @@ use smallvec::smallvec;
 use sp_api::impl_runtime_apis;
 use sp_core::{crypto::KeyTypeId, ConstU64, Get, OpaqueMetadata};
 use sp_runtime::{
-	create_runtime_str, generic, impl_opaque_keys,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT},
-	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult, ExtrinsicInclusionMode, MultiSignature,
+    create_runtime_str, generic, impl_opaque_keys,
+    traits::{AccountIdLookup, BlakeTwo256, Block as BlockT},
+    transaction_validity::{TransactionSource, TransactionValidity},
+    ApplyExtrinsicResult, ExtrinsicInclusionMode, MultiSignature,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -46,27 +46,27 @@ use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
 
 use frame_support::{
-	construct_runtime,
-	dispatch::DispatchClass,
-	genesis_builder_helper::{build_state, get_preset},
-	migrations::{FailedMigrationHandler, FailedMigrationHandling, MigrationStatusHandler},
-	pallet_prelude::ConstU32,
-	parameter_types,
-	traits::{
-		fungible::HoldConsideration,
-		tokens::{imbalance::ResolveTo, PayFromAccount, UnityAssetBalanceConversion},
-		AsEnsureOriginWithArg, ConstBool, Contains, LinearStoragePrice,
-	},
-	weights::{
-		constants::WEIGHT_REF_TIME_PER_SECOND, ConstantMultiplier, Weight, WeightToFeeCoefficient,
-		WeightToFeeCoefficients, WeightToFeePolynomial,
-	},
-	PalletId,
+    construct_runtime,
+    dispatch::DispatchClass,
+    genesis_builder_helper::{build_state, get_preset},
+    migrations::{FailedMigrationHandler, FailedMigrationHandling, MigrationStatusHandler},
+    pallet_prelude::ConstU32,
+    parameter_types,
+    traits::{
+        fungible::HoldConsideration,
+        tokens::{imbalance::ResolveTo, PayFromAccount, UnityAssetBalanceConversion},
+        AsEnsureOriginWithArg, ConstBool, Contains, LinearStoragePrice,
+    },
+    weights::{
+        constants::WEIGHT_REF_TIME_PER_SECOND, ConstantMultiplier, Weight, WeightToFeeCoefficient,
+        WeightToFeeCoefficients, WeightToFeePolynomial,
+    },
+    PalletId,
 };
 use frame_system::{
-	limits::{BlockLength, BlockWeights},
-	pallet_prelude::BlockNumberFor,
-	EnsureRoot, EnsureSigned, EnsureWithSuccess,
+    limits::{BlockLength, BlockWeights},
+    pallet_prelude::BlockNumberFor,
+    EnsureRoot, EnsureSigned, EnsureWithSuccess,
 };
 use pallet_identity::legacy::IdentityInfo;
 use pallet_transaction_payment::FungibleAdapter;
@@ -129,32 +129,32 @@ pub type BlockId = generic::BlockId<Block>;
 
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
-	frame_system::CheckNonZeroSender<Runtime>,
-	frame_system::CheckSpecVersion<Runtime>,
-	frame_system::CheckTxVersion<Runtime>,
-	frame_system::CheckGenesis<Runtime>,
-	frame_system::CheckEra<Runtime>,
-	frame_system::CheckNonce<Runtime>,
-	frame_system::CheckWeight<Runtime>,
-	pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
-	frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
+    frame_system::CheckNonZeroSender<Runtime>,
+    frame_system::CheckSpecVersion<Runtime>,
+    frame_system::CheckTxVersion<Runtime>,
+    frame_system::CheckGenesis<Runtime>,
+    frame_system::CheckEra<Runtime>,
+    frame_system::CheckNonce<Runtime>,
+    frame_system::CheckWeight<Runtime>,
+    pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+    frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
 );
 
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic =
-	generic::UncheckedExtrinsic<Address, RuntimeCall, Signature, SignedExtra>;
+generic::UncheckedExtrinsic<Address, RuntimeCall, Signature, SignedExtra>;
 
 /// Extrinsic type that has already been checked.
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, RuntimeCall, SignedExtra>;
 
 /// Executive: handles dispatch to the various modules.
 pub type Executive = frame_executive::Executive<
-	Runtime,
-	Block,
-	frame_system::ChainContext<Runtime>,
-	Runtime,
-	AllPalletsWithSystem,
-	SingleBlockMigrations,
+    Runtime,
+    Block,
+    frame_system::ChainContext<Runtime>,
+    Runtime,
+    AllPalletsWithSystem,
+    SingleBlockMigrations,
 >;
 
 /// Handles converting a weight scalar to a fee value, based on the scale and granularity of the
@@ -169,19 +169,19 @@ pub type Executive = frame_executive::Executive<
 ///   - Setting it to `1` will cause the literal `#[weight = x]` values to be charged.
 pub struct WeightToFee;
 impl WeightToFeePolynomial for WeightToFee {
-	type Balance = Balance;
-	fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-		// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLI_BAJU:
-		// in our template, we map to 1/10 of that, or 1/10 MILLI_BAJU
-		let p = MILLI_BAJU / 10;
-		let q = 100 * Balance::from(ExtrinsicBaseWeight::get().ref_time());
-		smallvec![WeightToFeeCoefficient {
+    type Balance = Balance;
+    fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
+        // in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLI_BAJU:
+        // in our template, we map to 1/10 of that, or 1/10 MILLI_BAJU
+        let p = MILLI_BAJU / 10;
+        let q = 100 * Balance::from(ExtrinsicBaseWeight::get().ref_time());
+        smallvec![WeightToFeeCoefficient {
 			degree: 1,
 			negative: false,
 			coeff_frac: Perbill::from_rational(p % q, q),
 			coeff_integer: p / q,
 		}]
-	}
+    }
 }
 
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
@@ -189,21 +189,21 @@ impl WeightToFeePolynomial for WeightToFee {
 /// of data like extrinsics, allowing for them to continue syncing the network through upgrades
 /// to even the core data structures.
 pub mod opaque {
-	use super::*;
-	use sp_runtime::{
-		generic,
-		traits::{BlakeTwo256, Hash as HashT},
-	};
+    use super::*;
+    use sp_runtime::{
+        generic,
+        traits::{BlakeTwo256, Hash as HashT},
+    };
 
-	pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
-	/// Opaque block header type.
-	pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
-	/// Opaque block type.
-	pub type Block = generic::Block<Header, UncheckedExtrinsic>;
-	/// Opaque block identifier type.
-	pub type BlockId = generic::BlockId<Block>;
-	/// Opaque block hash type.
-	pub type Hash = <BlakeTwo256 as HashT>::Output;
+    pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
+    /// Opaque block header type.
+    pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
+    /// Opaque block type.
+    pub type Block = generic::Block<Header, UncheckedExtrinsic>;
+    /// Opaque block identifier type.
+    pub type BlockId = generic::BlockId<Block>;
+    /// Opaque block hash type.
+    pub type Hash = <BlakeTwo256 as HashT>::Output;
 }
 
 impl_opaque_keys! {
@@ -214,14 +214,14 @@ impl_opaque_keys! {
 
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("bajun"),
-	impl_name: create_runtime_str!("bajun"),
-	authoring_version: 1,
-	spec_version: 704,
-	impl_version: 0,
-	apis: RUNTIME_API_VERSIONS,
-	transaction_version: 1,
-	state_version: 1,
+    spec_name: create_runtime_str!("bajun"),
+    impl_name: create_runtime_str!("bajun"),
+    authoring_version: 1,
+    spec_version: 706,
+    impl_version: 0,
+    apis: RUNTIME_API_VERSIONS,
+    transaction_version: 1,
+    state_version: 1,
 };
 
 /// Blocks will be produced at a minimum duration defined by `SLOT_DURATION`.
@@ -260,8 +260,8 @@ const NORMAL_DISPATCH_RATIO: Perbill = Perbill::from_percent(75);
 
 /// We allow for 2s of a second of compute with a 6-second average block time.
 const MAXIMUM_BLOCK_WEIGHT: Weight = Weight::from_parts(
-	WEIGHT_REF_TIME_PER_SECOND.saturating_mul(2),
-	cumulus_primitives_core::relay_chain::MAX_POV_SIZE as u64,
+    WEIGHT_REF_TIME_PER_SECOND.saturating_mul(2),
+    cumulus_primitives_core::relay_chain::MAX_POV_SIZE as u64,
 );
 
 /// Maximum number of blocks simultaneously accepted by the Runtime, not yet included into the
@@ -276,7 +276,7 @@ pub const RELAY_CHAIN_SLOT_DURATION_MILLIS: u32 = 6000;
 /// The version information used to identify this runtime when compiled natively.
 #[cfg(feature = "std")]
 pub fn native_version() -> NativeVersion {
-	NativeVersion { runtime_version: VERSION, can_author_with: Default::default() }
+    NativeVersion { runtime_version: VERSION, can_author_with: Default::default() }
 }
 
 parameter_types! {
@@ -312,76 +312,76 @@ parameter_types! {
 // Allow the following extrinsics only.
 pub struct BaseCallFilter;
 impl Contains<RuntimeCall> for BaseCallFilter {
-	fn contains(call: &RuntimeCall) -> bool {
-		match call {
-			RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
-				if namespace == &AttributeNamespace::CollectionOwner =>
-				true,
-			RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
-				if namespace != &AttributeNamespace::CollectionOwner =>
-				false,
-			_ => true,
-		}
-	}
+    fn contains(call: &RuntimeCall) -> bool {
+        match call {
+            RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
+            if namespace == &AttributeNamespace::CollectionOwner =>
+                true,
+            RuntimeCall::Nft(NftsCall::set_attribute { namespace, .. })
+            if namespace != &AttributeNamespace::CollectionOwner =>
+                false,
+            _ => true,
+        }
+    }
 }
 
 impl frame_system::Config for Runtime {
-	/// The ubiquitous event type.
-	type RuntimeEvent = RuntimeEvent;
-	/// The basic call filter to use in dispatchable.
-	type BaseCallFilter = BaseCallFilter;
-	/// Block & extrinsics weights: base values and limits.
-	type BlockWeights = RuntimeBlockWeights;
-	/// The maximum length of a block (in bytes).
-	type BlockLength = RuntimeBlockLength;
-	/// The ubiquitous origin type.
-	type RuntimeOrigin = RuntimeOrigin;
-	/// The aggregated dispatch type that is available for extrinsics.
-	type RuntimeCall = RuntimeCall;
-	type RuntimeTask = RuntimeTask;
-	/// The Nonce value type
-	type Nonce = Nonce;
-	/// The type for hashing blocks and tries.
-	type Hash = Hash;
-	/// The hashing algorithm used.
-	type Hashing = BlakeTwo256;
-	/// The identifier used to distinguish between accounts.
-	type AccountId = AccountId;
-	/// The lookup mechanism to get account ID from whatever is passed in dispatchers.
-	type Lookup = AccountIdLookup<AccountId, ()>;
-	/// The Block provider type
-	type Block = Block;
-	/// Maximum number of block number to block hash mappings to keep (oldest pruned first).
-	type BlockHashCount = BlockHashCount;
-	/// The weight of database operations that the runtime can invoke.
-	type DbWeight = RocksDbWeight;
-	/// Runtime version.
-	type Version = Version;
-	/// Converts a module to an index of this module in the runtime.
-	type PalletInfo = PalletInfo;
-	/// The data to be stored in an account.
-	type AccountData = pallet_balances::AccountData<Balance>;
-	/// What to do if a new account is created.
-	type OnNewAccount = ();
-	/// What to do if an account is fully reaped from the system.
-	type OnKilledAccount = ();
-	/// Weight information for the extrinsics of this pallet.
-	type SystemWeightInfo = weights::frame_system::WeightInfo<Runtime>;
-	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
-	type SS58Prefix = SS58Prefix;
-	/// The action to take on a Runtime Upgrade
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
-	type MaxConsumers = frame_support::traits::ConstU32<16>;
-	// Note: Single block migrations are currently run in the classical way in the `Executive`
-	// because try-runtime doesn't support the pallet-migrations yet.
-	//
-	// Once it is supported, we want to switch to the pallet-migrations, but we **must** ensure
-	// that we remove the migrations from the `Executive` to prevent running the migrations twice.
-	type SingleBlockMigrations = ();
-	type MultiBlockMigrator = pallet_migrations::Pallet<Runtime>;
-	type PreInherents = ();
-	type PostInherents = ();
-	type PostTransactions = ();
+    /// The ubiquitous event type.
+    type RuntimeEvent = RuntimeEvent;
+    /// The basic call filter to use in dispatchable.
+    type BaseCallFilter = BaseCallFilter;
+    /// Block & extrinsics weights: base values and limits.
+    type BlockWeights = RuntimeBlockWeights;
+    /// The maximum length of a block (in bytes).
+    type BlockLength = RuntimeBlockLength;
+    /// The ubiquitous origin type.
+    type RuntimeOrigin = RuntimeOrigin;
+    /// The aggregated dispatch type that is available for extrinsics.
+    type RuntimeCall = RuntimeCall;
+    type RuntimeTask = RuntimeTask;
+    /// The Nonce value type
+    type Nonce = Nonce;
+    /// The type for hashing blocks and tries.
+    type Hash = Hash;
+    /// The hashing algorithm used.
+    type Hashing = BlakeTwo256;
+    /// The identifier used to distinguish between accounts.
+    type AccountId = AccountId;
+    /// The lookup mechanism to get account ID from whatever is passed in dispatchers.
+    type Lookup = AccountIdLookup<AccountId, ()>;
+    /// The Block provider type
+    type Block = Block;
+    /// Maximum number of block number to block hash mappings to keep (oldest pruned first).
+    type BlockHashCount = BlockHashCount;
+    /// The weight of database operations that the runtime can invoke.
+    type DbWeight = RocksDbWeight;
+    /// Runtime version.
+    type Version = Version;
+    /// Converts a module to an index of this module in the runtime.
+    type PalletInfo = PalletInfo;
+    /// The data to be stored in an account.
+    type AccountData = pallet_balances::AccountData<Balance>;
+    /// What to do if a new account is created.
+    type OnNewAccount = ();
+    /// What to do if an account is fully reaped from the system.
+    type OnKilledAccount = ();
+    /// Weight information for the extrinsics of this pallet.
+    type SystemWeightInfo = weights::frame_system::WeightInfo<Runtime>;
+    /// This is used as an identifier of the chain. 42 is the generic substrate prefix.
+    type SS58Prefix = SS58Prefix;
+    /// The action to take on a Runtime Upgrade
+    type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+    type MaxConsumers = frame_support::traits::ConstU32<16>;
+    // Note: Single block migrations are currently run in the classical way in the `Executive`
+    // because try-runtime doesn't support the pallet-migrations yet.
+    //
+    // Once it is supported, we want to switch to the pallet-migrations, but we **must** ensure
+    // that we remove the migrations from the `Executive` to prevent running the migrations twice.
+    type SingleBlockMigrations = ();
+    type MultiBlockMigrator = pallet_migrations::Pallet<Runtime>;
+    type PreInherents = ();
+    type PostInherents = ();
+    type PostTransactions = ();
 }
 
 type SingleBlockMigrations = (cumulus_pallet_xcmp_queue::migration::v5::MigrateV4ToV5<Runtime>,);
@@ -391,7 +391,7 @@ use mbm::MultiBlockMigrations;
 
 #[cfg(not(feature = "runtime-benchmarks"))]
 mod mbm {
-	pub type MultiBlockMigrations = ();
+    pub type MultiBlockMigrations = ();
 }
 
 parameter_types! {
@@ -399,57 +399,57 @@ parameter_types! {
 }
 
 impl pallet_migrations::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	#[cfg(feature = "runtime-benchmarks")]
-	type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
-	#[cfg(not(feature = "runtime-benchmarks"))]
-	type Migrations = MultiBlockMigrations;
-	type CursorMaxLen = ConstU32<65_536>;
-	type IdentifierMaxLen = ConstU32<256>;
-	type MigrationStatusHandler = LoggerMigrationStatusHandler;
-	type FailedMigrationHandler = UnstuckFailedMigration;
-	type MaxServiceWeight = MbmServiceWeight;
-	type WeightInfo = weights::pallet_migrations::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    #[cfg(feature = "runtime-benchmarks")]
+    type Migrations = pallet_migrations::mock_helpers::MockedMigrations;
+    #[cfg(not(feature = "runtime-benchmarks"))]
+    type Migrations = MultiBlockMigrations;
+    type CursorMaxLen = ConstU32<65_536>;
+    type IdentifierMaxLen = ConstU32<256>;
+    type MigrationStatusHandler = LoggerMigrationStatusHandler;
+    type FailedMigrationHandler = UnstuckFailedMigration;
+    type MaxServiceWeight = MbmServiceWeight;
+    type WeightInfo = weights::pallet_migrations::WeightInfo<Runtime>;
 }
 
 /// Records all started and completed upgrades in `UpgradesStarted` and `UpgradesCompleted`.
 pub struct LoggerMigrationStatusHandler;
 impl MigrationStatusHandler for LoggerMigrationStatusHandler {
-	fn started() {
-		log::info!("MigrationStatusHandler started");
-	}
+    fn started() {
+        log::info!("MigrationStatusHandler started");
+    }
 
-	fn completed() {
-		log::info!("MigrationStatusHandler completed");
-	}
+    fn completed() {
+        log::info!("MigrationStatusHandler completed");
+    }
 }
 
 /// Records all failed upgrades in `UpgradesFailed`.
 pub struct UnstuckFailedMigration;
 impl FailedMigrationHandler for UnstuckFailedMigration {
-	fn failed(migration: Option<u32>) -> FailedMigrationHandling {
-		log::error!("FailedMigrationHandler failed at: {migration:?}");
-		FailedMigrationHandling::ForceUnstuck
-	}
+    fn failed(migration: Option<u32>) -> FailedMigrationHandling {
+        log::error!("FailedMigrationHandler failed at: {migration:?}");
+        FailedMigrationHandling::ForceUnstuck
+    }
 }
 
 impl pallet_sudo::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type RuntimeCall = RuntimeCall;
-	type WeightInfo = weights::pallet_sudo::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type RuntimeCall = RuntimeCall;
+    type WeightInfo = weights::pallet_sudo::WeightInfo<Runtime>;
 }
 
 impl pallet_timestamp::Config for Runtime {
-	/// A timestamp: milliseconds since the unix epoch.
-	type Moment = u64;
-	type OnTimestampSet = Aura;
-	type MinimumPeriod = ConstU64<0>;
-	type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
+    /// A timestamp: milliseconds since the unix epoch.
+    type Moment = u64;
+    type OnTimestampSet = Aura;
+    type MinimumPeriod = ConstU64<0>;
+    type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
 }
 
 impl pallet_authorship::Config for Runtime {
-	type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self, Aura>;
-	type EventHandler = (CollatorSelection,);
+    type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self, Aura>;
+    type EventHandler = (CollatorSelection,);
 }
 
 parameter_types! {
@@ -459,19 +459,19 @@ parameter_types! {
 }
 
 impl pallet_balances::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type RuntimeHoldReason = RuntimeHoldReason;
-	type RuntimeFreezeReason = ();
-	type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
-	type Balance = Balance;
-	type DustRemoval = ();
-	type ExistentialDeposit = ExistentialDeposit;
-	type AccountStore = System;
-	type ReserveIdentifier = [u8; 8];
-	type FreezeIdentifier = ();
-	type MaxLocks = MaxLocks;
-	type MaxReserves = MaxReserves;
-	type MaxFreezes = ();
+    type RuntimeEvent = RuntimeEvent;
+    type RuntimeHoldReason = RuntimeHoldReason;
+    type RuntimeFreezeReason = ();
+    type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
+    type Balance = Balance;
+    type DustRemoval = ();
+    type ExistentialDeposit = ExistentialDeposit;
+    type AccountStore = System;
+    type ReserveIdentifier = [u8; 8];
+    type FreezeIdentifier = ();
+    type MaxLocks = MaxLocks;
+    type MaxReserves = MaxReserves;
+    type MaxFreezes = ();
 }
 
 parameter_types! {
@@ -481,12 +481,12 @@ parameter_types! {
 }
 
 impl pallet_transaction_payment::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type OnChargeTransaction = FungibleAdapter<Balances, ResolveTo<TreasuryAccount, Balances>>;
-	type WeightToFee = WeightToFee;
-	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
-	type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
-	type OperationalFeeMultiplier = OperationalFeeMultiplier;
+    type RuntimeEvent = RuntimeEvent;
+    type OnChargeTransaction = FungibleAdapter<Balances, ResolveTo<TreasuryAccount, Balances>>;
+    type WeightToFee = WeightToFee;
+    type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
+    type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
+    type OperationalFeeMultiplier = OperationalFeeMultiplier;
 }
 
 parameter_types! {
@@ -510,30 +510,30 @@ parameter_types! {
 }
 
 impl pallet_treasury::Config for Runtime {
-	type Currency = Balances;
-	type ApproveOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type RejectOrigin = EnsureRootOrMoreThanHalfCouncil;
-	type RuntimeEvent = RuntimeEvent;
-	type OnSlash = ();
-	type ProposalBond = FivePercent;
-	type ProposalBondMinimum = MinimumProposalBond;
-	type ProposalBondMaximum = MaximumProposalBond;
-	type SpendPeriod = OneWeek;
-	type Burn = ZeroPercent;
-	type PalletId = TreasuryPalletId;
-	type BurnDestination = ();
-	type WeightInfo = weights::pallet_treasury::WeightInfo<Runtime>;
-	type SpendFunds = ();
-	type MaxApprovals = frame_support::traits::ConstU32<100>;
-	type SpendOrigin = EnsureWithSuccess<EnsureRoot<AccountId>, AccountId, MaxBalance>;
-	type AssetKind = ();
-	type Beneficiary = Self::AccountId;
-	type BeneficiaryLookup = IdentityLookup<Self::Beneficiary>;
-	type Paymaster = PayFromAccount<Balances, TreasuryAccount>;
-	type BalanceConverter = UnityAssetBalanceConversion;
-	type PayoutPeriod = SpendPayoutPeriod;
-	#[cfg(feature = "runtime-benchmarks")]
-	type BenchmarkHelper = ();
+    type Currency = Balances;
+    type ApproveOrigin = EnsureRootOrMoreThanHalfCouncil;
+    type RejectOrigin = EnsureRootOrMoreThanHalfCouncil;
+    type RuntimeEvent = RuntimeEvent;
+    type OnSlash = ();
+    type ProposalBond = FivePercent;
+    type ProposalBondMinimum = MinimumProposalBond;
+    type ProposalBondMaximum = MaximumProposalBond;
+    type SpendPeriod = OneWeek;
+    type Burn = ZeroPercent;
+    type PalletId = TreasuryPalletId;
+    type BurnDestination = ();
+    type WeightInfo = weights::pallet_treasury::WeightInfo<Runtime>;
+    type SpendFunds = ();
+    type MaxApprovals = frame_support::traits::ConstU32<100>;
+    type SpendOrigin = EnsureWithSuccess<EnsureRoot<AccountId>, AccountId, MaxBalance>;
+    type AssetKind = ();
+    type Beneficiary = Self::AccountId;
+    type BeneficiaryLookup = IdentityLookup<Self::Beneficiary>;
+    type Paymaster = PayFromAccount<Balances, TreasuryAccount>;
+    type BalanceConverter = UnityAssetBalanceConversion;
+    type PayoutPeriod = SpendPayoutPeriod;
+    #[cfg(feature = "runtime-benchmarks")]
+    type BenchmarkHelper = ();
 }
 
 parameter_types! {
@@ -541,16 +541,16 @@ parameter_types! {
 }
 
 impl orml_vesting::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type Currency = Balances;
-	type MinVestedTransfer = MinVestedTransfer;
-	type VestedTransferOrigin = EnsureSigned<AccountId>;
-	type WeightInfo = weights::orml_vesting::WeightInfo<Runtime>;
-	type MaxVestingSchedules = frame_support::traits::ConstU32<100>;
-	// We use the parachain block number instead of the relay chain provider
-	// because our active schedules would get messed up if we switched to the relay
-	// chain block number instead of the parachain one
-	type BlockNumberProvider = System;
+    type RuntimeEvent = RuntimeEvent;
+    type Currency = Balances;
+    type MinVestedTransfer = MinVestedTransfer;
+    type VestedTransferOrigin = EnsureSigned<AccountId>;
+    type WeightInfo = weights::orml_vesting::WeightInfo<Runtime>;
+    type MaxVestingSchedules = frame_support::traits::ConstU32<100>;
+    // We use the parachain block number instead of the relay chain provider
+    // because our active schedules would get messed up if we switched to the relay
+    // chain block number instead of the parachain one
+    type BlockNumberProvider = System;
 }
 
 parameter_types! {
@@ -560,25 +560,25 @@ parameter_types! {
 }
 
 type ConsensusHook = cumulus_pallet_aura_ext::FixedVelocityConsensusHook<
-	Runtime,
-	RELAY_CHAIN_SLOT_DURATION_MILLIS,
-	BLOCK_PROCESSING_VELOCITY,
-	UNINCLUDED_SEGMENT_CAPACITY,
+    Runtime,
+    RELAY_CHAIN_SLOT_DURATION_MILLIS,
+    BLOCK_PROCESSING_VELOCITY,
+    UNINCLUDED_SEGMENT_CAPACITY,
 >;
 
 impl cumulus_pallet_parachain_system::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type OnSystemEvent = ();
-	type SelfParaId = staging_parachain_info::Pallet<Runtime>;
-	type OutboundXcmpMessageSource = XcmpQueue;
-	type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
-	type ReservedDmpWeight = ReservedDmpWeight;
-	type XcmpMessageHandler = XcmpQueue;
-	type ReservedXcmpWeight = ReservedXcmpWeight;
-	type CheckAssociatedRelayNumber =
-		cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
-	type WeightInfo = weights::cumulus_pallet_parachain_system::WeightInfo<Runtime>;
-	type ConsensusHook = ConsensusHook;
+    type RuntimeEvent = RuntimeEvent;
+    type OnSystemEvent = ();
+    type SelfParaId = staging_parachain_info::Pallet<Runtime>;
+    type OutboundXcmpMessageSource = XcmpQueue;
+    type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
+    type ReservedDmpWeight = ReservedDmpWeight;
+    type XcmpMessageHandler = XcmpQueue;
+    type ReservedXcmpWeight = ReservedXcmpWeight;
+    type CheckAssociatedRelayNumber =
+    cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
+    type WeightInfo = weights::cumulus_pallet_parachain_system::WeightInfo<Runtime>;
+    type ConsensusHook = ConsensusHook;
 }
 
 impl staging_parachain_info::Config for Runtime {}
@@ -590,26 +590,26 @@ parameter_types! {
 }
 
 impl pallet_message_queue::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = weights::pallet_message_queue::WeightInfo<Runtime>;
-	#[cfg(feature = "runtime-benchmarks")]
-	type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
-		cumulus_primitives_core::AggregateMessageOrigin,
-	>;
-	#[cfg(not(feature = "runtime-benchmarks"))]
-	type MessageProcessor = staging_xcm_builder::ProcessXcmMessage<
-		AggregateMessageOrigin,
-		staging_xcm_executor::XcmExecutor<xcm_config::XcmConfig>,
-		RuntimeCall,
-	>;
-	type Size = u32;
-	// The XCMP queue pallet is only ever able to handle the `Sibling(ParaId)` origin:
-	type QueueChangeHandler = NarrowOriginToSibling<XcmpQueue>;
-	type QueuePausedQuery = NarrowOriginToSibling<XcmpQueue>;
-	type HeapSize = sp_core::ConstU32<{ 64 * 1024 }>;
-	type MaxStale = sp_core::ConstU32<8>;
-	type ServiceWeight = MessageQueueServiceWeight;
-	type IdleMaxServiceWeight = ();
+    type RuntimeEvent = RuntimeEvent;
+    type WeightInfo = weights::pallet_message_queue::WeightInfo<Runtime>;
+    #[cfg(feature = "runtime-benchmarks")]
+    type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
+        cumulus_primitives_core::AggregateMessageOrigin,
+    >;
+    #[cfg(not(feature = "runtime-benchmarks"))]
+    type MessageProcessor = staging_xcm_builder::ProcessXcmMessage<
+        AggregateMessageOrigin,
+        staging_xcm_executor::XcmExecutor<xcm_config::XcmConfig>,
+        RuntimeCall,
+    >;
+    type Size = u32;
+    // The XCMP queue pallet is only ever able to handle the `Sibling(ParaId)` origin:
+    type QueueChangeHandler = NarrowOriginToSibling<XcmpQueue>;
+    type QueuePausedQuery = NarrowOriginToSibling<XcmpQueue>;
+    type HeapSize = sp_core::ConstU32<{ 64 * 1024 }>;
+    type MaxStale = sp_core::ConstU32<8>;
+    type ServiceWeight = MessageQueueServiceWeight;
+    type IdleMaxServiceWeight = ();
 }
 
 parameter_types! {
@@ -619,25 +619,25 @@ parameter_types! {
 }
 
 impl pallet_session::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type ValidatorId = <Self as frame_system::Config>::AccountId;
-	// we don't have stash and controller, thus we don't need the convert as well.
-	type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
-	type ShouldEndSession = pallet_session::PeriodicSessions<Period, Offset>;
-	type NextSessionRotation = pallet_session::PeriodicSessions<Period, Offset>;
-	type SessionManager = CollatorSelection;
-	// Essentially just Aura, but lets be pedantic.
-	type SessionHandler = <SessionKeys as sp_runtime::traits::OpaqueKeys>::KeyTypeIdProviders;
-	type Keys = SessionKeys;
-	type WeightInfo = weights::pallet_session::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type ValidatorId = <Self as frame_system::Config>::AccountId;
+    // we don't have stash and controller, thus we don't need the convert as well.
+    type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
+    type ShouldEndSession = pallet_session::PeriodicSessions<Period, Offset>;
+    type NextSessionRotation = pallet_session::PeriodicSessions<Period, Offset>;
+    type SessionManager = CollatorSelection;
+    // Essentially just Aura, but lets be pedantic.
+    type SessionHandler = <SessionKeys as sp_runtime::traits::OpaqueKeys>::KeyTypeIdProviders;
+    type Keys = SessionKeys;
+    type WeightInfo = weights::pallet_session::WeightInfo<Runtime>;
 }
 
 impl pallet_aura::Config for Runtime {
-	type AuthorityId = AuraId;
-	type MaxAuthorities = MaxAuthorities;
-	type DisabledValidators = ();
-	type AllowMultipleBlocksPerSlot = ConstBool<true>;
-	type SlotDuration = ConstU64<SLOT_DURATION>;
+    type AuthorityId = AuraId;
+    type MaxAuthorities = MaxAuthorities;
+    type DisabledValidators = ();
+    type AllowMultipleBlocksPerSlot = ConstBool<true>;
+    type SlotDuration = ConstU64<SLOT_DURATION>;
 }
 
 parameter_types! {
@@ -653,23 +653,23 @@ parameter_types! {
 pub type CollatorSelectionUpdateOrigin = EnsureRoot<AccountId>;
 
 impl pallet_collator_selection::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type Currency = Balances;
-	type UpdateOrigin = CollatorSelectionUpdateOrigin;
-	type PotId = PotId;
-	type MaxCandidates = MaxCandidates;
-	type MinEligibleCollators = MinEligibleCollators;
-	type MaxInvulnerables = MaxInvulnerables;
-	// should be a multiple of session or things will get inconsistent
-	type KickThreshold = Period;
-	type ValidatorId = <Self as frame_system::Config>::AccountId;
-	type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
-	type ValidatorRegistration = Session;
-	type WeightInfo = weights::pallet_collator_selection::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type Currency = Balances;
+    type UpdateOrigin = CollatorSelectionUpdateOrigin;
+    type PotId = PotId;
+    type MaxCandidates = MaxCandidates;
+    type MinEligibleCollators = MinEligibleCollators;
+    type MaxInvulnerables = MaxInvulnerables;
+    // should be a multiple of session or things will get inconsistent
+    type KickThreshold = Period;
+    type ValidatorId = <Self as frame_system::Config>::AccountId;
+    type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
+    type ValidatorRegistration = Session;
+    type WeightInfo = weights::pallet_collator_selection::WeightInfo<Runtime>;
 }
 
 pub const fn deposit(items: u32, bytes: u32) -> Balance {
-	items as Balance * 20 * BAJU + (bytes as Balance) * 1_000 * MICRO_BAJU
+    items as Balance * 20 * BAJU + (bytes as Balance) * 1_000 * MICRO_BAJU
 }
 
 parameter_types! {
@@ -681,20 +681,20 @@ parameter_types! {
 }
 
 impl pallet_multisig::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type RuntimeCall = RuntimeCall;
-	type Currency = Balances;
-	type DepositBase = DepositBase;
-	type DepositFactor = DepositFactor;
-	type MaxSignatories = MaxSignatories;
-	type WeightInfo = weights::pallet_multisig::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type RuntimeCall = RuntimeCall;
+    type Currency = Balances;
+    type DepositBase = DepositBase;
+    type DepositFactor = DepositFactor;
+    type MaxSignatories = MaxSignatories;
+    type WeightInfo = weights::pallet_multisig::WeightInfo<Runtime>;
 }
 
 impl pallet_utility::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type RuntimeCall = RuntimeCall;
-	type PalletsOrigin = OriginCaller;
-	type WeightInfo = weights::pallet_utility::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type RuntimeCall = RuntimeCall;
+    type PalletsOrigin = OriginCaller;
+    type WeightInfo = weights::pallet_utility::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -709,24 +709,24 @@ parameter_types! {
 }
 
 impl pallet_identity::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type Currency = Balances;
-	type BasicDeposit = BasicDeposit;
-	type ByteDeposit = ByteDeposit;
-	type SubAccountDeposit = SubAccountDeposit;
-	type MaxSubAccounts = MaxSubAccounts;
-	type IdentityInformation = IdentityInfo<MaxAdditionalFields>;
-	type MaxRegistrars = MaxRegistrars;
-	type Slashed = Treasury;
-	type ForceOrigin = EnsureRoot<AccountId>;
-	type RegistrarOrigin = EnsureRoot<AccountId>;
-	type OffchainSignature = MultiSignature;
-	type SigningPublicKey = AccountPublic;
-	type UsernameAuthorityOrigin = EnsureRoot<Self::AccountId>;
-	type PendingUsernameExpiration = ConstU32<100>;
-	type MaxSuffixLength = MaxSuffixLength;
-	type MaxUsernameLength = MaxUsernameLength;
-	type WeightInfo = weights::pallet_identity::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type Currency = Balances;
+    type BasicDeposit = BasicDeposit;
+    type ByteDeposit = ByteDeposit;
+    type SubAccountDeposit = SubAccountDeposit;
+    type MaxSubAccounts = MaxSubAccounts;
+    type IdentityInformation = IdentityInfo<MaxAdditionalFields>;
+    type MaxRegistrars = MaxRegistrars;
+    type Slashed = Treasury;
+    type ForceOrigin = EnsureRoot<AccountId>;
+    type RegistrarOrigin = EnsureRoot<AccountId>;
+    type OffchainSignature = MultiSignature;
+    type SigningPublicKey = AccountPublic;
+    type UsernameAuthorityOrigin = EnsureRoot<Self::AccountId>;
+    type PendingUsernameExpiration = ConstU32<100>;
+    type MaxSuffixLength = MaxSuffixLength;
+    type MaxUsernameLength = MaxUsernameLength;
+    type WeightInfo = weights::pallet_identity::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -741,18 +741,18 @@ parameter_types! {
 }
 
 impl pallet_proxy::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type RuntimeCall = RuntimeCall;
-	type Currency = Balances;
-	type ProxyType = proxy_type::ProxyType;
-	type ProxyDepositBase = ProxyDepositBase;
-	type ProxyDepositFactor = ProxyDepositFactor;
-	type MaxProxies = MaxProxies;
-	type WeightInfo = weights::pallet_proxy::WeightInfo<Runtime>;
-	type MaxPending = MaxPending;
-	type CallHasher = BlakeTwo256;
-	type AnnouncementDepositBase = AnnouncementDepositBase;
-	type AnnouncementDepositFactor = AnnouncementDepositFactor;
+    type RuntimeEvent = RuntimeEvent;
+    type RuntimeCall = RuntimeCall;
+    type Currency = Balances;
+    type ProxyType = proxy_type::ProxyType;
+    type ProxyDepositBase = ProxyDepositBase;
+    type ProxyDepositFactor = ProxyDepositFactor;
+    type MaxProxies = MaxProxies;
+    type WeightInfo = weights::pallet_proxy::WeightInfo<Runtime>;
+    type MaxPending = MaxPending;
+    type CallHasher = BlakeTwo256;
+    type AnnouncementDepositBase = AnnouncementDepositBase;
+    type AnnouncementDepositFactor = AnnouncementDepositFactor;
 }
 
 parameter_types! {
@@ -763,16 +763,16 @@ parameter_types! {
 }
 
 impl pallet_scheduler::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type RuntimeOrigin = RuntimeOrigin;
-	type PalletsOrigin = OriginCaller;
-	type RuntimeCall = RuntimeCall;
-	type MaximumWeight = MaximumSchedulerWeight;
-	type ScheduleOrigin = EnsureRoot<AccountId>;
-	type OriginPrivilegeCmp = frame_support::traits::EqualPrivilegeOnly;
-	type MaxScheduledPerBlock = MaxScheduledPerBlock;
-	type WeightInfo = weights::pallet_scheduler::WeightInfo<Runtime>;
-	type Preimages = Preimage;
+    type RuntimeEvent = RuntimeEvent;
+    type RuntimeOrigin = RuntimeOrigin;
+    type PalletsOrigin = OriginCaller;
+    type RuntimeCall = RuntimeCall;
+    type MaximumWeight = MaximumSchedulerWeight;
+    type ScheduleOrigin = EnsureRoot<AccountId>;
+    type OriginPrivilegeCmp = frame_support::traits::EqualPrivilegeOnly;
+    type MaxScheduledPerBlock = MaxScheduledPerBlock;
+    type WeightInfo = weights::pallet_scheduler::WeightInfo<Runtime>;
+    type Preimages = Preimage;
 }
 
 parameter_types! {
@@ -783,16 +783,16 @@ parameter_types! {
 }
 
 impl pallet_preimage::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = weights::pallet_preimage::WeightInfo<Runtime>;
-	type Currency = Balances;
-	type ManagerOrigin = EnsureRoot<AccountId>;
-	type Consideration = HoldConsideration<
-		AccountId,
-		Balances,
-		PreimageHoldReason,
-		LinearStoragePrice<PreimageBaseDeposit, PreimageByteDeposit, Balance>,
-	>;
+    type RuntimeEvent = RuntimeEvent;
+    type WeightInfo = weights::pallet_preimage::WeightInfo<Runtime>;
+    type Currency = Balances;
+    type ManagerOrigin = EnsureRoot<AccountId>;
+    type Consideration = HoldConsideration<
+        AccountId,
+        Balances,
+        PreimageHoldReason,
+        LinearStoragePrice<PreimageBaseDeposit, PreimageByteDeposit, Balance>,
+    >;
 }
 
 impl pallet_insecure_randomness_collective_flip::Config for Runtime {}
@@ -802,17 +802,17 @@ parameter_types! {
 }
 
 impl pallet_ajuna_awesome_avatars::Config for Runtime {
-	type PalletId = AwesomeAvatarsPalletId;
-	type RuntimeEvent = RuntimeEvent;
-	type Currency = Balances;
-	type Randomness = Randomness;
-	type KeyLimit = KeyLimit;
-	type ValueLimit = ValueLimit;
-	type NftHandler = NftTransfer;
-	type FeeChainMaxLength = AffiliateMaxLevel;
-	type AffiliateHandler = AffiliatesAAA;
-	type TournamentHandler = TournamentAAA;
-	type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
+    type PalletId = AwesomeAvatarsPalletId;
+    type RuntimeEvent = RuntimeEvent;
+    type Currency = Balances;
+    type Randomness = Randomness;
+    type KeyLimit = KeyLimit;
+    type ValueLimit = ValueLimit;
+    type NftHandler = NftTransfer;
+    type FeeChainMaxLength = AffiliateMaxLevel;
+    type AffiliateHandler = AffiliatesAAA;
+    type TournamentHandler = TournamentAAA;
+    type WeightInfo = pallet_ajuna_awesome_avatars::weights::AjunaWeight<Runtime>;
 }
 
 parameter_types! {
@@ -836,41 +836,41 @@ parameter_types! {
 pub struct ParameterGet<const N: u32>;
 
 impl<const N: u32> Get<u32> for ParameterGet<N> {
-	fn get() -> u32 {
-		N
-	}
+    fn get() -> u32 {
+        N
+    }
 }
 
 pub type KeyLimit = ParameterGet<32>;
 pub type ValueLimit = ParameterGet<64>;
 
 impl pallet_nfts::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type CollectionId = CollectionId;
-	type ItemId = Hash;
-	type Currency = Balances;
-	type ForceOrigin = EnsureRoot<AccountId>;
-	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
-	type Locker = NftTransfer;
-	type CollectionDeposit = CollectionDeposit;
-	type ItemDeposit = ItemDeposit;
-	type MetadataDepositBase = MetadataDepositBase;
-	type AttributeDepositBase = AttributeDepositBase;
-	type DepositPerByte = DepositPerByte;
-	type StringLimit = StringLimit;
-	type KeyLimit = KeyLimit;
-	type ValueLimit = ValueLimit;
-	type ApprovalsLimit = ApprovalsLimit;
-	type ItemAttributesApprovalsLimit = ItemAttributesApprovalsLimit;
-	type MaxTips = MaxTips;
-	type MaxDeadlineDuration = MaxDeadlineDuration;
-	type MaxAttributesPerCall = MaxAttributesPerCall;
-	type Features = NftFeatures;
-	type OffchainSignature = Signature;
-	type OffchainPublic = AccountPublic;
-	#[cfg(feature = "runtime-benchmarks")]
-	type Helper = NftBenchmarkHelper;
-	type WeightInfo = weights::pallet_nfts::WeightInfo<Runtime>;
+    type RuntimeEvent = RuntimeEvent;
+    type CollectionId = CollectionId;
+    type ItemId = Hash;
+    type Currency = Balances;
+    type ForceOrigin = EnsureRoot<AccountId>;
+    type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
+    type Locker = NftTransfer;
+    type CollectionDeposit = CollectionDeposit;
+    type ItemDeposit = ItemDeposit;
+    type MetadataDepositBase = MetadataDepositBase;
+    type AttributeDepositBase = AttributeDepositBase;
+    type DepositPerByte = DepositPerByte;
+    type StringLimit = StringLimit;
+    type KeyLimit = KeyLimit;
+    type ValueLimit = ValueLimit;
+    type ApprovalsLimit = ApprovalsLimit;
+    type ItemAttributesApprovalsLimit = ItemAttributesApprovalsLimit;
+    type MaxTips = MaxTips;
+    type MaxDeadlineDuration = MaxDeadlineDuration;
+    type MaxAttributesPerCall = MaxAttributesPerCall;
+    type Features = NftFeatures;
+    type OffchainSignature = Signature;
+    type OffchainPublic = AccountPublic;
+    #[cfg(feature = "runtime-benchmarks")]
+    type Helper = NftBenchmarkHelper;
+    type WeightInfo = weights::pallet_nfts::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -878,14 +878,14 @@ parameter_types! {
 }
 
 impl pallet_ajuna_nft_transfer::Config for Runtime {
-	type PalletId = NftTransferPalletId;
-	type RuntimeEvent = RuntimeEvent;
-	type CollectionId = CollectionId;
-	type ItemId = Hash;
-	type ItemConfig = pallet_nfts::ItemConfig;
-	type KeyLimit = KeyLimit;
-	type ValueLimit = ValueLimit;
-	type NftHelper = Nft;
+    type PalletId = NftTransferPalletId;
+    type RuntimeEvent = RuntimeEvent;
+    type CollectionId = CollectionId;
+    type ItemId = Hash;
+    type ItemConfig = pallet_nfts::ItemConfig;
+    type KeyLimit = KeyLimit;
+    type ValueLimit = ValueLimit;
+    type NftHelper = Nft;
 }
 
 parameter_types! {
@@ -894,10 +894,10 @@ parameter_types! {
 
 pub type AffiliatesInstanceAAA = pallet_ajuna_affiliates::Instance1;
 impl pallet_ajuna_affiliates::Config<AffiliatesInstanceAAA> for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type RuleIdentifier = pallet_ajuna_awesome_avatars::types::AffiliateMethods;
-	type RuntimeRule = pallet_ajuna_awesome_avatars::FeePropagationOf<Runtime>;
-	type AffiliateMaxLevel = AffiliateMaxLevel;
+    type RuntimeEvent = RuntimeEvent;
+    type RuleIdentifier = pallet_ajuna_awesome_avatars::types::AffiliateMethods;
+    type RuntimeRule = pallet_ajuna_awesome_avatars::FeePropagationOf<Runtime>;
+    type AffiliateMaxLevel = AffiliateMaxLevel;
 }
 
 parameter_types! {
@@ -907,13 +907,13 @@ parameter_types! {
 
 type TournamentInstance1 = pallet_ajuna_tournament::Instance1;
 impl pallet_ajuna_tournament::Config<TournamentInstance1> for Runtime {
-	type PalletId = TournamentPalletId1;
-	type RuntimeEvent = RuntimeEvent;
-	type Currency = Balances;
-	type SeasonId = pallet_ajuna_awesome_avatars::types::SeasonId;
-	type EntityId = pallet_ajuna_awesome_avatars::AvatarIdOf<Runtime>;
-	type RankedEntity = pallet_ajuna_awesome_avatars::types::Avatar<BlockNumberFor<Runtime>>;
-	type MinimumTournamentPhaseDuration = MinimumTournamentPhaseDuration;
+    type PalletId = TournamentPalletId1;
+    type RuntimeEvent = RuntimeEvent;
+    type Currency = Balances;
+    type SeasonId = pallet_ajuna_awesome_avatars::types::SeasonId;
+    type EntityId = pallet_ajuna_awesome_avatars::AvatarIdOf<Runtime>;
+    type RankedEntity = pallet_ajuna_awesome_avatars::types::Avatar<BlockNumberFor<Runtime>>;
+    type MinimumTournamentPhaseDuration = MinimumTournamentPhaseDuration;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -993,7 +993,7 @@ extern crate frame_benchmarking;
 
 #[cfg(feature = "runtime-benchmarks")]
 mod benches {
-	define_benchmarks!(
+    define_benchmarks!(
 		[cumulus_pallet_parachain_system, ParachainSystem]
 		[cumulus_pallet_xcmp_queue, XcmpQueue]
 		[frame_system, SystemBench::<Runtime>]
@@ -1023,26 +1023,26 @@ mod benches {
 		// [pallet_ajuna_awesome_avatars_mbm, AwesomeAvatars]
 		[pallet_nfts, Nft]
 	);
-	// Use this section if you want to benchmark individual pallets
-	// define_benchmarks!([orml_vesting, OrmlVestingBench::<Runtime>]);
+    // Use this section if you want to benchmark individual pallets
+    // define_benchmarks!([orml_vesting, OrmlVestingBench::<Runtime>]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]
 pub struct NftBenchmarkHelper;
 #[cfg(feature = "runtime-benchmarks")]
 impl<CollectionId: From<u16>, ItemId: From<[u8; 32]>>
-	pallet_nfts::BenchmarkHelper<CollectionId, ItemId> for NftBenchmarkHelper
+pallet_nfts::BenchmarkHelper<CollectionId, ItemId> for NftBenchmarkHelper
 {
-	fn collection(i: u16) -> CollectionId {
-		i.into()
-	}
-	fn item(i: u16) -> ItemId {
-		let mut id = [0_u8; 32];
-		let bytes = i.to_be_bytes();
-		id[0] = bytes[0];
-		id[1] = bytes[1];
-		id.into()
-	}
+    fn collection(i: u16) -> CollectionId {
+        i.into()
+    }
+    fn item(i: u16) -> ItemId {
+        let mut id = [0_u8; 32];
+        let bytes = i.to_be_bytes();
+        id[0] = bytes[0];
+        id[1] = bytes[1];
+        id.into()
+    }
 }
 
 impl_runtime_apis! {
