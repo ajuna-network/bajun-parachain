@@ -650,7 +650,7 @@ dependencies = [
 
 [[package]]
 name = "bajun-node"
-version = "0.7.4"
+version = "0.7.6"
 dependencies = [
  "async-trait",
  "bajun-runtime",
@@ -728,7 +728,7 @@ dependencies = [
 
 [[package]]
 name = "bajun-runtime"
-version = "0.7.4"
+version = "0.7.6"
 dependencies = [
  "assets-common",
  "cumulus-pallet-aura-ext",
@@ -6265,8 +6265,8 @@ dependencies = [
 
 [[package]]
 name = "orml-pallets-benchmarking"
-version = "0.12.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.12.0#0f4108c7e4d46f6d3286383e741da69a4feee2b6"
+version = "0.13.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.13.0#fa8c35e865c8bf00eea92b726eb287adeb25d201"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6393,8 +6393,8 @@ checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 
 [[package]]
 name = "pallet-ajuna-affiliates"
-version = "0.12.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.12.0#0f4108c7e4d46f6d3286383e741da69a4feee2b6"
+version = "0.13.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.13.0#fa8c35e865c8bf00eea92b726eb287adeb25d201"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6406,8 +6406,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-awesome-avatars"
-version = "0.12.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.12.0#0f4108c7e4d46f6d3286383e741da69a4feee2b6"
+version = "0.13.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.13.0#fa8c35e865c8bf00eea92b726eb287adeb25d201"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6426,8 +6426,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-awesome-avatars-benchmarking"
-version = "0.12.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.12.0#0f4108c7e4d46f6d3286383e741da69a4feee2b6"
+version = "0.13.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.13.0#fa8c35e865c8bf00eea92b726eb287adeb25d201"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6450,8 +6450,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-nft-transfer"
-version = "0.12.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.12.0#0f4108c7e4d46f6d3286383e741da69a4feee2b6"
+version = "0.13.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.13.0#fa8c35e865c8bf00eea92b726eb287adeb25d201"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6463,8 +6463,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ajuna-tournament"
-version = "0.12.0"
-source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.12.0#0f4108c7e4d46f6d3286383e741da69a4feee2b6"
+version = "0.13.0"
+source = "git+https://github.com/ajuna-network/ajuna-pallets.git?tag=v0.13.0#fa8c35e865c8bf00eea92b726eb287adeb25d201"
 dependencies = [
  "frame-support",
  "frame-system",
