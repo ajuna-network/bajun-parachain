@@ -189,7 +189,7 @@ jobs:
       matrix:
         binary: [ bajun-node ]
     env:
-      ZOMBIENET_VERSION: 1.3.116
+      ZOMBIENET_VERSION: v1.3.116
     steps:
       - uses: actions/checkout@v4
         with:
