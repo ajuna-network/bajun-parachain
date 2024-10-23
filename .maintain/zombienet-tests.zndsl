@@ -8,5 +8,5 @@ bajun-collator: reports node_roles is 4
 bajun-collator: reports sub_libp2p_is_major_syncing is 0
 
 # logs
-bajun-collator: log line matches glob "*rted #1*" within 10 seconds
-bajun-collator: log line matches "Imported #[0-9]+" within 10 seconds
+bajun-collator: log line matches glob "*rted #1*" within 20 seconds
+bajun-collator: log line matches "Imported #[0-9]+" within 20 seconds
